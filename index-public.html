@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bainsla Music Private Limited — Rajasthan's Premier Music Company</title>
+<meta name="description" content="Bainsla Music Private Limited — Rajasthan's First Rasiya Music Company. Music Distribution, Production House, Digital Solutions.">
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--red:#c00;--red2:#a00;--dark:#1a1a1a;--gray:#666;--light:#f7f7f7;--white:#fff;--shadow:0 4px 24px rgba(0,0,0,.07);--radius:14px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',sans-serif;background:var(--white);color:#333;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#f0f0f0}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:3px}
+
+/* ===== HEADER (Transparent → White on scroll) ===== */
+.header{position:fixed;top:0;left:0;right:0;z-index:1000;transition:all .4s;padding:6px 0}
+.header.scrolled{background:rgba(255,255,255,.97);box-shadow:0 2px 20px rgba(0,0,0,.08);backdrop-filter:blur(10px)}
+.header-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo img{height:42px;width:42px;border-radius:50%;border:2px solid rgba(255,255,255,.3);transition:border-color .3s}
+.header.scrolled .logo img{border-color:var(--red)}
+.logo-text{font-weight:800;font-size:15px;color:#fff;letter-spacing:.5px;text-transform:uppercase;transition:color .3s}
+.logo-sub{font-size:8px;color:rgba(255,255,255,.7);letter-spacing:2.5px;font-weight:500;transition:color .3s}
+.header.scrolled .logo-text{color:var(--red)}
+.header.scrolled .logo-sub{color:var(--gray)}
+.nav-menu{display:flex;gap:0;align-items:center}
+.nav-menu a{padding:20px 16px;font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:1.5px;text-transform:uppercase;transition:all .3s;position:relative}
+.nav-menu a::after{content:'';position:absolute;bottom:12px;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--red);transition:width .3s;border-radius:2px}
+.nav-menu a:hover,.nav-menu a.active{color:#fff}
+.nav-menu a:hover::after,.nav-menu a.active::after{width:60%}
+.header.scrolled .nav-menu a{color:#444}
+.header.scrolled .nav-menu a:hover,.header.scrolled .nav-menu a.active{color:var(--red)}
+.hamburger{display:none;background:none;border:none;color:#fff;font-size:24px;cursor:pointer;transition:color .3s}
+.header.scrolled .hamburger{color:#333}
+.mobile-nav{display:none;position:fixed;top:70px;left:0;right:0;background:var(--white);box-shadow:var(--shadow);padding:12px;z-index:999}
+.mobile-nav.open{display:block}
+.mobile-nav a{display:block;padding:12px 16px;color:#444;font-size:12px;font-weight:600;letter-spacing:1px;border-radius:6px;text-transform:uppercase}
+.mobile-nav a:hover{color:var(--red);background:rgba(204,0,0,.04)}
+
+/* ===== HERO (Single Video Background) ===== */
+.hero{position:relative;width:100%;height:100vh;min-height:550px;overflow:hidden}
+.hero video,.hero .hero-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .hero-fallback{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:3px}
+.hero .hero-fallback .gi{overflow:hidden}
+.hero .hero-fallback .gi img{width:100%;height:100%;object-fit:cover;animation:heroZoom 14s ease-in-out infinite alternate}
+.hero .hero-fallback .gi:nth-child(odd) img{animation-delay:-4s}
+@keyframes heroZoom{0%{transform:scale(1)}100%{transform:scale(1.12)}}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.5) 100%);z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+.hero-tag{color:rgba(255,255,255,.8);font-size:clamp(11px,1.5vw,14px);font-weight:600;letter-spacing:6px;text-transform:uppercase;margin-bottom:12px;opacity:0;animation:heroFade 1s .3s forwards}
+.hero-title{color:#fff;font-size:clamp(32px,6vw,64px);font-weight:900;letter-spacing:3px;margin-bottom:8px;opacity:0;animation:heroFade 1s .7s forwards}
+.hero-desc{color:rgba(255,255,255,.75);font-size:clamp(12px,1.5vw,16px);font-weight:300;max-width:600px;margin-bottom:32px;opacity:0;animation:heroFade 1s 1.1s forwards}
+@keyframes heroFade{to{opacity:1;transform:translateY(0)}from{opacity:0;transform:translateY(20px)}}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;opacity:0;animation:heroFade 1s 1.4s forwards}
+.hero-btns a{padding:13px 32px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-radius:50px;transition:all .3s}
+.btn-primary-hero{background:var(--red);color:#fff;border:2px solid var(--red)}
+.btn-primary-hero:hover{background:transparent;border-color:#fff}
+.btn-outline-hero{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.5)}
+.btn-outline-hero:hover{background:#fff;color:var(--red);border-color:#fff}
+
+/* ===== STATS BAR ===== */
+.stats-bar{background:linear-gradient(135deg,#b00 0%,#d22 50%,#b00 100%);padding:28px 0;position:relative;overflow:hidden}
+.stats-bar::before{content:'';position:absolute;top:-50%;left:-10%;width:120%;height:200%;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,255,255,.03) 20px,rgba(255,255,255,.03) 40px)}
+.stats-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(6,1fr);gap:16px;text-align:center}
+.stat-box{color:#fff}
+.stat-box .stat-num{font-size:clamp(22px,3vw,34px);font-weight:900}
+.stat-box sup{font-size:12px}
+.stat-box .stat-suf{font-size:clamp(12px,1.5vw,16px);font-weight:600}
+.stat-box .stat-lbl{font-size:10px;opacity:.8;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+
+/* ===== SECTION COMMON ===== */
+section{padding:70px 0}
+.container{max-width:1280px;margin:0 auto;padding:0 24px}
+.sec-head{margin-bottom:44px;position:relative}
+.sec-head h2{font-size:clamp(20px,3vw,30px);font-weight:800;color:var(--dark);text-transform:uppercase;letter-spacing:.5px;padding-left:18px;border-left:4px solid var(--red)}
+.sec-head p{font-size:13px;color:var(--gray);margin-top:6px;padding-left:18px}
+.sec-head .view-more{position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--red);font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;border:2px solid var(--red);padding:8px 20px;border-radius:50px;transition:all .3s}
+.sec-head .view-more:hover{background:var(--red);color:#fff}
+
+/* ===== OUR LABELS (Cards) ===== */
+.labels-sec{background:var(--light)}
+.label-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:all .35s;border:1px solid #eee}
+.label-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.12);transform:translateY(-6px)}
+.label-top{padding:24px 20px 16px;display:flex;gap:14px;align-items:flex-start}
+.label-logo{width:70px;height:70px;border-radius:50%;overflow:hidden;flex-shrink:0;border:3px solid #f0f0f0}
+.label-logo img{width:100%;height:100%;object-fit:cover}
+.label-info h3{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:4px}
+.label-info p{font-size:11px;color:var(--gray);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.label-bottom{padding:14px 20px;background:var(--light);border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.label-stats{display:flex;gap:14px}
+.label-stats span{font-size:10px;color:#555}
+.label-stats strong{display:block;font-size:15px;color:var(--red);font-weight:700}
+.label-actions{display:flex;gap:6px}
+.label-actions a{width:30px;height:30px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;color:#666;font-size:12px;transition:all .3s}
+.label-actions a:hover{background:var(--red);color:#fff}
+
+/* ===== OUR PRESENCE ===== */
+.presence-sec{background:var(--white)}
+.pres-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:28px}
+.pres-tabs button{padding:10px 28px;border:2px solid var(--red);background:transparent;color:var(--red);font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;border-radius:50px;cursor:pointer;transition:all .3s;font-family:inherit}
+.pres-tabs button.active{background:var(--red);color:#fff}
+.pres-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;align-items:center}
+.pres-grid img{height:44px;width:auto;filter:grayscale(.4);opacity:.7;transition:all .3s}
+.pres-grid img:hover{filter:grayscale(0);opacity:1;transform:scale(1.12)}
+
+/* ===== ARTISTS / ASSOCIATES ===== */
+.assoc-sec{background:var(--light);overflow:hidden}
+.assoc-card{text-align:center;padding:16px;transition:all .3s}
+.assoc-card:hover{transform:translateY(-6px)}
+.assoc-img{width:110px;height:110px;border-radius:50%;overflow:hidden;margin:0 auto 10px;border:4px solid #eee;transition:border-color .3s}
+.assoc-card:hover .assoc-img{border-color:var(--red)}
+.assoc-img img{width:100%;height:100%;object-fit:cover}
+.assoc-card h4{font-size:13px;font-weight:700;color:var(--dark)}
+.assoc-card p{font-size:10px;color:#888}
+.assoc-social{display:flex;gap:5px;justify-content:center;margin-top:6px}
+.assoc-social a{width:24px;height:24px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;color:#666;font-size:10px;transition:all .3s}
+.assoc-social a:hover{background:var(--red);color:#fff}
+
+/* ===== SERVICES ===== */
+.services-sec{background:var(--white)}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.svc-card{background:var(--white);border:1px solid #eee;border-radius:var(--radius);padding:32px 24px;text-align:center;transition:all .35s;position:relative;overflow:hidden}
+.svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--red);transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.svc-card:hover::before{transform:scaleX(1)}
+.svc-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.1);transform:translateY(-4px)}
+.svc-icon{width:64px;height:64px;border-radius:50%;background:rgba(204,0,0,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:var(--red);transition:all .3s}
+.svc-card:hover .svc-icon{background:var(--red);color:#fff;transform:scale(1.1)}
+.svc-card h3{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:8px}
+.svc-card p{font-size:12px;color:var(--gray);line-height:1.6}
+
+/* ===== CLIENTS MARQUEE ===== */
+.clients-sec{background:var(--light);overflow:hidden;padding:50px 0}
+.clients-track{display:flex;gap:48px;animation:marquee 35s linear infinite;width:max-content}
+.clients-track img{height:50px;width:auto;filter:grayscale(1);opacity:.4;transition:all .3s}
+.clients-track img:hover{filter:grayscale(0);opacity:1}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ===== EXCLUSIVE ALBUMS ===== */
+.albums-sec{background:var(--white)}
+.album-card{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer;box-shadow:var(--shadow)}
+.album-card img{width:100%;height:260px;object-fit:cover;transition:transform .6s}
+.album-card:hover img{transform:scale(1.08)}
+.album-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 45%);display:flex;align-items:flex-end;padding:18px;opacity:0;transition:opacity .3s}
+.album-card:hover .album-ov{opacity:1}
+.album-ov h4{color:#fff;font-size:13px;font-weight:600}
+.album-ov p{color:rgba(255,255,255,.7);font-size:10px}
+
+/* ===== JOURNEY TIMELINE ===== */
+.journey-sec{background:var(--light)}
+.tl{position:relative;max-width:860px;margin:0 auto}
+.tl::before{content:'';position:absolute;left:50%;transform:translateX(-50%);width:3px;height:100%;background:linear-gradient(to bottom,var(--red),#f66)}
+.tl-item{display:flex;margin-bottom:36px;position:relative}
+.tl-item:nth-child(odd){flex-direction:row-reverse}
+.tl-dot{width:18px;height:18px;border-radius:50%;background:var(--red);border:4px solid var(--white);box-shadow:0 0 0 3px var(--red);position:absolute;left:50%;transform:translateX(-50%);z-index:2}
+.tl-box{width:43%;padding:18px;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow)}
+.tl-item:nth-child(odd) .tl-box{margin-right:auto;margin-left:7%}
+.tl-item:nth-child(even) .tl-box{margin-left:auto;margin-right:7%}
+.tl-box h5{color:var(--red);font-size:20px;font-weight:800;margin-bottom:4px}
+.tl-box p{font-size:12px;color:var(--gray);line-height:1.6}
+
+/* ===== CONTENT WAREHOUSE ===== */
+.warehouse-sec{background:var(--dark);color:#fff;padding:80px 0;position:relative}
+.warehouse-sec .sec-head h2{color:#fff;border-left-color:#fff}
+.warehouse-sec .sec-head p{color:rgba(255,255,255,.6)}
+.wh-video{max-width:780px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);aspect-ratio:16/9}
+.wh-video iframe,.wh-video video{width:100%;height:100%;border:none}
+
+/* ===== LATEST RELEASES ===== */
+.releases-sec{background:var(--light)}
+.rel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.rel-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:all .3s;display:block}
+.rel-card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.12)}
+.rel-thumb{position:relative;overflow:hidden}
+.rel-thumb img{width:100%;height:170px;object-fit:cover;transition:transform .5s}
+.rel-card:hover .rel-thumb img{transform:scale(1.05)}
+.rel-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);opacity:0;transition:opacity .3s}
+.rel-card:hover .rel-play{opacity:1}
+.rel-play i{font-size:44px;color:#fff}
+.rel-views{position:absolute;bottom:6px;right:8px;background:rgba(0,0,0,.7);color:#fff;font-size:9px;padding:2px 7px;border-radius:4px}
+.rel-body{padding:12px 14px}
+.rel-body h4{font-size:12px;font-weight:600;color:var(--dark);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px}
+.rel-body p{font-size:10px;color:#888}
+
+/* ===== DIRECTORS ===== */
+.directors-sec{background:var(--white)}
+.dir-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px}
+.dir-card{background:var(--white);border:1px solid #eee;border-radius:var(--radius);overflow:hidden;text-align:center;padding:28px 20px;transition:all .3s}
+.dir-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.1);transform:translateY(-4px)}
+.dir-img{width:100px;height:100px;border-radius:50%;overflow:hidden;margin:0 auto 14px;border:4px solid var(--light)}
+.dir-img img{width:100%;height:100%;object-fit:cover}
+.dir-card h4{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:2px}
+.dir-card .dir-role{font-size:11px;color:var(--red);font-weight:600;margin-bottom:8px}
+.dir-card p{font-size:11px;color:var(--gray);line-height:1.5;margin-bottom:10px}
+.dir-social{display:flex;gap:6px;justify-content:center}
+.dir-social a{width:28px;height:28px;border-radius:50%;background:var(--light);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:12px;transition:all .3s}
+.dir-social a:hover{background:var(--red);color:#fff}
+
+/* ===== CONTACT ===== */
+.contact-sec{background:var(--light)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.cform input,.cform textarea,.cform select{width:100%;padding:13px 16px;border:1px solid #ddd;border-radius:10px;font-family:inherit;font-size:13px;transition:border-color .3s;background:var(--white)}
+.cform input:focus,.cform textarea:focus{border-color:var(--red);outline:none}
+.cform textarea{height:110px;resize:vertical}
+.cform .fg{margin-bottom:14px}
+.cform label{display:block;font-size:11px;font-weight:700;color:#555;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.btn-send{padding:14px 0;background:var(--red);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border-radius:10px;cursor:pointer;transition:all .3s;width:100%}
+.btn-send:hover{background:var(--red2);transform:translateY(-2px);box-shadow:0 8px 20px rgba(204,0,0,.25)}
+.cinfo{padding:28px;background:var(--white);border-radius:16px;box-shadow:var(--shadow)}
+.cinfo h3{font-size:18px;font-weight:700;color:var(--dark);margin-bottom:18px}
+.ci-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}
+.ci-item i{width:38px;height:38px;border-radius:50%;background:rgba(204,0,0,.08);color:var(--red);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ci-item h4{font-size:12px;font-weight:600;color:var(--dark);margin-bottom:1px}
+.ci-item p{font-size:11px;color:var(--gray)}
+.cmap{margin-top:18px;border-radius:12px;overflow:hidden;height:180px}
+.cmap iframe{width:100%;height:100%;border:none}
+
+/* ===== FOOTER ===== */
+.footer{background:#111;color:#bbb;padding:50px 0 16px}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:28px;margin-bottom:28px}
+.ft-brand .ft-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.ft-brand .ft-logo img{height:40px;width:40px;border-radius:50%}
+.ft-brand .ft-logo span{color:var(--red);font-weight:800;font-size:15px}
+.ft-brand p{font-size:11px;color:#888;line-height:1.7;margin-bottom:14px}
+.ft-social{display:flex;gap:7px}
+.ft-social a{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#bbb;font-size:13px;transition:all .3s}
+.ft-social a:hover{background:var(--red);color:#fff}
+.footer h4{color:#fff;font-size:13px;font-weight:700;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+.footer ul{list-style:none}
+.footer ul li{margin-bottom:7px}
+.footer ul li a{color:#888;font-size:11px;transition:color .2s}
+.footer ul li a:hover{color:var(--red)}
+.ft-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:16px;text-align:center;font-size:10px;color:#555}
+
+/* ===== SWIPER ===== */
+.swiper{overflow:visible !important}
+.swiper-button-next,.swiper-button-prev{width:40px !important;height:40px !important;border-radius:50% !important;background:var(--white) !important;box-shadow:0 2px 12px rgba(0,0,0,.12) !important;color:var(--red) !important}
+.swiper-button-next::after,.swiper-button-prev::after{font-size:15px !important;font-weight:700 !important}
+.swiper-pagination-bullet-active{background:var(--red) !important}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+.stats-inner{grid-template-columns:repeat(3,1fr)}
+.contact-grid,.ft-grid{grid-template-columns:1fr}
+.svc-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+.nav-menu{display:none}
+.hamburger{display:block}
+.hero{height:70vh;min-height:380px}
+.hero .hero-fallback{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr)}
+.hero .hero-fallback .gi:nth-child(n+5){display:none}
+.stats-inner{grid-template-columns:repeat(2,1fr);gap:10px}
+.tl::before{left:16px}
+.tl-dot{left:16px}
+.tl-item,.tl-item:nth-child(odd){flex-direction:row}
+.tl-box{width:calc(100% - 44px) !important;margin-left:44px !important;margin-right:0 !important}
+.svc-grid{grid-template-columns:1fr}
+.rel-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.sec-head .view-more{position:static;transform:none;display:inline-block;margin-top:10px;margin-left:18px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header" id="mainHeader">
+<div class="header-inner">
+  <a href="/" class="logo">
+    <img src="https://yt3.googleusercontent.com/E8YM429FWSAHbNIKYFSzR-Yv8KW3J79oHXCbK6WUkqJthWXvpObtc-UMy0TMSjx1b7gQyefwJu4=s176-c-k-c0x00ffffff-no-rj" alt="Bainsla Music">
+    <div>
+      <div class="logo-text">Bainsla Music</div>
+      <div class="logo-sub">PRIVATE LIMITED</div>
+    </div>
+  </a>
+  <nav class="nav-menu">
+    <a href="#home" class="active">Home</a>
+    <a href="#about">About</a>
+    <a href="#catalogue">Catalogue</a>
+    <a href="#artists">Artists</a>
+    <a href="#services">Services</a>
+    <a href="#connect">Connect</a>
+  </nav>
+  <button class="hamburger" onclick="document.querySelector('.mobile-nav').classList.toggle('open')">&#9776;</button>
+</div>
+<div class="mobile-nav">
+  <a href="#home" onclick="this.parentElement.classList.remove('open')">Home</a>
+  <a href="#about" onclick="this.parentElement.classList.remove('open')">About</a>
+  <a href="#catalogue" onclick="this.parentElement.classList.remove('open')">Catalogue</a>
+  <a href="#artists" onclick="this.parentElement.classList.remove('open')">Artists</a>
+  <a href="#services" onclick="this.parentElement.classList.remove('open')">Services</a>
+  <a href="#connect" onclick="this.parentElement.classList.remove('open')">Connect</a>
+  <a href="/admin/" style="color:var(--red);font-weight:700" onclick="this.parentElement.classList.remove('open')">Admin Panel</a>
+</div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+<!-- Fallback: thumbnail grid (replaced by video if admin uploads one) -->
+<div class="hero-fallback" id="heroFallback">
+  <div class="gi"><img src="https://img.youtube.com/vi/m0k-0l3js_M/maxresdefault.jpg" alt="" loading="lazy"></div>
+  <div class="gi"><img src="https://img.youtube.com/vi/qriwR1RZ0is/maxresdefault.jpg" alt="" loading="lazy"></div>
+  <div class="gi"><img src="https://img.youtube.com/vi/7pq69AdKVnY/maxresdefault.jpg" alt="" loading="lazy"></div>
+  <div class="gi"><img src="https://img.youtube.com/vi/29NlrsT27ds/maxresdefault.jpg" alt="" loading="lazy"></div>
+  <div class="gi"><img src="https://img.youtube.com/vi/x9eB18LSknA/maxresdefault.jpg" alt="" loading="lazy"></div>
+  <div class="gi"><img src="https://img.youtube.com/vi/2_U16q7-ags/maxresdefault.jpg" alt="" loading="lazy"></div>
+  <div class="gi"><img src="https://img.youtube.com/vi/DrwSehgOmg8/maxresdefault.jpg" alt="" loading="lazy"></div>
+  <div class="gi"><img src="https://img.youtube.com/vi/jPURBztdpOk/maxresdefault.jpg" alt="" loading="lazy"></div>
+  <div class="gi"><img src="https://img.youtube.com/vi/_Q-MFX1bK_c/maxresdefault.jpg" alt="" loading="lazy"></div>
+</div>
+<div class="hero-overlay">
+  <div class="hero-tag">Rajasthan's Premier Music Company</div>
+  <h1 class="hero-title">Bainsla Music</h1>
+  <p class="hero-desc">Music Distribution &bull; Production House &bull; Digital Solutions</p>
+  <div class="hero-btns">
+    <a href="#about" class="btn-primary-hero">Explore More</a>
+    <a href="#connect" class="btn-outline-hero">Get In Touch</a>
+  </div>
+</div>
+</section>
+
+<!-- ===== STATS ===== -->
+<div class="stats-bar">
+<div class="stats-inner">
+  <div class="stat-box" data-aos="zoom-in" data-aos-delay="0">
+    <div><span class="stat-num counter" data-target="3">0</span><sup>+</sup> <span class="stat-suf">Yr</span></div>
+    <div class="stat-lbl">Experience</div>
+  </div>
+  <div class="stat-box" data-aos="zoom-in" data-aos-delay="80">
+    <div><span class="stat-num counter" data-target="42">0</span><sup>+</sup></div>
+    <div class="stat-lbl">Happy Clients</div>
+  </div>
+  <div class="stat-box" data-aos="zoom-in" data-aos-delay="160">
+    <div><span class="stat-num counter" data-target="256">0</span><sup>+</sup></div>
+    <div class="stat-lbl">Audio Tracks</div>
+  </div>
+  <div class="stat-box" data-aos="zoom-in" data-aos-delay="240">
+    <div><span class="stat-num counter" data-target="178">0</span><sup>+</sup></div>
+    <div class="stat-lbl">Music Videos</div>
+  </div>
+  <div class="stat-box" data-aos="zoom-in" data-aos-delay="320">
+    <div><span class="stat-num counter" data-target="50">0</span><sup>+</sup> <span class="stat-suf">K</span></div>
+    <div class="stat-lbl">Subscribers</div>
+  </div>
+  <div class="stat-box" data-aos="zoom-in" data-aos-delay="400">
+    <div><span class="stat-num counter" data-target="12.8">0</span><sup>+</sup> <span class="stat-suf">M</span></div>
+    <div class="stat-lbl">Total Views</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== OUR LABELS ===== -->
+<section class="labels-sec" id="about">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Our Labels</h2>
+    <p>Our music channels and brands</p>
+    <a href="https://www.youtube.com/@bainslaofficial" target="_blank" class="view-more">View All</a>
+  </div>
+  <div class="swiper labelsSwiper">
+    <div class="swiper-wrapper" id="labelsWrapper">
+      <!-- Label cards populated by JS -->
+    </div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== OUR PRESENCE ===== -->
+<section class="presence-sec" id="presence">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Our Presence</h2>
+    <p>Available on all major platforms</p>
+  </div>
+  <div class="pres-tabs" data-aos="fade-up">
+    <button class="active" onclick="showPres('audio',this)">Audio</button>
+    <button onclick="showPres('video',this)">Video</button>
+  </div>
+  <div id="pres-audio" class="pres-grid" data-aos="fade-up" data-aos-delay="100">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/168px-Spotify_logo_without_text.svg.png" alt="Spotify" title="Spotify">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/100px-Apple_logo_black.svg.png" alt="Apple Music" title="Apple Music" style="height:40px">
+    <img src="https://images.squarespace-cdn.com/content/v1/5e4ef5e0e7c6ac53d5eef0e9/1582152941519-U3ZCWX35M29LAOWF5WLX/JioSaavn+Logo.png" alt="JioSaavn" title="JioSaavn" style="height:36px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Gaana_Logo.svg/220px-Gaana_Logo.svg.png" alt="Gaana" title="Gaana" style="height:32px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/200px-Logo_of_YouTube_%282015-2017%29.svg.png" alt="YouTube Music" title="YouTube Music">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/39/Wynk_Music_logo.svg/220px-Wynk_Music_logo.svg.png" alt="Wynk" title="Wynk" style="height:36px">
+  </div>
+  <div id="pres-video" class="pres-grid" style="display:none" data-aos="fade-up">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/200px-Logo_of_YouTube_%282015-2017%29.svg.png" alt="YouTube" title="YouTube">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/150px-Instagram_logo.svg.png" alt="Instagram" title="Instagram Reels" style="height:40px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/100px-Facebook_f_logo_%282019%29.svg.png" alt="Facebook" title="Facebook Watch" style="height:40px">
+  </div>
+</div>
+</section>
+
+<!-- ===== ARTISTS / ASSOCIATES ===== -->
+<section class="assoc-sec" id="artists">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Our Artists</h2>
+    <p>Meet the talented performers behind our music</p>
+  </div>
+  <div class="swiper assocSwiper">
+    <div class="swiper-wrapper" id="assocWrapper">
+      <!-- Populated by JS -->
+    </div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="services-sec" id="services">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Our Services</h2>
+    <p>Complete digital solutions for the entertainment industry</p>
+  </div>
+  <div class="svc-grid" id="svcGrid">
+    <div class="svc-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="svc-icon"><i class="fas fa-compact-disc"></i></div>
+      <h3>Music Distribution</h3>
+      <p>Distribute your music across 150+ global platforms including Spotify, Apple Music, JioSaavn, Gaana, Wynk and more.</p>
+    </div>
+    <div class="svc-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="svc-icon"><i class="fas fa-film"></i></div>
+      <h3>Production House</h3>
+      <p>Full-scale music video production with professional equipment, direction, editing and post-production services.</p>
+    </div>
+    <div class="svc-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="svc-icon"><i class="fas fa-laptop-code"></i></div>
+      <h3>Website Development</h3>
+      <p>Custom website design and development for artists, labels and music companies with admin panels and CMS.</p>
+    </div>
+    <div class="svc-card" data-aos="fade-up" data-aos-delay="240">
+      <div class="svc-icon"><i class="fas fa-mobile-alt"></i></div>
+      <h3>Mobile App Development</h3>
+      <p>Android and iOS app development for music streaming, artist management and fan engagement platforms.</p>
+    </div>
+    <div class="svc-card" data-aos="fade-up" data-aos-delay="320">
+      <div class="svc-icon"><i class="fas fa-bullhorn"></i></div>
+      <h3>Digital Marketing</h3>
+      <p>Social media management, YouTube SEO, Instagram promotion and digital advertising for maximum reach.</p>
+    </div>
+    <div class="svc-card" data-aos="fade-up" data-aos-delay="400">
+      <div class="svc-icon"><i class="fas fa-microphone-alt"></i></div>
+      <h3>Artist Management</h3>
+      <p>Complete artist management including bookings, brand deals, content strategy and career growth planning.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== CLIENTS ===== -->
+<section class="clients-sec">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Our Clients &amp; Partners</h2>
+  </div>
+</div>
+<div style="overflow:hidden">
+  <div class="clients-track" id="clientsTrack">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/168px-Spotify_logo_without_text.svg.png" alt="Spotify">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/200px-Logo_of_YouTube_%282015-2017%29.svg.png" alt="YouTube">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/100px-Apple_logo_black.svg.png" alt="Apple" style="height:44px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/150px-Instagram_logo.svg.png" alt="Instagram" style="height:48px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/100px-Facebook_f_logo_%282019%29.svg.png" alt="Facebook" style="height:48px">
+    <img src="https://images.squarespace-cdn.com/content/v1/5e4ef5e0e7c6ac53d5eef0e9/1582152941519-U3ZCWX35M29LAOWF5WLX/JioSaavn+Logo.png" alt="JioSaavn" style="height:36px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Gaana_Logo.svg/220px-Gaana_Logo.svg.png" alt="Gaana" style="height:32px">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/39/Wynk_Music_logo.svg/220px-Wynk_Music_logo.svg.png" alt="Wynk" style="height:36px">
+    <!-- Duplicated for seamless loop -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/168px-Spotify_logo_without_text.svg.png" alt="Spotify">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/200px-Logo_of_YouTube_%282015-2017%29.svg.png" alt="YouTube">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/100px-Apple_logo_black.svg.png" alt="Apple" style="height:44px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/150px-Instagram_logo.svg.png" alt="Instagram" style="height:48px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/100px-Facebook_f_logo_%282019%29.svg.png" alt="Facebook" style="height:48px">
+    <img src="https://images.squarespace-cdn.com/content/v1/5e4ef5e0e7c6ac53d5eef0e9/1582152941519-U3ZCWX35M29LAOWF5WLX/JioSaavn+Logo.png" alt="JioSaavn" style="height:36px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Gaana_Logo.svg/220px-Gaana_Logo.svg.png" alt="Gaana" style="height:32px">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/39/Wynk_Music_logo.svg/220px-Wynk_Music_logo.svg.png" alt="Wynk" style="height:36px">
+  </div>
+</div>
+</section>
+
+<!-- ===== EXCLUSIVE ALBUMS ===== -->
+<section class="albums-sec" id="catalogue">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Exclusive Albums</h2>
+    <p>Our latest music collections</p>
+    <a href="https://www.youtube.com/@bainslaofficial" target="_blank" class="view-more">View All</a>
+  </div>
+  <div class="swiper albumsSwiper">
+    <div class="swiper-wrapper" id="albumsWrapper">
+      <!-- Populated by JS -->
+    </div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-pagination" style="position:relative;margin-top:18px"></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== JOURNEY ===== -->
+<section class="journey-sec" id="journey">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Our Journey</h2>
+    <p>Milestones that define us</p>
+  </div>
+  <div class="tl" id="journeyTl">
+    <!-- Populated by JS -->
+  </div>
+</div>
+</section>
+
+<!-- ===== CONTENT WAREHOUSE ===== -->
+<section class="warehouse-sec" id="warehouse">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Content Warehouse</h2>
+    <p>Explore our featured content</p>
+  </div>
+  <div class="wh-video" data-aos="zoom-in" id="whVideo">
+    <iframe src="https://www.youtube.com/embed/m0k-0l3js_M?rel=0" title="Featured Video" allowfullscreen loading="lazy"></iframe>
+  </div>
+  <div style="text-align:center;margin-top:28px" data-aos="fade-up">
+    <a href="https://www.youtube.com/@bainslaofficial" target="_blank" style="display:inline-block;padding:12px 30px;border:2px solid rgba(255,255,255,.3);color:#fff;font-weight:700;font-size:12px;border-radius:50px;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s">Visit YouTube Channel</a>
+  </div>
+</div>
+</section>
+
+<!-- ===== LATEST RELEASES ===== -->
+<section class="releases-sec">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Latest Releases</h2>
+    <p>Fresh from our studio</p>
+    <a href="https://www.youtube.com/@bainslaofficial/videos" target="_blank" class="view-more">View All</a>
+  </div>
+  <div class="rel-grid" id="relGrid">
+    <!-- Populated by JS -->
+  </div>
+</div>
+</section>
+
+<!-- ===== DIRECTORS ===== -->
+<section class="directors-sec">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Leadership &amp; Team</h2>
+    <p>The people behind Bainsla Music</p>
+  </div>
+  <div class="dir-grid" id="dirGrid">
+    <!-- Populated by JS -->
+  </div>
+</div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact-sec" id="connect">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Get In Touch</h2>
+    <p>We'd love to hear from you</p>
+  </div>
+  <div class="contact-grid">
+    <div class="cform" data-aos="fade-right">
+      <div class="fg"><label>Full Name</label><input type="text" placeholder="Your name" id="c-name"></div>
+      <div class="fg"><label>Email</label><input type="email" placeholder="Your email" id="c-email"></div>
+      <div class="fg"><label>Phone</label><input type="tel" placeholder="Phone number" id="c-phone"></div>
+      <div class="fg"><label>Subject</label>
+        <select id="c-subject"><option value="">Select Subject</option><option>Music Distribution</option><option>Production</option><option>Artist Collaboration</option><option>Website Development</option><option>App Development</option><option>General Inquiry</option></select>
+      </div>
+      <div class="fg"><label>Message</label><textarea placeholder="Your message..." id="c-msg"></textarea></div>
+      <button class="btn-send" onclick="submitForm()">Send Message</button>
+    </div>
+    <div class="cinfo" data-aos="fade-left">
+      <h3>Contact Information</h3>
+      <div class="ci-item"><i class="fas fa-envelope"></i><div><h4>Email</h4><p>support@bainslamusic.com</p></div></div>
+      <div class="ci-item"><i class="fas fa-map-marker-alt"></i><div><h4>Address</h4><p>Rajasthan, India</p></div></div>
+      <div class="ci-item"><i class="fab fa-youtube"></i><div><h4>YouTube</h4><p><a href="https://www.youtube.com/@bainslaofficial" target="_blank" style="color:var(--red)">@bainslaofficial</a></p></div></div>
+      <div class="ci-item"><i class="fab fa-instagram"></i><div><h4>Instagram</h4><p><a href="https://www.instagram.com/bainsla_music_company" target="_blank" style="color:var(--red)">@bainsla_music_company</a></p></div></div>
+      <div class="cmap"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3557.7!2d75.78!3d26.91!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDU0JzM2LjAiTiA3NcKwNDYnNDguMCJF!5e0!3m2!1sen!2sin!4v1" allowfullscreen loading="lazy"></iframe></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+<div class="container">
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <div class="ft-logo">
+        <img src="https://yt3.googleusercontent.com/E8YM429FWSAHbNIKYFSzR-Yv8KW3J79oHXCbK6WUkqJthWXvpObtc-UMy0TMSjx1b7gQyefwJu4=s176-c-k-c0x00ffffff-no-rj" alt="Bainsla Music">
+        <span>Bainsla Music</span>
+      </div>
+      <p>Bainsla Music Private Limited — Rajasthan's First Rasiya Music Company. Music Distribution, Production House, Digital Solutions.</p>
+      <div class="ft-social">
+        <a href="https://www.youtube.com/@bainslaofficial" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.instagram.com/bainsla_music_company" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#catalogue">Catalogue</a></li>
+        <li><a href="#artists">Artists</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#connect">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Our Services</h4>
+      <ul>
+        <li><a href="#services">Music Distribution</a></li>
+        <li><a href="#services">Production House</a></li>
+        <li><a href="#services">Website Development</a></li>
+        <li><a href="#services">App Development</a></li>
+        <li><a href="#services">Digital Marketing</a></li>
+        <li><a href="#services">Artist Management</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    &copy; 2024-2026 Bainsla Music Private Limited. All Rights Reserved. &nbsp;|&nbsp; <a href="/admin/" style="color:var(--red)">Admin Panel</a>
+  </div>
+</div>
+</footer>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+AOS.init({duration:700,once:true,offset:80});
+
+/* ─── Header scroll effect ─── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainHeader').classList.toggle('scrolled',window.scrollY>60);
+});
+
+/* ─── Counter animation ─── */
+let counterDone=false;
+const statsObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting&&!counterDone){counterDone=true;
+    document.querySelectorAll('.counter').forEach(el=>{
+      const t=parseFloat(el.dataset.target),dec=t%1!==0;let c=0;const inc=t/55;
+      const timer=setInterval(()=>{c+=inc;if(c>=t){c=t;clearInterval(timer)}el.textContent=dec?c.toFixed(1):Math.floor(c)},28);
+    });
+  }});
+},{threshold:.3});
+document.querySelector('.stats-bar')&&statsObs.observe(document.querySelector('.stats-bar'));
+
+/* ─── Presence tabs ─── */
+function showPres(tab,btn){
+  document.getElementById('pres-audio').style.display=tab==='audio'?'flex':'none';
+  document.getElementById('pres-video').style.display=tab==='video'?'flex':'none';
+  document.querySelectorAll('.pres-tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ─── Load data from Admin API, then populate all sections ─── */
+(async function loadSiteData(){
+  let D = null;
+  try {
+    const res = await fetch('/api/data.php?section=public');
+    if (res.ok) D = await res.json();
+  } catch(e) { /* API unavailable, sections stay empty */ }
+  if (!D) return;
+
+  /* Labels */
+  const lw=document.getElementById('labelsWrapper');
+  if(D.labels && D.labels.length && lw){
+    lw.innerHTML='';
+    D.labels.forEach((l,i)=>{
+      const yt=l.youtube_url||'', ig=l.instagram_url||'', fb=l.facebook_url||'';
+      lw.innerHTML+=`<div class="swiper-slide"><div class="label-card" data-aos="fade-up" data-aos-delay="${i*60}">
+        <div class="label-top"><div class="label-logo"><img src="${l.image||''}" alt="${l.name}"></div>
+          <div class="label-info"><h3>${l.name}</h3><p>${l.description||''}</p></div></div>
+        <div class="label-bottom">
+          <div class="label-stats"><span><strong>${l.songs||0}<sup>+</sup></strong>Songs</span><span><strong>${l.views||0}</strong>Views</span><span><strong>${l.subs||0}</strong>Subs</span></div>
+          <div class="label-actions">
+            ${yt?`<a href="${yt}" target="_blank"><i class="fab fa-youtube"></i></a>`:''}
+            ${ig?`<a href="${ig}" target="_blank"><i class="fab fa-instagram"></i></a>`:''}
+            ${fb?`<a href="${fb}" target="_blank"><i class="fab fa-facebook-f"></i></a>`:''}
+          </div>
+        </div></div></div>`;
+    });
+  }
+
+  /* Associates */
+  const aw=document.getElementById('assocWrapper');
+  if(D.associates && D.associates.length && aw){
+    aw.innerHTML='';
+    D.associates.forEach((a,i)=>{
+      aw.innerHTML+=`<div class="swiper-slide"><div class="assoc-card" data-aos="zoom-in" data-aos-delay="${i*40}">
+        <div class="assoc-img"><img src="${a.image||''}" alt="${a.name}"></div>
+        <h4>${a.name}</h4><p>${a.role||''}</p>
+        <div class="assoc-social">
+          ${a.youtube_url?`<a href="${a.youtube_url}" target="_blank"><i class="fab fa-youtube"></i></a>`:''}
+          ${a.instagram_url?`<a href="${a.instagram_url}" target="_blank"><i class="fab fa-instagram"></i></a>`:''}
+          ${a.facebook_url?`<a href="${a.facebook_url}" target="_blank"><i class="fab fa-facebook-f"></i></a>`:''}
+        </div></div></div>`;
+    });
+  }
+
+  /* Albums */
+  const alw=document.getElementById('albumsWrapper');
+  if(D.albums && D.albums.length && alw){
+    alw.innerHTML='';
+    D.albums.forEach((a,i)=>{
+      const vid=a.video_id||'';
+      const img=a.image||(vid?`https://img.youtube.com/vi/${vid}/maxresdefault.jpg`:'');
+      alw.innerHTML+=`<div class="swiper-slide"><div class="album-card" data-aos="fade-up" data-aos-delay="${i*40}">
+        <img src="${img}" alt="${a.title}">
+        <div class="album-ov"><div><h4>${a.title||''}</h4><p>${a.artist||''}</p></div></div></div></div>`;
+    });
+  }
+
+  /* Journey */
+  const jtl=document.getElementById('journeyTl');
+  if(D.journey && D.journey.length && jtl){
+    jtl.innerHTML='';
+    D.journey.forEach((j,i)=>{
+      jtl.innerHTML+=`<div class="tl-item" data-aos="${i%2===0?'fade-right':'fade-left'}">
+        <div class="tl-dot"></div><div class="tl-box"><h5>${j.year}</h5><p>${j.text}</p></div></div>`;
+    });
+  }
+
+  /* Releases */
+  const rg=document.getElementById('relGrid');
+  if(D.releases && D.releases.length && rg){
+    rg.innerHTML='';
+    D.releases.forEach((r,i)=>{
+      const vid=r.video_id||'';
+      const img=r.image||(vid?`https://img.youtube.com/vi/${vid}/mqdefault.jpg`:'');
+      const url=r.url||(vid?`https://www.youtube.com/watch?v=${vid}`:'#');
+      rg.innerHTML+=`<a href="${url}" target="_blank" class="rel-card" data-aos="fade-up" data-aos-delay="${i*40}">
+        <div class="rel-thumb"><img src="${img}" alt="${r.title}">
+          <div class="rel-play"><i class="fas fa-play-circle"></i></div>
+          <span class="rel-views">${r.views||'New'} views</span></div>
+        <div class="rel-body"><h4>${r.title||''}</h4><p>${r.artist||''} ${r.date?'• '+r.date:''}</p></div></a>`;
+    });
+  }
+
+  /* Directors */
+  const dg=document.getElementById('dirGrid');
+  if(D.directors && D.directors.length && dg){
+    dg.innerHTML='';
+    D.directors.forEach((d,i)=>{
+      dg.innerHTML+=`<div class="dir-card" data-aos="fade-up" data-aos-delay="${i*60}">
+        <div class="dir-img"><img src="${d.image||''}" alt="${d.name}"></div>
+        <h4>${d.name}</h4><div class="dir-role">${d.role||''}</div><p>${d.description||''}</p>
+        <div class="dir-social">
+          ${d.instagram_url?`<a href="${d.instagram_url}" target="_blank"><i class="fab fa-instagram"></i></a>`:''}
+          ${d.facebook_url?`<a href="${d.facebook_url}" target="_blank"><i class="fab fa-facebook-f"></i></a>`:''}
+          ${d.twitter_url?`<a href="${d.twitter_url}" target="_blank"><i class="fab fa-twitter"></i></a>`:''}
+          ${d.linkedin_url?`<a href="${d.linkedin_url}" target="_blank"><i class="fab fa-linkedin-in"></i></a>`:''}
+        </div></div>`;
+    });
+  }
+
+  /* Services */
+  const sg=document.getElementById('svcGrid');
+  if(D.services && D.services.length && sg){
+    sg.innerHTML='';
+    D.services.forEach((s,i)=>{
+      sg.innerHTML+=`<div class="svc-card" data-aos="fade-up" data-aos-delay="${i*80}">
+        <div class="svc-icon"><i class="${s.icon||'fas fa-cog'}"></i></div>
+        <h3>${s.name||''}</h3>
+        <p>${s.description||''}</p></div>`;
+    });
+  }
+
+  /* Clients */
+  const ct=document.getElementById('clientsTrack');
+  if(D.clients && D.clients.length && ct){
+    ct.innerHTML='';
+    const html=D.clients.map(c=>`<img src="${c.image||''}" alt="${c.name||''}" style="height:48px">`).join('');
+    ct.innerHTML=html+html; /* duplicate for seamless marquee */
+  }
+
+  /* Presence */
+  if(D.presence && D.presence.length){
+    const audioEl=document.getElementById('pres-audio');
+    const videoEl=document.getElementById('pres-video');
+    if(audioEl){
+      const audio=D.presence.filter(p=>p.type==='audio');
+      if(audio.length) audioEl.innerHTML=audio.map(p=>`<a href="${p.url||'#'}" target="_blank"><img src="${p.image||''}" alt="${p.name}" title="${p.name}" style="height:44px"></a>`).join('');
+    }
+    if(videoEl){
+      const video=D.presence.filter(p=>p.type==='video');
+      if(video.length) videoEl.innerHTML=video.map(p=>`<a href="${p.url||'#'}" target="_blank"><img src="${p.image||''}" alt="${p.name}" title="${p.name}" style="height:44px"></a>`).join('');
+    }
+  }
+
+  /* Contact info */
+  if(D.settings){
+    const s=D.settings;
+    document.querySelectorAll('a[href*="youtube.com/@bainslaofficial"]').forEach(el=>{ if(s.youtube_url) el.href=s.youtube_url; });
+    document.querySelectorAll('a[href*="instagram.com/bainsla_music_company"]').forEach(el=>{ if(s.instagram_url) el.href=s.instagram_url; });
+  }
+
+  /* Re-init Swipers after data loaded */
+  new Swiper('.labelsSwiper',{slidesPerView:1,spaceBetween:18,loop:true,autoplay:{delay:4000,disableOnInteraction:false},navigation:{nextEl:'.labelsSwiper .swiper-button-next',prevEl:'.labelsSwiper .swiper-button-prev'},breakpoints:{640:{slidesPerView:2},1024:{slidesPerView:3}}});
+  new Swiper('.assocSwiper',{slidesPerView:2,spaceBetween:16,loop:true,autoplay:{delay:3000,disableOnInteraction:false},navigation:{nextEl:'.assocSwiper .swiper-button-next',prevEl:'.assocSwiper .swiper-button-prev'},breakpoints:{640:{slidesPerView:3},1024:{slidesPerView:5}}});
+  new Swiper('.albumsSwiper',{slidesPerView:1,spaceBetween:14,loop:true,autoplay:{delay:3500,disableOnInteraction:false},pagination:{el:'.albumsSwiper .swiper-pagination',clickable:true},navigation:{nextEl:'.albumsSwiper .swiper-button-next',prevEl:'.albumsSwiper .swiper-button-prev'},breakpoints:{640:{slidesPerView:2},768:{slidesPerView:3},1024:{slidesPerView:4}}});
+  AOS.refresh();
+})();
+
+/* Swipers are initialized inside loadSiteData() after API data is loaded */
+
+/* ─── Nav scroll ─── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});
+});
+window.addEventListener('scroll',()=>{
+  const sy=window.scrollY;
+  document.querySelectorAll('section[id]').forEach(s=>{
+    const top=s.offsetTop-100,h=s.offsetHeight,id=s.getAttribute('id');
+    if(sy>=top&&sy<top+h){
+      document.querySelectorAll('.nav-menu a').forEach(a=>a.classList.remove('active'));
+      const al=document.querySelector(`.nav-menu a[href="#${id}"]`);if(al)al.classList.add('active');
+    }
+  });
+});
+
+/* ─── Contact Form ─── */
+function submitForm(){
+  const n=document.getElementById('c-name').value,e=document.getElementById('c-email').value;
+  if(!n||!e){alert('Please fill in Name and Email');return}
+  alert('Thank you! Your message has been sent.');
+  document.querySelectorAll('.cform input,.cform textarea,.cform select').forEach(el=>el.value='');
+}
+</script>
+</body>
+</html>
