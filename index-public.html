@@ -530,7 +530,7 @@ section{padding:70px 0}
     <p>Explore our featured content</p>
   </div>
   <div class="wh-video" data-aos="zoom-in" id="whVideo">
-    <iframe src="https://www.youtube.com/embed/m0k-0l3js_M?rel=0" title="Featured Video" allowfullscreen loading="lazy"></iframe>
+    <!-- Populated dynamically from admin Content Warehouse settings -->
   </div>
   <div style="text-align:center;margin-top:28px" data-aos="fade-up">
     <a href="https://www.youtube.com/@bainslaofficial" target="_blank" style="display:inline-block;padding:12px 30px;border:2px solid rgba(255,255,255,.3);color:#fff;font-weight:700;font-size:12px;border-radius:50px;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s">Visit YouTube Channel</a>
@@ -783,6 +783,59 @@ function showPres(tab,btn){
         <h3>${s.name||''}</h3>
         <p>${s.description||''}</p></div>`;
     });
+  }
+
+  /* Warehouse */
+  const whEl=document.getElementById('whVideo');
+  if(whEl && D.settings){
+    const wh=D.settings.warehouse||{};
+    const ytUrl=wh.youtube_url||'';
+    const vidFile=wh.video_file||'';
+    if(vidFile){
+      whEl.innerHTML=`<video src="${vidFile}" muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></video>`;
+    } else {
+      let embedId='';
+      if(ytUrl.includes('embed/')){
+        embedId=ytUrl.split('embed/')[1].split('?')[0].split('&')[0];
+      } else if(ytUrl.includes('v=')){
+        embedId=ytUrl.split('v=')[1].split('&')[0];
+      } else if(ytUrl.includes('youtu.be/')){
+        embedId=ytUrl.split('youtu.be/')[1].split('?')[0];
+      }
+      if(embedId){
+        whEl.innerHTML=`<iframe id="whIframe" src="https://www.youtube.com/embed/${embedId}?rel=0&enablejsapi=1" title="Featured Video" allowfullscreen loading="lazy" allow="autoplay"></iframe>`;
+      }
+    }
+  }
+
+  /* Warehouse autoplay on scroll */
+  const whSec=document.getElementById('warehouse');
+  if(whSec){
+    let whPlaying=false;
+    const whObs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        const vid=whSec.querySelector('video');
+        const iframe=whSec.querySelector('iframe');
+        if(vid){
+          if(e.isIntersecting&&!whPlaying){vid.play().catch(()=>{});whPlaying=true;}
+          if(!e.isIntersecting&&whPlaying){vid.pause();whPlaying=false;}
+        }
+        if(iframe){
+          const src=iframe.src||'';
+          if(e.isIntersecting&&!whPlaying){
+            if(!src.includes('autoplay=1')){
+              iframe.src=src+(src.includes('?')?'&':'?')+'autoplay=1&mute=1';
+            }
+            whPlaying=true;
+          }
+          if(!e.isIntersecting&&whPlaying){
+            iframe.src=src.replace(/[&?]autoplay=1/g,'').replace(/[&?]mute=1/g,'');
+            whPlaying=false;
+          }
+        }
+      });
+    },{threshold:.4});
+    whObs.observe(whSec);
   }
 
   /* Clients */
