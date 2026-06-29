@@ -1,0 +1,598 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  MANAGER
+  YOUTUBE_MANAGER
+  COPYRIGHT_MANAGER
+  DESIGNER
+  STUDIO_STAFF
+  VIDEO_TEAM
+  ACCOUNTANT
+  ARTIST_CLIENT
+}
+
+enum ClientType {
+  ARTIST
+  SINGER
+  LABEL
+  STUDIO
+  COMPOSER
+  LYRICIST
+  VIDEO_CLIENT
+}
+
+enum ClientStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+enum SongCategory {
+  BHAJAN
+  RASIYA
+  DJ
+  FOLK
+  DEVOTIONAL
+  REMIX
+  FILM
+  OTHER
+}
+
+enum SongStage {
+  IDEA
+  LYRICS
+  SINGER_CONFIRMED
+  AGREEMENT_PENDING
+  AGREEMENT_SIGNED
+  RECORDING_BOOKED
+  RECORDING_DONE
+  MIXING
+  MASTERING
+  AUDIO_FINAL
+  ARTWORK_PENDING
+  ARTWORK_APPROVED
+  VIDEO_SHOOT_PENDING
+  VIDEO_SHOOT_DONE
+  EDITING
+  FINAL_VIDEO_READY
+  DISTRIBUTION_SUBMITTED
+  DISTRIBUTION_LIVE
+  YOUTUBE_SEO_READY
+  YOUTUBE_UPLOADED
+  RELEASED
+  COPYRIGHT_PROTECTED
+  REVENUE_STARTED
+}
+
+enum StageStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  DELAYED
+  BLOCKED
+}
+
+enum ParticipantRole {
+  SINGER
+  LYRICIST
+  COMPOSER
+  MUSIC_DIRECTOR
+  ACTOR
+  DANCER
+  MODEL
+  STUDIO
+  EDITOR
+  DIRECTOR
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum AiOutputType {
+  TEXT
+  IMAGE_PROMPT
+  SEO
+  AGREEMENT
+  NOTICE
+  REPORT
+  THUMBNAIL_PROMPT
+  SUMMARY
+}
+
+enum UploadStatus {
+  DRAFT
+  SCHEDULED
+  UPLOADED
+  LIVE
+  FAILED
+}
+
+enum ArtworkStatus {
+  REQUESTED
+  PROMPT_GENERATED
+  IMAGE_GENERATED
+  DESIGNER_EDITING
+  SENT_FOR_APPROVAL
+  REVISION_REQUESTED
+  APPROVED
+  FINAL_EXPORTED
+  USED_IN_UPLOAD
+  REJECTED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  phone         String?
+  passwordHash  String
+  role          UserRole  @default(ARTIST_CLIENT)
+  avatarUrl     String?
+  status        String    @default("active")
+  lastLogin     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  tasks           Task[]         @relation("AssignedTasks")
+  createdTasks    Task[]         @relation("CreatedTasks")
+  notifications   Notification[]
+  aiGenerations   AiGeneration[]
+  uploadedFiles   File[]
+  createdClients  Client[]       @relation("CreatedByUser")
+  artworkDesigner ArtworkItem[]  @relation("DesignerArtwork")
+  artworkApprover ArtworkItem[]  @relation("ApproverArtwork")
+  imageGenerations ImageGeneration[]
+  seoGenerations  SeoGeneration[]
+
+  @@map("users")
+}
+
+model Client {
+  id                    String       @id @default(cuid())
+  clientType            ClientType
+  name                  String
+  stageName             String?
+  phone                 String?
+  whatsappNumber        String?
+  email                 String?
+  address               String?
+  city                  String?
+  state                 String?
+  country               String?
+  aadhaarNumber         String?
+  panNumber             String?
+  gstNumber             String?
+  bankName              String?
+  accountNumber         String?
+  ifsc                  String?
+  upiId                 String?
+  revenueSharePercentage Float?
+  advanceAmount         Float?       @default(0)
+  pendingAmount         Float?       @default(0)
+  totalPaid             Float?       @default(0)
+  notes                 String?
+  status                ClientStatus @default(ACTIVE)
+  createdById           String?
+  createdBy             User?        @relation("CreatedByUser", fields: [createdById], references: [id])
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+
+  songParticipants SongParticipant[]
+  songsAsSinger    Song[]           @relation("SingerSongs")
+  songsAsLyricist  Song[]           @relation("LyricistSongs")
+  songsAsComposer  Song[]           @relation("ComposerSongs")
+  songsAsMusicDir  Song[]           @relation("MusicDirectorSongs")
+
+  @@map("clients")
+}
+
+model Song {
+  id                    String       @id @default(cuid())
+  songTitle             String
+  alternateTitle        String?
+  language              String?      @default("Hindi")
+  category              SongCategory @default(OTHER)
+  genre                 String?
+  mood                  String?
+  singerId              String?
+  singer                Client?      @relation("SingerSongs", fields: [singerId], references: [id])
+  lyricistId            String?
+  lyricist              Client?      @relation("LyricistSongs", fields: [lyricistId], references: [id])
+  composerId            String?
+  composer              Client?      @relation("ComposerSongs", fields: [composerId], references: [id])
+  musicDirectorId       String?
+  musicDirector         Client?      @relation("MusicDirectorSongs", fields: [musicDirectorId], references: [id])
+  producerName          String?
+  labelName             String?      @default("Bainsla Music")
+  copyrightOwner        String?
+  revenueSharePercentage Float?
+  currentStage          SongStage    @default(IDEA)
+  stageStatus           StageStatus  @default(PENDING)
+  audioStatus           String?      @default("pending")
+  videoStatus           String?      @default("pending")
+  artworkStatus         String?      @default("pending")
+  agreementStatus       String?      @default("pending")
+  distributionStatus    String?      @default("pending")
+  youtubeStatus         String?      @default("pending")
+  copyrightStatus       String?      @default("pending")
+  releaseStatus         String?      @default("pending")
+  releaseDate           DateTime?
+  isrc                  String?
+  upc                   String?
+  youtubeLink           String?
+  spotifyLink           String?
+  appleMusicLink        String?
+  jiosaavnLink          String?
+  amazonMusicLink       String?
+  youtubeMusicLink      String?
+  lyrics                String?
+  description           String?
+  internalNotes         String?
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+
+  participants    SongParticipant[]
+  statusHistory   SongStatusHistory[]
+  files           File[]             @relation("SongFiles")
+  youtubeVideos   YoutubeVideo[]
+  artworkItems    ArtworkItem[]
+  imageGenerations ImageGeneration[]
+  seoGenerations  SeoGeneration[]
+
+  @@map("songs")
+}
+
+model SongParticipant {
+  id              String          @id @default(cuid())
+  songId          String
+  song            Song            @relation(fields: [songId], references: [id], onDelete: Cascade)
+  clientId        String
+  client          Client          @relation(fields: [clientId], references: [id])
+  role            ParticipantRole
+  sharePercentage Float?
+  rightsAssigned  Boolean         @default(false)
+  agreementSigned Boolean         @default(false)
+  paymentAmount   Float?
+  paymentStatus   String?         @default("pending")
+  notes           String?
+
+  @@map("song_participants")
+}
+
+model SongStatusHistory {
+  id        String   @id @default(cuid())
+  songId    String
+  song      Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
+  oldStatus String?
+  newStatus String
+  changedBy String?
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@map("song_status_history")
+}
+
+model File {
+  id          String   @id @default(cuid())
+  relatedType String?
+  relatedId   String?
+  songId      String?
+  song        Song?    @relation("SongFiles", fields: [songId], references: [id])
+  fileName    String
+  fileType    String?
+  fileUrl     String
+  fileSize    Int?
+  uploadedById String?
+  uploadedBy  User?    @relation(fields: [uploadedById], references: [id])
+  tags        String[]
+  createdAt   DateTime @default(now())
+
+  @@map("files")
+}
+
+model Task {
+  id          String      @id @default(cuid())
+  title       String
+  description String?
+  assignedToId String?
+  assignedTo  User?       @relation("AssignedTasks", fields: [assignedToId], references: [id])
+  relatedType String?
+  relatedId   String?
+  priority    TaskPriority @default(MEDIUM)
+  status      TaskStatus   @default(PENDING)
+  dueDate     DateTime?
+  reminderDate DateTime?
+  createdById String?
+  createdBy   User?       @relation("CreatedTasks", fields: [createdById], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("tasks")
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  title       String
+  message     String?
+  type        String?
+  relatedType String?
+  relatedId   String?
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@map("notifications")
+}
+
+model AiGeneration {
+  id          String      @id @default(cuid())
+  userId      String?
+  user        User?       @relation(fields: [userId], references: [id])
+  moduleName  String?
+  inputData   Json?
+  promptUsed  String?
+  aiOutput    String?
+  outputType  AiOutputType @default(TEXT)
+  relatedType String?
+  relatedId   String?
+  createdAt   DateTime    @default(now())
+
+  @@map("ai_generations")
+}
+
+model AiPromptTemplate {
+  id           String   @id @default(cuid())
+  templateName String
+  module       String?
+  inputFields  Json?
+  systemPrompt String?
+  userPrompt   String?
+  outputFormat String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("ai_prompt_templates")
+}
+
+model AiSettings {
+  id              String  @id @default(cuid())
+  aiProvider      String  @default("openai")
+  apiKey          String?
+  textModel       String  @default("gpt-4")
+  imageModel      String? @default("dall-e-3")
+  temperature     Float   @default(0.7)
+  maxTokens       Int     @default(2000)
+  defaultLanguage String  @default("Hindi")
+  companyTone     String  @default("professional")
+  saveHistory     Boolean @default(true)
+
+  @@map("ai_settings")
+}
+
+// Part 2 - YouTube Management
+model YoutubeChannel {
+  id                        String   @id @default(cuid())
+  channelName               String
+  channelUrl                String?
+  channelId                 String?
+  category                  String?
+  ownerName                 String?
+  managerUserId             String?
+  status                    String   @default("active")
+  subscribersCount          Int?     @default(0)
+  totalViews                Int?     @default(0)
+  monthlyViews              Int?     @default(0)
+  monthlyRevenue            Float?   @default(0)
+  rpm                       Float?
+  ctr                       Float?
+  averageViewDuration       String?
+  copyrightStrikes          Int?     @default(0)
+  communityGuidelineStrikes Int?     @default(0)
+  monetizationStatus        String?  @default("active")
+  notes                     String?
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  videos YoutubeVideo[]
+
+  @@map("youtube_channels")
+}
+
+model YoutubeVideo {
+  id                  String       @id @default(cuid())
+  songId              String?
+  song                Song?        @relation(fields: [songId], references: [id])
+  channelId           String?
+  channel             YoutubeChannel? @relation(fields: [channelId], references: [id])
+  videoTitle          String?
+  videoDescription    String?
+  videoTags           String[]
+  hashtags            String[]
+  pinnedComment       String?
+  thumbnailId         String?
+  uploadStatus        UploadStatus @default(DRAFT)
+  uploadDate          DateTime?
+  scheduledDate       DateTime?
+  youtubeVideoUrl     String?
+  youtubeVideoId      String?
+  views               Int?         @default(0)
+  likes               Int?         @default(0)
+  comments            Int?         @default(0)
+  ctr                 Float?
+  rpm                 Float?
+  revenue             Float?
+  copyrightClaimStatus String?
+  seoScore            Int?
+  thumbnailScore      Int?
+  aiNotes             String?
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  @@map("youtube_videos")
+}
+
+// Part 2 - Artwork & Image Generation
+model ArtworkItem {
+  id            String        @id @default(cuid())
+  songId        String?
+  song          Song?         @relation(fields: [songId], references: [id])
+  artworkType   String?
+  titleText     String?
+  prompt        String?
+  imageUrl      String?
+  designerId    String?
+  designer      User?         @relation("DesignerArtwork", fields: [designerId], references: [id])
+  status        ArtworkStatus @default(REQUESTED)
+  revisionCount Int           @default(0)
+  approvedById  String?
+  approvedBy    User?         @relation("ApproverArtwork", fields: [approvedById], references: [id])
+  notes         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("artwork_items")
+}
+
+model CharacterProfile {
+  id                  String   @id @default(cuid())
+  characterName       String
+  characterType       String
+  description         String?
+  faceReferenceImage  String?
+  dressStyle          String?
+  jewelryStyle        String?
+  hairStyle           String?
+  skinTone            String?
+  expressionStyle     String?
+  poseStyle           String?
+  backgroundPreference String?
+  promptTemplate      String?
+  negativePrompt      String?
+  createdAt           DateTime @default(now())
+
+  @@map("character_profiles")
+}
+
+model BrandKit {
+  id              String   @id @default(cuid())
+  brandName       String
+  logoUrl         String?
+  primaryColor    String?
+  secondaryColor  String?
+  fontStyle       String?
+  thumbnailStyle  String?
+  devotionalStyle String?
+  rasiyaStyle     String?
+  textShadowStyle String?
+  borderStyle     String?
+  watermarkPosition String?
+  createdAt       DateTime @default(now())
+
+  @@map("brand_kits")
+}
+
+model ImageGeneration {
+  id             String   @id @default(cuid())
+  userId         String?
+  user           User?    @relation(fields: [userId], references: [id])
+  songId         String?
+  song           Song?    @relation(fields: [songId], references: [id])
+  prompt         String
+  negativePrompt String?
+  imageUrl       String?
+  imageType      String?
+  modelUsed      String?
+  seed           String?
+  aspectRatio    String?
+  status         String   @default("pending")
+  createdAt      DateTime @default(now())
+
+  @@map("image_generations")
+}
+
+model SeoGeneration {
+  id                   String   @id @default(cuid())
+  songId               String?
+  song                 Song?    @relation(fields: [songId], references: [id])
+  channelId            String?
+  generatedTitle       String?
+  generatedDescription String?
+  generatedTags        String[]
+  generatedHashtags    String[]
+  seoScore             Int?
+  aiNotes              String?
+  createdById          String?
+  createdBy            User?    @relation(fields: [createdById], references: [id])
+  createdAt            DateTime @default(now())
+
+  @@map("seo_generations")
+}
+
+model PromptLibrary {
+  id               String   @id @default(cuid())
+  title            String
+  category         String?
+  promptText       String
+  negativePrompt   String?
+  platform         String?
+  aspectRatio      String?
+  style            String?
+  performanceScore Int?
+  usedCount        Int      @default(0)
+  createdById      String?
+  createdAt        DateTime @default(now())
+
+  @@map("prompt_library")
+}
+
+model Asset {
+  id            String   @id @default(cuid())
+  assetName     String
+  assetType     String
+  category      String?
+  tags          String[]
+  fileUrl       String
+  previewUrl    String?
+  licenseStatus String?
+  usageRights   String?
+  uploadedById  String?
+  createdAt     DateTime @default(now())
+
+  @@map("assets")
+}
+
+model ThumbnailTest {
+  id                String   @id @default(cuid())
+  videoId           String?
+  thumbnailAId      String?
+  thumbnailBId      String?
+  testStartDate     DateTime?
+  testEndDate       DateTime?
+  ctrA              Float?
+  ctrB              Float?
+  winnerThumbnailId String?
+  aiAnalysis        String?
+
+  @@map("thumbnail_tests")
+}
