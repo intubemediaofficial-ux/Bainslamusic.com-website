@@ -13,8 +13,8 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('Access-Control-Allow-Credentials: true');
 
 define('DATA_DIR', __DIR__ . '/../data/');
-define('ADMIN_USER', 'admin');
-define('ADMIN_PASS', 'Bainsla@2024');
+define('ADMIN_USER', 'shivlalbainslaofficial@gmail.com');
+define('ADMIN_PASS', 'AjeetKing@7616061273');
 
 function readData() {
     $file = DATA_DIR . 'content.json';
