@@ -585,11 +585,12 @@ section{padding:70px 0}
     </div>
     <div class="cinfo" data-aos="fade-left">
       <h3>Contact Information</h3>
-      <div class="ci-item"><i class="fas fa-envelope"></i><div><h4>Email</h4><p>support@bainslamusic.com</p></div></div>
-      <div class="ci-item"><i class="fas fa-map-marker-alt"></i><div><h4>Address</h4><p>Rajasthan, India</p></div></div>
-      <div class="ci-item"><i class="fab fa-youtube"></i><div><h4>YouTube</h4><p><a href="https://www.youtube.com/@bainslaofficial" target="_blank" style="color:var(--red)">@bainslaofficial</a></p></div></div>
-      <div class="ci-item"><i class="fab fa-instagram"></i><div><h4>Instagram</h4><p><a href="https://www.instagram.com/bainsla_music_company" target="_blank" style="color:var(--red)">@bainsla_music_company</a></p></div></div>
-      <div class="cmap"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3557.7!2d75.78!3d26.91!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDU0JzM2LjAiTiA3NcKwNDYnNDguMCJF!5e0!3m2!1sen!2sin!4v1" allowfullscreen loading="lazy"></iframe></div>
+      <div class="ci-item"><i class="fas fa-phone"></i><div><h4>Phone</h4><p><a id="ci-phone" href="tel:+917297897628" style="color:var(--red)">+91 72978 97628</a></p></div></div>
+      <div class="ci-item"><i class="fas fa-envelope"></i><div><h4>Email</h4><p id="ci-email">support@bainslamusic.com</p></div></div>
+      <div class="ci-item"><i class="fas fa-map-marker-alt"></i><div><h4>Address</h4><p id="ci-address">Rajasthan, India</p></div></div>
+      <div class="ci-item"><i class="fab fa-youtube"></i><div><h4>YouTube</h4><p><a id="ci-youtube" href="https://www.youtube.com/@bainslaofficial" target="_blank" style="color:var(--red)">@bainslaofficial</a></p></div></div>
+      <div class="ci-item"><i class="fab fa-instagram"></i><div><h4>Instagram</h4><p><a id="ci-instagram" href="https://www.instagram.com/bainsla_music_company" target="_blank" style="color:var(--red)">@bainsla_music_company</a></p></div></div>
+      <div class="cmap"><iframe id="ci-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3557.7!2d75.78!3d26.91!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDU0JzM2LjAiTiA3NcKwNDYnNDguMCJF!5e0!3m2!1sen!2sin!4v1" allowfullscreen loading="lazy"></iframe></div>
     </div>
   </div>
 </div>
@@ -604,12 +605,12 @@ section{padding:70px 0}
         <img src="https://yt3.googleusercontent.com/E8YM429FWSAHbNIKYFSzR-Yv8KW3J79oHXCbK6WUkqJthWXvpObtc-UMy0TMSjx1b7gQyefwJu4=s176-c-k-c0x00ffffff-no-rj" alt="Bainsla Music">
         <span>Bainsla Music</span>
       </div>
-      <p>Bainsla Music Private Limited — Rajasthan's First Rasiya Music Company. Music Distribution, Production House, Digital Solutions.</p>
+      <p id="ft-desc">Bainsla Music Private Limited — Rajasthan's First Rasiya Music Company. Music Distribution, Production House, Digital Solutions.</p>
       <div class="ft-social">
-        <a href="https://www.youtube.com/@bainslaofficial" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-        <a href="https://www.instagram.com/bainsla_music_company" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+        <a id="ft-youtube" href="https://www.youtube.com/@bainslaofficial" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a id="ft-instagram" href="https://www.instagram.com/bainsla_music_company" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a id="ft-facebook" href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a id="ft-twitter" href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
       </div>
     </div>
     <div>
@@ -860,11 +861,54 @@ function showPres(tab,btn){
     }
   }
 
-  /* Contact info */
+  /* Settings: contact info, social links, footer */
   if(D.settings){
     const s=D.settings;
-    document.querySelectorAll('a[href*="youtube.com/@bainslaofficial"]').forEach(el=>{ if(s.youtube_url) el.href=s.youtube_url; });
-    document.querySelectorAll('a[href*="instagram.com/bainsla_music_company"]').forEach(el=>{ if(s.instagram_url) el.href=s.instagram_url; });
+    const setText=(id,val)=>{const el=document.getElementById(id); if(el&&val) el.textContent=val;};
+    const setHref=(id,val)=>{const el=document.getElementById(id); if(el&&val) el.href=val;};
+
+    const email=s.contact_email||s.support_email||s.email;
+    const phone=s.contact_phone||s.phone;
+    const address=s.contact_address||s.address;
+
+    /* Contact section */
+    setText('ci-email', email);
+    setText('ci-address', address);
+    if(phone){ const p=document.getElementById('ci-phone'); if(p){ p.textContent=phone; p.href='tel:'+phone.replace(/[^\d+]/g,''); } }
+    setHref('ci-youtube', s.youtube_url);
+    setHref('ci-instagram', s.instagram_url);
+    const map=s.google_maps_url||s.maps_url; setHref('ci-map', map);
+
+    /* Footer */
+    setText('ft-desc', s.description);
+    setHref('ft-youtube', s.youtube_url);
+    setHref('ft-instagram', s.instagram_url);
+    setHref('ft-facebook', s.facebook_url);
+    setHref('ft-twitter', s.twitter_url);
+
+    /* All social/contact links across the page (header, hero, etc.) */
+    if(s.youtube_url) document.querySelectorAll('a[href*="youtube.com/@bainslaofficial"]').forEach(el=>el.href=s.youtube_url);
+    if(s.instagram_url) document.querySelectorAll('a[href*="instagram.com/bainsla_music_company"]').forEach(el=>el.href=s.instagram_url);
+    if(s.facebook_url) document.querySelectorAll('a[href*="facebook.com/bainslamusic"]').forEach(el=>el.href=s.facebook_url);
+    if(s.whatsapp) document.querySelectorAll('a[href*="wa.me"]').forEach(el=>{ el.href='https://wa.me/'+s.whatsapp.replace(/[^\d]/g,''); });
+  }
+
+  /* Hero: banner images grid or uploaded video */
+  const heroSec=document.getElementById('home');
+  const heroFallback=document.getElementById('heroFallback');
+  const heroVideo=(D.settings&&D.settings.hero_video)||'';
+  if(heroSec&&heroVideo){
+    if(heroFallback) heroFallback.remove();
+    if(!heroSec.querySelector('video.hero-vid')){
+      const v=document.createElement('video');
+      v.className='hero-vid'; v.src=heroVideo; v.autoplay=true; v.muted=true; v.loop=true; v.playsInline=true;
+      heroSec.insertBefore(v, heroSec.firstChild);
+    }
+  } else if(heroFallback && D.banners && D.banners.length){
+    const imgs=D.banners.filter(b=>b.image).map(b=>b.image);
+    if(imgs.length){
+      heroFallback.innerHTML=imgs.map(src=>`<div class="gi"><img src="${src}" alt="" loading="lazy"></div>`).join('');
+    }
   }
 
   /* Re-init Swipers after data loaded */
