@@ -348,9 +348,9 @@ function renderOverview(area) {
             <tbody>
               ${releases.slice(0, 5).map((r, i) => `<tr>
                 <td>${i + 1}</td>
-                <td class="cover-cell">${r.image ? `<img src="${r.image}" alt="">` : ''}<div><div class="title-col">${r.hindi_title || r.eng_title || ''}</div><div class="subtitle-col">${r.eng_title || ''}</div></div></td>
+                <td class="cover-cell">${r.image ? `<img src="${r.image}" alt="">` : ''}<div><div class="title-col">${r.hindi_title || r.title || r.eng_title || ''}</div><div class="subtitle-col">${r.eng_title || ''}</div></div></td>
                 <td>${r.artist || 'Bainsla Music'}</td>
-                <td>${r.release_date || '2024'}</td>
+                <td>${r.release_date || r.date || '2024'}</td>
                 <td><span class="badge badge-green">Published</span></td>
                 <td>${platformIcons()}</td>
               </tr>`).join('')}
@@ -813,9 +813,9 @@ function renderReleases(area) {
             <tbody>
               ${releases.map(r => `<tr>
                 <td>${r.image ? `<img src="${r.image}" alt="">` : '<div style="width:45px;height:45px;background:var(--card2);border-radius:6px"></div>'}</td>
-                <td><div class="title-col">${r.hindi_title || ''}</div><div class="subtitle-col">${r.eng_title || ''}</div></td>
+                <td><div class="title-col">${r.hindi_title || r.title || ''}</div><div class="subtitle-col">${r.eng_title || ''}</div></td>
                 <td>${r.artist || 'Bainsla Music'}</td>
-                <td class="text-xs">${r.release_date || '-'}</td>
+                <td class="text-xs">${r.release_date || r.date || '-'}</td>
                 <td><span class="badge ${r.status === 'Published' ? 'badge-green' : r.status === 'Scheduled' ? 'badge-amber' : 'badge-gray'}">${r.status || 'PUBLISHED'}</span></td>
                 <td>${platformIcons()}</td>
                 <td class="actions">

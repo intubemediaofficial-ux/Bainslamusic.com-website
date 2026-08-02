@@ -743,17 +743,27 @@ function showPres(tab,btn){
 
   /* Releases */
   const rg=document.getElementById('relGrid');
+  const ytId=(u)=>{
+    if(!u) return '';
+    if(u.includes('watch?v=')) return u.split('watch?v=')[1].split('&')[0];
+    if(u.includes('youtu.be/')) return u.split('youtu.be/')[1].split('?')[0].split('&')[0];
+    if(u.includes('/embed/')) return u.split('/embed/')[1].split('?')[0].split('&')[0];
+    if(u.includes('/shorts/')) return u.split('/shorts/')[1].split('?')[0].split('&')[0];
+    return '';
+  };
   if(D.releases && D.releases.length && rg){
     rg.innerHTML='';
     D.releases.forEach((r,i)=>{
-      const vid=r.video_id||'';
+      const title=r.title||r.hindi_title||r.eng_title||'';
+      const date=r.date||r.release_date||'';
+      const vid=r.video_id||ytId(r.url)||'';
       const img=r.image||(vid?`https://img.youtube.com/vi/${vid}/mqdefault.jpg`:'');
       const url=r.url||(vid?`https://www.youtube.com/watch?v=${vid}`:'#');
       rg.innerHTML+=`<a href="${url}" target="_blank" class="rel-card" data-aos="fade-up" data-aos-delay="${i*40}">
-        <div class="rel-thumb"><img src="${img}" alt="${r.title}">
+        <div class="rel-thumb"><img src="${img}" alt="${title}">
           <div class="rel-play"><i class="fas fa-play-circle"></i></div>
           <span class="rel-views">${r.views||'New'} views</span></div>
-        <div class="rel-body"><h4>${r.title||''}</h4><p>${r.artist||''} ${r.date?'• '+r.date:''}</p></div></a>`;
+        <div class="rel-body"><h4>${title}</h4><p>${r.artist||''} ${date?'• '+date:''}</p></div></a>`;
     });
   }
 
