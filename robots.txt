@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /data/
+Disallow: /dashboard/
+
+Sitemap: https://bainslamusic.com/sitemap.xml

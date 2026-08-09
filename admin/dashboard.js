@@ -1788,6 +1788,24 @@ function renderSettings(area) {
           </div>
         </div>
       </div>
+      <div class="grid-2" style="margin-bottom:20px">
+        <div class="panel">
+          <div class="panel-header"><h2>SEO (Google &amp; Social Preview)</h2></div>
+          <div class="panel-body">
+            ${field('SEO Title (50-60 characters)', 'seo_title', s.seo_title || '')}
+            ${textareaField('SEO Description (150-160 characters)', 'seo_description', s.seo_description || '', 'Google search result mein dikhne wala description...')}
+            ${textareaField('SEO Keywords (comma separated)', 'seo_keywords', s.seo_keywords || '', 'bainsla music, rasiya, rajasthani folk...')}
+            <div class="text-xs text-muted" style="margin-top:-8px">Khaali chhodoge to website ka default title/description use hoga.</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h2>Social Share Image</h2></div>
+          <div class="panel-body">
+            <div class="text-xs text-muted" style="margin-bottom:8px">WhatsApp / Facebook pe link share karne par dikhne wali image. Best size: 1200 x 630 px.</div>
+            ${imageUploadField('Share Image', 'og_image', s.og_image || '', 'banners')}
+          </div>
+        </div>
+      </div>
       <div style="text-align:right">
         <button type="submit" class="btn btn-primary btn-lg">Save Settings</button>
       </div>
