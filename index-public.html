@@ -245,7 +245,11 @@ section{padding:70px 0}
 .warehouse-sec .sec-head h2{color:#fff;border-left-color:#fff}
 .warehouse-sec .sec-head p{color:rgba(255,255,255,.6)}
 .wh-video{max-width:780px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);aspect-ratio:16/9}
-.wh-video iframe,.wh-video video{width:100%;height:100%;border:none}
+.wh-video iframe,.wh-video video{width:100%;height:100%;border:none;object-fit:cover}
+.wh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:22px}
+.wh-item{position:relative;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/9;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.wh-item img,.wh-item video,.wh-item iframe{width:100%;height:100%;object-fit:cover;display:block;border:none}
+.wh-cap{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;font-size:11px;font-weight:600;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff}
 
 /* ===== LATEST RELEASES ===== */
 .releases-sec{background:var(--light)}
@@ -606,6 +610,9 @@ section{padding:70px 0}
   <div class="wh-video" data-aos="zoom-in" id="whVideo">
     <!-- Populated dynamically from admin Content Warehouse settings -->
   </div>
+  <div class="wh-grid" id="whGrid">
+    <!-- Admin ke Content Warehouse photos/videos -->
+  </div>
   <div style="text-align:center;margin-top:28px" data-aos="fade-up">
     <a href="https://www.youtube.com/@bainslaofficial" target="_blank" style="display:inline-block;padding:12px 30px;border:2px solid rgba(255,255,255,.3);color:#fff;font-weight:700;font-size:12px;border-radius:50px;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s">Visit YouTube Channel</a>
   </div>
@@ -659,7 +666,7 @@ section{padding:70px 0}
     </div>
     <div class="cinfo" data-aos="fade-left">
       <h3>Contact Information</h3>
-      <div class="ci-item"><i class="fas fa-phone"></i><div><h4>Phone</h4><p><a id="ci-phone" href="tel:+917297897628" style="color:var(--red)">+91 72978 97628</a></p></div></div>
+      <div class="ci-item"><i class="fas fa-phone"></i><div><h4>Phone</h4><p><a id="ci-phone" href="tel:+917297897628" style="color:var(--red)">+91 72978 97628</a></p><p id="ci-phone2-wrap" style="display:none"><a id="ci-phone2" href="#" style="color:var(--red)"></a></p></div></div>
       <div class="ci-item"><i class="fas fa-envelope"></i><div><h4>Email</h4><p id="ci-email">support@bainslamusic.com</p></div></div>
       <div class="ci-item"><i class="fas fa-map-marker-alt"></i><div><h4>Address</h4><p id="ci-address">Rajasthan, India</p></div></div>
       <div class="ci-item"><i class="fab fa-youtube"></i><div><h4>YouTube</h4><p><a id="ci-youtube" href="https://www.youtube.com/@bainslaofficial" target="_blank" style="color:var(--red)">@bainslaofficial</a></p></div></div>
@@ -899,26 +906,53 @@ function showPres(tab,btn){
     });
   }
 
-  /* Warehouse */
+  /* Warehouse: featured video + admin ke photos/videos */
   const whEl=document.getElementById('whVideo');
+  const whGrid=document.getElementById('whGrid');
   if(whEl && D.settings){
     const wh=D.settings.warehouse||{};
-    const ytUrl=wh.youtube_url||'';
+    const items=(Array.isArray(wh.items)?wh.items:[]).filter(it=>it&&(it.url||it.youtube_url));
+    const ytEmbed=(u)=>{
+      const id=ytId(u);
+      return id?`https://www.youtube.com/embed/${id}?rel=0&enablejsapi=1&playsinline=1`:'';
+    };
+    const isVideoFile=(u)=>/\.(mp4|webm|mov|m4v|avi|mkv)(\?|$)/i.test(u||'');
+    const localVideo=(u)=>`<video src="${u}" muted loop playsinline controls preload="metadata"></video>`;
+
+    /* Featured: uploaded video > youtube url > pehla warehouse item */
     const vidFile=wh.video_file||'';
+    const embed=ytEmbed(wh.youtube_url||'');
     if(vidFile){
-      whEl.innerHTML=`<video src="${vidFile}" muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></video>`;
+      whEl.innerHTML=localVideo(vidFile);
+    } else if(embed){
+      whEl.innerHTML=`<iframe id="whIframe" src="${embed}" title="Featured Video" allowfullscreen loading="lazy" allow="autoplay"></iframe>`;
+    } else if(items.length){
+      const f=items.shift();
+      const u=f.url||f.youtube_url;
+      if(f.type==='photo'||/\.(jpe?g|png|webp|gif)(\?|$)/i.test(u)){
+        whEl.innerHTML=`<img src="${u}" alt="${f.title||'Content Warehouse'}" style="width:100%;height:100%;object-fit:cover">`;
+      } else if(isVideoFile(u)){
+        whEl.innerHTML=localVideo(u);
+      } else if(ytEmbed(u)){
+        whEl.innerHTML=`<iframe src="${ytEmbed(u)}" title="${f.title||'Featured Video'}" allowfullscreen loading="lazy" allow="autoplay"></iframe>`;
+      }
     } else {
-      let embedId='';
-      if(ytUrl.includes('embed/')){
-        embedId=ytUrl.split('embed/')[1].split('?')[0].split('&')[0];
-      } else if(ytUrl.includes('v=')){
-        embedId=ytUrl.split('v=')[1].split('&')[0];
-      } else if(ytUrl.includes('youtu.be/')){
-        embedId=ytUrl.split('youtu.be/')[1].split('?')[0];
-      }
-      if(embedId){
-        whEl.innerHTML=`<iframe id="whIframe" src="https://www.youtube.com/embed/${embedId}?rel=0&enablejsapi=1" title="Featured Video" allowfullscreen loading="lazy" allow="autoplay"></iframe>`;
-      }
+      whEl.style.display='none';
+    }
+
+    if(whGrid){
+      whGrid.innerHTML=items.map(it=>{
+        const u=it.url||it.youtube_url;
+        const cap=it.title?`<div class="wh-cap">${it.title}</div>`:'';
+        if(it.type==='photo'||/\.(jpe?g|png|webp|gif)(\?|$)/i.test(u)){
+          return `<div class="wh-item"><img src="${u}" alt="${it.title||''}" loading="lazy">${cap}</div>`;
+        }
+        if(isVideoFile(u)){
+          return `<div class="wh-item">${localVideo(u)}${cap}</div>`;
+        }
+        const e=ytEmbed(u);
+        return e?`<div class="wh-item"><iframe src="${e}" allowfullscreen loading="lazy" allow="autoplay"></iframe>${cap}</div>`:'';
+      }).join('');
     }
   }
 
@@ -928,11 +962,11 @@ function showPres(tab,btn){
     let whPlaying=false;
     const whObs=new IntersectionObserver(entries=>{
       entries.forEach(e=>{
-        const vid=whSec.querySelector('video');
+        const vids=whSec.querySelectorAll('video');
         const iframe=whSec.querySelector('iframe');
-        if(vid){
-          if(e.isIntersecting&&!whPlaying){vid.play().catch(()=>{});whPlaying=true;}
-          if(!e.isIntersecting&&whPlaying){vid.pause();whPlaying=false;}
+        if(vids.length){
+          if(e.isIntersecting&&!whPlaying){vids.forEach(v=>{v.muted=true;v.play().catch(()=>{})});whPlaying=true;}
+          if(!e.isIntersecting&&whPlaying){vids.forEach(v=>v.pause());whPlaying=false;}
         }
         if(iframe){
           const src=iframe.src||'';
@@ -988,6 +1022,9 @@ function showPres(tab,btn){
     setText('ci-email', email);
     setText('ci-address', address);
     if(phone){ const p=document.getElementById('ci-phone'); if(p){ p.textContent=phone; p.href='tel:'+phone.replace(/[^\d+]/g,''); } }
+    const phone2=s.contact_phone2||s.phone2;
+    if(phone2){ const p2=document.getElementById('ci-phone2'), w2=document.getElementById('ci-phone2-wrap');
+      if(p2&&w2){ p2.textContent=phone2; p2.href='tel:'+phone2.replace(/[^\d+]/g,''); w2.style.display=''; } }
     setHref('ci-youtube', s.youtube_url);
     setHref('ci-instagram', s.instagram_url);
     const map=s.google_maps_url||s.maps_url; setHref('ci-map', map);
@@ -1092,11 +1129,25 @@ window.addEventListener('scroll',()=>{
 });
 
 /* ─── Contact Form ─── */
-function submitForm(){
-  const n=document.getElementById('c-name').value,e=document.getElementById('c-email').value;
+async function submitForm(){
+  const val=id=>(document.getElementById(id)||{}).value||'';
+  const n=val('c-name'),e=val('c-email');
   if(!n||!e){alert('Please fill in Name and Email');return}
-  alert('Thank you! Your message has been sent.');
-  document.querySelectorAll('.cform input,.cform textarea,.cform select').forEach(el=>el.value='');
+  const btn=document.querySelector('.btn-send');
+  const label=btn?btn.textContent:'';
+  if(btn){btn.disabled=true;btn.textContent='Sending...';}
+  try{
+    const res=await fetch('/api/frontend-data.php',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:n,email:e,phone:val('c-phone'),type:val('c-subject')||'General Inquiry',message:val('c-msg')})});
+    const r=await res.json();
+    if(!res.ok||r.error) throw new Error(r.error||'Failed');
+    alert('Thank you! Your message has been sent.');
+    document.querySelectorAll('.cform input,.cform textarea,.cform select').forEach(el=>el.value='');
+  }catch(err){
+    alert('Sorry, message send nahi hua. Please WhatsApp ya call karein.');
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent=label;}
+  }
 }
 </script>
 </body>
