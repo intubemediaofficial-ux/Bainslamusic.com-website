@@ -731,9 +731,9 @@ window.addEventListener('scroll',()=>{
 let counterDone=false;
 function runCounters(){
   document.querySelectorAll('.counter').forEach(el=>{
-    const t=parseFloat(el.dataset.target),dec=t%1!==0;let c=0;const inc=t/55;
+    const raw=String(el.dataset.target||'0'),t=parseFloat(raw),dp=(raw.split('.')[1]||'').replace(/0+$/,'').length;let c=0;const inc=t/55;
     if(el._timer) clearInterval(el._timer);
-    el._timer=setInterval(()=>{c+=inc;if(c>=t){c=t;clearInterval(el._timer)}el.textContent=dec?c.toFixed(1):Math.floor(c)},28);
+    el._timer=setInterval(()=>{c+=inc;if(c>=t){c=t;clearInterval(el._timer)}el.textContent=dp?c.toFixed(dp):Math.floor(c)},28);
   });
 }
 /* Called after admin settings load so updated numbers animate/show correctly */
