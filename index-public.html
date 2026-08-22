@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bainsla Music Private Limited — Rajasthan's Premier Music Company</title>
-<meta name="description" content="Bainsla Music Private Limited — Rajasthan's First Rasiya Music Company. Music Distribution, Production House, Digital Solutions.">
+<meta name="description" content="Bainsla Music Private Limited — Rajasthan's First Rasiya Music Company. Music Distribution, Production House, Artist &amp; Label Services.">
 <meta name="keywords" content="Bainsla Music, Rasiya, Gurjar Rasiya, Rajasthani Folk Music, Devotional Bhajan, Music Distribution, Music Label Rajasthan, DG Mawai, Ajeet Bainsla">
 <meta name="author" content="Bainsla Music Private Limited">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -17,7 +17,7 @@
 <meta property="og:locale" content="hi_IN">
 <meta property="og:url" content="https://bainslamusic.com/">
 <meta property="og:title" content="Bainsla Music Private Limited — Rajasthan's Premier Music Company">
-<meta property="og:description" content="Rajasthan's First Rasiya Music Company. Music Distribution, Production House aur Digital Solutions — 256+ songs, 42+ artists.">
+<meta property="og:description" content="Rajasthan's First Rasiya Music Company. Music Distribution, Production House aur Artist &amp; Label Services — 256+ songs, 42+ artists.">
 <meta property="og:image" content="https://bainslamusic.com/images/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -26,7 +26,7 @@
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Bainsla Music Private Limited — Rajasthan's Premier Music Company">
-<meta name="twitter:description" content="Rajasthan's First Rasiya Music Company. Music Distribution, Production House aur Digital Solutions.">
+<meta name="twitter:description" content="Rajasthan's First Rasiya Music Company. Music Distribution, Production House aur Artist &amp; Label Services.">
 <meta name="twitter:image" content="https://bainslamusic.com/images/og-cover.jpg">
 
 <meta name="theme-color" content="#cc0000">
@@ -46,7 +46,7 @@
       "url": "https://bainslamusic.com/",
       "logo": "https://bainslamusic.com/images/og-cover.jpg",
       "image": "https://bainslamusic.com/images/og-cover.jpg",
-      "description": "Bainsla Music Private Limited — Rajasthan's First Rasiya Music Company. Music Distribution, Production House, Digital Solutions.",
+      "description": "Bainsla Music Private Limited — Rajasthan's First Rasiya Music Company. Music Distribution, Production House, Artist & Label Services.",
       "genre": ["Rasiya", "Folk", "Devotional", "Bhajan"],
       "foundingLocation": "Jaipur, Rajasthan, India",
       "address": {
@@ -67,7 +67,12 @@
         "https://www.youtube.com/@bainslaofficial",
         "https://www.instagram.com/bainsla_music_company",
         "https://facebook.com/bainslamusic"
-      ]
+      ],
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "Intube Media",
+        "url": "https://intubemedia.com/"
+      }
     },
     {
       "@type": "WebSite",
@@ -95,8 +100,18 @@ img{max-width:100%;display:block}
 ::-webkit-scrollbar-track{background:#f0f0f0}
 ::-webkit-scrollbar-thumb{background:var(--red);border-radius:3px}
 
+/* ===== CORPORATE BAR (Intube Media network) ===== */
+.corp-bar{background:linear-gradient(90deg,#0a0a0a,#1d1d1d 55%,#0a0a0a);border-bottom:1px solid rgba(255,255,255,.08)}
+.corp-inner{max-width:1280px;margin:0 auto;padding:6px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.corp-txt{font-size:10px;font-weight:500;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.corp-txt a{color:#fff;font-weight:700}
+.corp-txt a:hover{color:var(--red)}
+.corp-cta{flex-shrink:0;font-size:9.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,.32);padding:4px 13px;border-radius:50px;transition:all .3s}
+.corp-cta:hover{background:#fff;color:#111;border-color:#fff}
+.corp-mob{display:none}
+
 /* ===== HEADER (Transparent → White on scroll) ===== */
-.header{position:fixed;top:0;left:0;right:0;z-index:1000;transition:all .4s;padding:6px 0}
+.header{position:fixed;top:0;left:0;right:0;z-index:1000;transition:all .4s;padding:0 0 6px}
 .header.scrolled{background:rgba(255,255,255,.97);box-shadow:0 2px 20px rgba(0,0,0,.08);backdrop-filter:blur(10px)}
 .header-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px}
 .logo{display:flex;align-items:center;gap:10px}
@@ -115,7 +130,7 @@ img{max-width:100%;display:block}
 .header.scrolled .nav-menu a:hover,.header.scrolled .nav-menu a.active{color:var(--red)}
 .hamburger{display:none;background:none;border:none;color:#fff;font-size:24px;cursor:pointer;transition:color .3s}
 .header.scrolled .hamburger{color:#333}
-.mobile-nav{display:none;position:fixed;top:70px;left:0;right:0;background:var(--white);box-shadow:var(--shadow);padding:12px;z-index:999}
+.mobile-nav{display:none;position:fixed;top:100px;left:0;right:0;background:var(--white);box-shadow:var(--shadow);padding:12px;z-index:999}
 .mobile-nav.open{display:block}
 .mobile-nav a{display:block;padding:12px 16px;color:#444;font-size:12px;font-weight:600;letter-spacing:1px;border-radius:6px;text-transform:uppercase}
 .mobile-nav a:hover{color:var(--red);background:rgba(204,0,0,.04)}
@@ -198,8 +213,30 @@ section{padding:70px 0}
 .assoc-social a{width:24px;height:24px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;color:#666;font-size:10px;transition:all .3s}
 .assoc-social a:hover{background:var(--red);color:#fff}
 
+/* ===== INTUBE MEDIA NETWORK CARD ===== */
+.network-sec{background:var(--light);padding:56px 0}
+.net-card{background:linear-gradient(135deg,#0d0d0d 0%,#1c1c22 55%,#0d0d0d 100%);border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:34px;box-shadow:0 22px 60px rgba(0,0,0,.28);position:relative;overflow:hidden}
+.net-card::after{content:'';position:absolute;top:-40%;right:-10%;width:340px;height:340px;background:radial-gradient(circle,rgba(204,0,0,.28),transparent 70%);pointer-events:none}
+.net-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:22px}
+.net-body{display:grid;grid-template-columns:260px 1fr;gap:34px;align-items:center}
+.net-brand{text-align:center;padding:24px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px}
+.net-brand img{max-height:56px;width:auto;margin:0 auto 12px}
+.net-name{font-size:20px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#fff}
+.net-sub{font-size:9.5px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:8px;line-height:1.7}
+.net-info p{font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.72);margin-bottom:12px}
+.net-tags{display:flex;flex-wrap:wrap;gap:9px;margin:16px 0 20px}
+.net-tags span{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);padding:7px 14px;border-radius:50px}
+.net-tags i{color:var(--red);margin-right:6px}
+.net-btn{display:inline-block;background:var(--red);color:#fff;font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;padding:12px 26px;border-radius:50px;transition:all .3s}
+.net-btn:hover{background:#fff;color:#111;transform:translateY(-2px)}
+
 /* ===== SERVICES ===== */
 .services-sec{background:var(--white)}
+.svc-partner{display:block;background:linear-gradient(160deg,#fbfbfd,#f4f4f8)}
+.svc-partner::before{background:#111}
+.svc-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#111;background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.1);padding:4px 11px;border-radius:50px;margin-bottom:10px}
+.svc-link{display:inline-block;margin-top:12px;font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--red)}
+.svc-partner:hover .svc-link{color:#111}
 .svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
 .svc-card{background:var(--white);border:1px solid #eee;border-radius:var(--radius);padding:32px 24px;text-align:center;transition:all .35s;position:relative;overflow:hidden}
 .svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--red);transform:scaleX(0);transition:transform .3s;transform-origin:left}
@@ -302,7 +339,7 @@ section{padding:70px 0}
 
 /* ===== FOOTER ===== */
 .footer{background:#111;color:#bbb;padding:50px 0 16px}
-.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:28px;margin-bottom:28px}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:28px;margin-bottom:28px}
 .ft-brand .ft-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .ft-brand .ft-logo img{height:40px;width:40px;border-radius:50%}
 .ft-brand .ft-logo span{color:var(--red);font-weight:800;font-size:15px}
@@ -315,6 +352,13 @@ section{padding:70px 0}
 .footer ul li{margin-bottom:7px}
 .footer ul li a{color:#888;font-size:11px;transition:color .2s}
 .footer ul li a:hover{color:var(--red)}
+.ft-network{font-size:11px;color:#999;margin-top:10px}
+.ft-network a{color:#fff;font-weight:600}
+.ft-network a:hover{color:var(--red)}
+.ft-net-name{font-size:14px !important;font-weight:800;color:#fff !important;letter-spacing:1.5px;text-transform:uppercase}
+.ft-net-sub{font-size:10px;color:#777;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px !important}
+.ft-net-cta{display:inline-block;border:1px solid #444;padding:7px 14px;border-radius:50px;font-size:10px !important;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#ddd !important}
+.ft-net-cta:hover{background:#fff;color:#111 !important;border-color:#fff}
 .ft-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:16px;text-align:center;font-size:10px;color:#555}
 
 /* ===== SWIPER ===== */
@@ -341,6 +385,11 @@ section{padding:70px 0}
 .tl-item,.tl-item:nth-child(odd){flex-direction:row}
 .tl-box{width:calc(100% - 44px) !important;margin-left:44px !important;margin-right:0 !important}
 .svc-grid{grid-template-columns:1fr}
+.corp-txt,.corp-cta{display:none}
+.corp-mob{display:block;font-size:9.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:#fff;text-align:center;width:100%}
+.corp-inner{padding:6px 14px;justify-content:center}
+.net-body{grid-template-columns:1fr;gap:22px}
+.net-card{padding:24px 20px}
 .rel-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
 .sec-head .view-more{position:static;transform:none;display:inline-block;margin-top:10px;margin-left:18px}
 }
@@ -350,6 +399,13 @@ section{padding:70px 0}
 
 <!-- ===== HEADER ===== -->
 <header class="header" id="mainHeader">
+<div class="corp-bar">
+  <div class="corp-inner">
+    <div class="corp-txt">Bainsla Music &mdash; Part of the <a href="https://intubemedia.com" target="_blank" rel="noopener">Intube Media</a> Network</div>
+    <a class="corp-cta" href="https://intubemedia.com" target="_blank" rel="noopener">Visit Intube Media &#8599;</a>
+    <a class="corp-mob" href="https://intubemedia.com" target="_blank" rel="noopener">Part of Intube Media Network &rarr;</a>
+  </div>
+</div>
 <div class="header-inner">
   <a href="/" class="logo">
     <img src="https://yt3.googleusercontent.com/E8YM429FWSAHbNIKYFSzR-Yv8KW3J79oHXCbK6WUkqJthWXvpObtc-UMy0TMSjx1b7gQyefwJu4=s176-c-k-c0x00ffffff-no-rj" alt="Bainsla Music">
@@ -396,7 +452,7 @@ section{padding:70px 0}
 <div class="hero-overlay">
   <div class="hero-tag">Rajasthan's Premier Music Company</div>
   <h1 class="hero-title">Bainsla Music</h1>
-  <p class="hero-desc">Music Distribution &bull; Production House &bull; Digital Solutions</p>
+  <p class="hero-desc">Music Distribution &bull; Production House &bull; Artist &amp; Label Services</p>
   <div class="hero-btns">
     <a href="#about" class="btn-primary-hero">Explore More</a>
     <a href="#connect" class="btn-outline-hero">Get In Touch</a>
@@ -433,6 +489,32 @@ section{padding:70px 0}
   </div>
 </div>
 </div>
+
+<!-- ===== INTUBE MEDIA NETWORK CARD ===== -->
+<section class="network-sec">
+<div class="container">
+  <div class="net-card" data-aos="fade-up">
+    <div class="net-eyebrow">Powered by a Wider Digital Ecosystem</div>
+    <div class="net-body">
+      <div class="net-brand">
+        <img src="/images/intube-media.svg" alt="Intube Media" onerror="this.style.display='none'">
+        <div class="net-name">Intube Media</div>
+        <div class="net-sub">Digital Agency &bull; IT Solutions &bull; Influencer Management</div>
+      </div>
+      <div class="net-info">
+        <p>Bainsla Music is connected with <strong>Intube Media</strong>, a digital and technology-focused media network providing digital solutions, technology services, creator and influencer management, and online growth solutions.</p>
+        <p>Together, the network connects music, creators, technology and digital media.</p>
+        <div class="net-tags">
+          <span><i class="fas fa-bullhorn"></i> Digital Agency</span>
+          <span><i class="fas fa-laptop-code"></i> IT Solutions</span>
+          <span><i class="fas fa-users"></i> Influencer Management</span>
+        </div>
+        <a class="net-btn" href="https://intubemedia.com" target="_blank" rel="noopener">Explore Intube Media &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
 
 <!-- ===== OUR LABELS ===== -->
 <section class="labels-sec" id="about">
@@ -515,25 +597,31 @@ section{padding:70px 0}
       <p>Full-scale music video production with professional equipment, direction, editing and post-production services.</p>
     </div>
     <div class="svc-card" data-aos="fade-up" data-aos-delay="160">
-      <div class="svc-icon"><i class="fas fa-laptop-code"></i></div>
-      <h3>Website Development</h3>
-      <p>Custom website design and development for artists, labels and music companies with admin panels and CMS.</p>
-    </div>
-    <div class="svc-card" data-aos="fade-up" data-aos-delay="240">
-      <div class="svc-icon"><i class="fas fa-mobile-alt"></i></div>
-      <h3>Mobile App Development</h3>
-      <p>Android and iOS app development for music streaming, artist management and fan engagement platforms.</p>
-    </div>
-    <div class="svc-card" data-aos="fade-up" data-aos-delay="320">
-      <div class="svc-icon"><i class="fas fa-bullhorn"></i></div>
-      <h3>Digital Marketing</h3>
-      <p>Social media management, YouTube SEO, Instagram promotion and digital advertising for maximum reach.</p>
-    </div>
-    <div class="svc-card" data-aos="fade-up" data-aos-delay="400">
       <div class="svc-icon"><i class="fas fa-microphone-alt"></i></div>
       <h3>Artist Management</h3>
       <p>Complete artist management including bookings, brand deals, content strategy and career growth planning.</p>
     </div>
+    <a class="svc-card svc-partner" href="https://intubemedia.com" target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="240">
+      <div class="svc-icon"><i class="fas fa-laptop-code"></i></div>
+      <h3>Website &amp; Digital Solutions</h3>
+      <div class="svc-badge">Powered by Intube Media</div>
+      <p>Professional websites, applications and digital technology solutions delivered through the Intube Media network.</p>
+      <span class="svc-link">Explore Intube Media &rarr;</span>
+    </a>
+    <a class="svc-card svc-partner" href="https://intubemedia.com" target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="320">
+      <div class="svc-icon"><i class="fas fa-mobile-alt"></i></div>
+      <h3>Mobile App Development</h3>
+      <div class="svc-badge">Powered by Intube Media</div>
+      <p>Android and iOS app development for music streaming, artist management and fan engagement platforms.</p>
+      <span class="svc-link">Explore Intube Media &rarr;</span>
+    </a>
+    <a class="svc-card svc-partner" href="https://intubemedia.com" target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="400">
+      <div class="svc-icon"><i class="fas fa-bullhorn"></i></div>
+      <h3>Digital Marketing</h3>
+      <div class="svc-badge">Powered by Intube Media</div>
+      <p>Social media management, YouTube SEO, Instagram promotion and digital advertising for maximum reach.</p>
+      <span class="svc-link">Explore Intube Media &rarr;</span>
+    </a>
   </div>
 </div>
 </section>
@@ -686,7 +774,8 @@ section{padding:70px 0}
         <img src="https://yt3.googleusercontent.com/E8YM429FWSAHbNIKYFSzR-Yv8KW3J79oHXCbK6WUkqJthWXvpObtc-UMy0TMSjx1b7gQyefwJu4=s176-c-k-c0x00ffffff-no-rj" alt="Bainsla Music">
         <span>Bainsla Music</span>
       </div>
-      <p id="ft-desc">Bainsla Music Private Limited — Rajasthan's First Rasiya Music Company. Music Distribution, Production House, Digital Solutions.</p>
+      <p id="ft-desc">Bainsla Music Private Limited — Rajasthan's First Rasiya Music Company. Music Distribution, Production House, Artist &amp; Label Services.</p>
+      <p class="ft-network">Bainsla Music is part of the <a href="https://intubemedia.com" target="_blank" rel="noopener">Intube Media Network</a>.</p>
       <div class="ft-social">
         <a id="ft-youtube" href="https://www.youtube.com/@bainslaofficial" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
         <a id="ft-instagram" href="https://www.instagram.com/bainsla_music_company" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -710,10 +799,18 @@ section{padding:70px 0}
       <ul>
         <li><a href="#services">Music Distribution</a></li>
         <li><a href="#services">Production House</a></li>
-        <li><a href="#services">Website Development</a></li>
-        <li><a href="#services">App Development</a></li>
-        <li><a href="#services">Digital Marketing</a></li>
         <li><a href="#services">Artist Management</a></li>
+        <li><a href="https://intubemedia.com" target="_blank" rel="noopener">Website Development</a></li>
+        <li><a href="https://intubemedia.com" target="_blank" rel="noopener">App Development</a></li>
+        <li><a href="https://intubemedia.com" target="_blank" rel="noopener">Digital Marketing</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Our Network</h4>
+      <ul class="ft-net">
+        <li><a href="https://intubemedia.com" target="_blank" rel="noopener" class="ft-net-name">Intube Media</a></li>
+        <li class="ft-net-sub">Digital &bull; Technology &bull; Media</li>
+        <li><a href="https://intubemedia.com" target="_blank" rel="noopener" class="ft-net-cta">Visit Intube Media &#8599;</a></li>
       </ul>
     </div>
   </div>
@@ -899,10 +996,14 @@ function showPres(tab,btn){
   if(D.services && D.services.length && sg){
     sg.innerHTML='';
     D.services.forEach((s,i)=>{
-      sg.innerHTML+=`<div class="svc-card" data-aos="fade-up" data-aos-delay="${i*80}">
-        <div class="svc-icon"><i class="${s.icon||'fas fa-cog'}"></i></div>
+      const inner=`<div class="svc-icon"><i class="${s.icon||'fas fa-cog'}"></i></div>
         <h3>${s.name||''}</h3>
-        <p>${s.description||''}</p></div>`;
+        ${s.partner?`<div class="svc-badge">Powered by ${s.partner}</div>`:''}
+        <p>${s.description||''}</p>`;
+      sg.innerHTML+=s.url
+        ? `<a class="svc-card svc-partner" href="${s.url}" target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="${i*80}">${inner}
+        <span class="svc-link">${s.link_text||'Explore '+(s.partner||'more')} &rarr;</span></a>`
+        : `<div class="svc-card" data-aos="fade-up" data-aos-delay="${i*80}">${inner}</div>`;
     });
   }
 
