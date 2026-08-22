@@ -187,6 +187,34 @@ async function uploadImage(file, folder) {
   return res.json();
 }
 
+/* Bade files (video) 8MB ke chunks mein jaate hain — 5GB tak chalta hai */
+const UPLOAD_CHUNK_BYTES = 8 * 1024 * 1024;
+async function uploadLargeFile(file, folder, onProgress) {
+  if (file.size <= UPLOAD_CHUNK_BYTES) {
+    if (onProgress) onProgress(0);
+    const r = await uploadImage(file, folder);
+    if (onProgress) onProgress(100);
+    return r;
+  }
+  const uploadId = Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+  const total = Math.ceil(file.size / UPLOAD_CHUNK_BYTES);
+  for (let i = 0; i < total; i++) {
+    const fd = new FormData();
+    fd.append('image', file.slice(i * UPLOAD_CHUNK_BYTES, (i + 1) * UPLOAD_CHUNK_BYTES), 'chunk');
+    fd.append('folder', folder);
+    fd.append('filename', file.name);
+    fd.append('upload_id', uploadId);
+    fd.append('chunk_index', i);
+    fd.append('chunk_total', total);
+    const res = await fetch('/api/upload.php', { method: 'POST', credentials: 'include', body: fd });
+    const r = await res.json().catch(() => ({ error: 'Bad response' }));
+    if (r.error) return r;
+    if (onProgress) onProgress(Math.round(((i + 1) / total) * 100));
+    if (i === total - 1) return r;
+  }
+  return { error: 'Upload incomplete' };
+}
+
 function imageUploadField(label, name, value, folder) {
   const uid = Math.random().toString(36).slice(2,8);
   const previewId = 'preview_' + uid;
@@ -2038,7 +2066,7 @@ function videoUploadField(label, name, value, folder) {
       style="border:2px dashed var(--border2);border-radius:8px;padding:20px;text-align:center;cursor:pointer;background:rgba(245,158,11,.03);min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center">
       ${value ? `<div style="font-size:13px;color:#22c55e;font-weight:600">✓ Video uploaded</div><div style="font-size:10px;color:#666;margin-top:4px">${value}</div>` : '<div style="font-size:36px;margin-bottom:8px">🎬</div>'}
       <div style="font-size:13px;font-weight:600;color:#f59e0b">Click to upload or drag & drop video</div>
-      <div style="font-size:11px;color:#666;margin-top:4px">MP4, WEBM. Max 100MB.</div>
+      <div style="font-size:11px;color:#666;margin-top:4px">MP4, WEBM, MOV, MKV. Max 5 GB.</div>
       <div id="vstat_${uid}" style="font-size:11px;margin-top:6px;color:#999"></div>
     </div>
   </div>`;
@@ -2057,14 +2085,14 @@ function initVideoUploadZones(container) {
     if (!inp || !stat || !hidden) return;
     async function handleFile(file) {
       if (!file || !file.type.startsWith('video/')) { stat.textContent = 'Please select a video file'; stat.style.color = '#ef4444'; return; }
-      if (file.size > 100*1024*1024) { stat.textContent = 'File too large (max 100MB)'; stat.style.color = '#ef4444'; return; }
-      stat.textContent = 'Uploading video...'; stat.style.color = '#f59e0b';
+      if (file.size > 5*1024*1024*1024) { stat.textContent = 'File too large (max 5 GB)'; stat.style.color = '#ef4444'; return; }
+      var mb = Math.round(file.size / (1024*1024));
+      stat.style.color = '#f59e0b';
+      stat.textContent = 'Uploading (' + mb + ' MB)... 0%';
       try {
-        var fd = new FormData();
-        fd.append('image', file);
-        fd.append('folder', folder);
-        var res = await fetch('/api/upload.php', { method: 'POST', credentials: 'include', body: fd });
-        var r = await res.json();
+        var r = await uploadLargeFile(file, folder, function(pct) {
+          stat.textContent = 'Uploading (' + mb + ' MB)... ' + pct + '%';
+        });
         if (r.url) { hidden.value = r.url; stat.textContent = 'Video uploaded!'; stat.style.color = '#22c55e'; drop.style.borderColor = '#22c55e'; }
         else { stat.textContent = 'Error: ' + (r.error || 'Upload failed'); stat.style.color = '#ef4444'; }
       } catch(e) { stat.textContent = 'Upload failed'; stat.style.color = '#ef4444'; }
@@ -2394,6 +2422,7 @@ function renderJourney(area) {
 /* ═══════ CONTENT WAREHOUSE ═══════ */
 function renderWarehouse(area) {
   const wh = DATA.warehouse || DATA.settings?.warehouse || {};
+  const items = Array.isArray(wh.items) ? wh.items : [];
   area.innerHTML = `
     <div class="panel mb-20">
       <div class="panel-header"><h2>Featured Video</h2></div>
@@ -2406,6 +2435,41 @@ function renderWarehouse(area) {
         </form>
       </div>
     </div>
+    <div class="panel mb-20">
+      <div class="panel-header"><h2>Photos &amp; Videos (${items.length})</h2></div>
+      <div class="panel-body">
+        <p style="color:#888;font-size:12px;margin-bottom:12px">Yahan photo ya video (5 GB tak) upload karo — website ke Content Warehouse section mein turant dikhega. Uploaded video wahin play hota hai, YouTube pe nahi jaata.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" id="whAddPhoto">+ Add Photos</button>
+          <button class="btn btn-primary btn-sm" id="whAddVideo">+ Add Video (max 5 GB)</button>
+          <button class="btn btn-outline btn-sm" id="whAddYt">+ Add YouTube Link</button>
+          <input type="file" id="whPhotoInput" accept="image/*" multiple style="display:none">
+          <input type="file" id="whVideoInput" accept="video/*" style="display:none">
+        </div>
+        <div id="whUpStat" style="font-size:12px;color:#f59e0b;margin-bottom:10px"></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+          ${items.map((it, i) => `
+            <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#000">
+              <div style="aspect-ratio:16/9;background:#111">
+                ${it.type === 'photo'
+                  ? `<img src="${it.url}" style="width:100%;height:100%;object-fit:cover">`
+                  : it.type === 'video'
+                    ? `<video src="${it.url}" muted controls style="width:100%;height:100%;object-fit:cover"></video>`
+                    : `<div style="color:#f59e0b;font-size:11px;padding:10px;word-break:break-all">▶ ${it.url}</div>`}
+              </div>
+              <div style="padding:8px;background:var(--panel,#1a1a1a)">
+                <input class="wh-title" data-i="${i}" value="${(it.title || '').replace(/"/g, '&quot;')}" placeholder="Title (optional)"
+                  style="width:100%;font-size:11px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;background:transparent;color:inherit">
+                <div style="display:flex;gap:6px;margin-top:6px">
+                  <button class="btn btn-outline btn-sm wh-up" data-i="${i}" style="padding:2px 6px;font-size:10px">↑</button>
+                  <button class="btn btn-outline btn-sm wh-del" data-i="${i}" style="padding:2px 6px;font-size:10px;border-color:#ef4444;color:#ef4444">✕</button>
+                </div>
+              </div>
+            </div>`).join('')}
+          ${items.length === 0 ? '<p style="color:#666;padding:20px">Abhi koi photo/video nahi hai.</p>' : ''}
+        </div>
+      </div>
+    </div>
     <div class="panel">
       <div class="panel-header"><h2>Preview</h2></div>
       <div class="panel-body">
@@ -2413,15 +2477,65 @@ function renderWarehouse(area) {
       </div>
     </div>`;
   initVideoUploadZones(area);
-  document.getElementById('warehouseForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const obj = Object.fromEntries(fd.entries());
-    await api('PUT', 'settings', { warehouse: obj });
-    toast('Warehouse updated');
+
+  const saveWarehouse = async (patch, msg) => {
+    await api('PUT', 'settings', { warehouse: Object.assign({}, wh, patch) });
+    toast(msg || 'Warehouse updated');
     await loadData();
     showSection('warehouse');
+  };
+
+  document.getElementById('warehouseForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const obj = Object.fromEntries(new FormData(e.target).entries());
+    await saveWarehouse(obj);
   });
+
+  const stat = document.getElementById('whUpStat');
+  const addItems = async (files, type) => {
+    const added = [];
+    for (let i = 0; i < files.length; i++) {
+      const f = files[i];
+      const mb = Math.round(f.size / (1024 * 1024));
+      stat.textContent = `Uploading ${f.name} (${mb} MB)... 0%`;
+      const r = await uploadLargeFile(f, 'warehouse', pct => {
+        stat.textContent = `Uploading ${f.name} (${mb} MB)... ${pct}%`;
+      });
+      if (r.url) added.push({ type, url: r.url, title: '' });
+      else { stat.textContent = 'Error: ' + (r.error || 'upload failed'); return; }
+    }
+    stat.textContent = 'Saving...';
+    await saveWarehouse({ items: items.concat(added) }, added.length + ' item(s) added');
+  };
+
+  document.getElementById('whAddPhoto')?.addEventListener('click', () => document.getElementById('whPhotoInput').click());
+  document.getElementById('whAddVideo')?.addEventListener('click', () => document.getElementById('whVideoInput').click());
+  document.getElementById('whPhotoInput')?.addEventListener('change', function () { if (this.files.length) addItems(this.files, 'photo'); });
+  document.getElementById('whVideoInput')?.addEventListener('change', function () { if (this.files.length) addItems(this.files, 'video'); });
+  document.getElementById('whAddYt')?.addEventListener('click', async () => {
+    const url = prompt('YouTube video ka link paste karo:');
+    if (!url) return;
+    await saveWarehouse({ items: items.concat([{ type: 'youtube', url: url.trim(), title: '' }]) }, 'YouTube link added');
+  });
+
+  area.querySelectorAll('.wh-del').forEach(b => b.addEventListener('click', async () => {
+    if (!confirm('Delete this item?')) return;
+    const next = items.slice();
+    next.splice(+b.dataset.i, 1);
+    await saveWarehouse({ items: next }, 'Deleted');
+  }));
+  area.querySelectorAll('.wh-up').forEach(b => b.addEventListener('click', async () => {
+    const i = +b.dataset.i;
+    if (i === 0) return;
+    const next = items.slice();
+    [next[i - 1], next[i]] = [next[i], next[i - 1]];
+    await saveWarehouse({ items: next }, 'Moved up');
+  }));
+  area.querySelectorAll('.wh-title').forEach(inp => inp.addEventListener('change', async () => {
+    const next = items.slice();
+    next[+inp.dataset.i] = Object.assign({}, next[+inp.dataset.i], { title: inp.value });
+    await saveWarehouse({ items: next }, 'Title saved');
+  }));
 }
 
 /* ═══════ CONTACT / INQUIRIES ═══════ */
@@ -2436,6 +2550,7 @@ function renderContact(area) {
           <form id="contactInfoForm">
             ${field('Support Email', 'contact_email', s.contact_email || 'support@bainslamusic.com', 'email')}
             ${field('Phone Number', 'contact_phone', s.contact_phone || '', 'tel')}
+            ${field('Phone Number 2 (optional)', 'contact_phone2', s.contact_phone2 || '', 'tel')}
             ${field('Address', 'contact_address', s.contact_address || 'Rajasthan, India')}
             ${field('Google Maps Embed URL', 'maps_url', s.maps_url || '', 'url')}
             ${field('YouTube URL', 'youtube_url', s.youtube_url || 'https://www.youtube.com/@bainslaofficial', 'url')}
