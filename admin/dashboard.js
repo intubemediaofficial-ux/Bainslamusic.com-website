@@ -317,7 +317,7 @@ function renderOverview(area) {
       <div class="stat-card">
         <div class="stat-icon">👥</div>
         <div class="stat-label">Total Artists</div>
-        <div class="stat-number">${s.stats_artists || artists.length}</div>
+        <div class="stat-number">${s.stats_clients || s.stats_artists || artists.length}</div>
         <div class="stat-change">+5 this month ↑</div>
       </div>
       <div class="stat-card">
@@ -1758,15 +1758,32 @@ function renderSettings(area) {
           </div>
         </div>
         <div class="panel">
-          <div class="panel-header"><h2>Display Stats (shown on website)</h2></div>
+          <div class="panel-header"><h2>Display Stats (homepage counter bar)</h2></div>
           <div class="panel-body">
+            <div class="text-xs text-muted" style="margin-bottom:12px">Value mein number ke saath K / M / Yr bhi likh sakte ho — jaise <b>12.8 M</b>, <b>50 K</b>, <b>3 Yr</b>, ya sirf <b>256</b>. Label khaali chhodo to default label rahega.</div>
             <div class="form-row">
-              ${field('Songs Count', 'stats_songs', s.stats_songs)}
-              ${field('Artists Count', 'stats_artists', s.stats_artists)}
+              ${field('Experience — value', 'stats_experience', s.stats_experience || '3 Yr')}
+              ${field('Experience — label', 'stats_experience_label', s.stats_experience_label || 'Experience')}
             </div>
             <div class="form-row">
-              ${field('Videos Count', 'stats_videos', s.stats_videos)}
-              ${field('Views Count', 'stats_views', s.stats_views)}
+              ${field('Happy Clients — value', 'stats_clients', s.stats_clients || s.stats_artists || '42')}
+              ${field('Happy Clients — label', 'stats_clients_label', s.stats_clients_label || 'Happy Clients')}
+            </div>
+            <div class="form-row">
+              ${field('Audio Tracks — value', 'stats_songs', s.stats_songs || '256')}
+              ${field('Audio Tracks — label', 'stats_songs_label', s.stats_songs_label || 'Audio Tracks')}
+            </div>
+            <div class="form-row">
+              ${field('Music Videos — value', 'stats_videos', s.stats_videos || '178')}
+              ${field('Music Videos — label', 'stats_videos_label', s.stats_videos_label || 'Music Videos')}
+            </div>
+            <div class="form-row">
+              ${field('Subscribers — value', 'stats_subscribers', s.stats_subscribers || '50 K')}
+              ${field('Subscribers — label', 'stats_subscribers_label', s.stats_subscribers_label || 'Subscribers')}
+            </div>
+            <div class="form-row">
+              ${field('Total Views — value', 'stats_views', s.stats_views || '12.8 M')}
+              ${field('Total Views — label', 'stats_views_label', s.stats_views_label || 'Total Views')}
             </div>
           </div>
         </div>
