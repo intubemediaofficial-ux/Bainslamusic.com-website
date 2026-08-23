@@ -18,7 +18,7 @@ if (($file['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
 }
 
 $folder = preg_replace('/[^a-zA-Z0-9_-]/', '', $_POST['folder'] ?? 'uploads') ?: 'uploads';
-$allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'mov', 'avi', 'mkv', 'm4v'];
+$allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'mp4', 'webm', 'mov', 'avi', 'mkv', 'm4v'];
 
 // Large files arrive as chunks so nginx/PHP request limits are never hit.
 $chunkTotal = (int) ($_POST['chunk_total'] ?? 1);
@@ -40,6 +40,14 @@ $finalName = uniqid() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', $origName);
 $publicUrl = function ($name) use ($folder) {
     return '/images/' . $folder . '/' . $name;
 };
+
+// SVG same-origin serve hoti hai, isliye script/event handler wali SVG reject karte hain
+if ($ext === 'svg') {
+    $svg = (string) file_get_contents($file['tmp_name']);
+    if (preg_match('/<\s*script|javascript:|\son[a-z]+\s*=/i', $svg)) {
+        jsonResponse(['error' => 'SVG contains scripts and was rejected'], 400);
+    }
+}
 
 if ($chunkTotal <= 1) {
     if ($file['size'] > MAX_UPLOAD_BYTES) {

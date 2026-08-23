@@ -196,9 +196,14 @@ section{padding:70px 0}
 .pres-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:28px}
 .pres-tabs button{padding:10px 28px;border:2px solid var(--red);background:transparent;color:var(--red);font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;border-radius:50px;cursor:pointer;transition:all .3s;font-family:inherit}
 .pres-tabs button.active{background:var(--red);color:#fff}
-.pres-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;align-items:center}
-.pres-grid img{height:44px;width:auto;filter:grayscale(.4);opacity:.7;transition:all .3s}
+.pres-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:20px 32px;align-items:center}
+.pres-item{display:flex;align-items:center;justify-content:center;height:56px;min-width:110px;padding:6px 10px}
+.pres-grid img{height:44px;max-width:150px;width:auto;object-fit:contain;filter:grayscale(.4);opacity:.75;transition:all .3s}
 .pres-grid img:hover{filter:grayscale(0);opacity:1;transform:scale(1.12)}
+.pres-fallback{font-weight:800;font-size:16px;letter-spacing:.4px;color:var(--dark);opacity:.75;white-space:nowrap}
+.pres-item:hover .pres-fallback{opacity:1;color:var(--red)}
+@media(max-width:768px){.pres-grid{gap:14px 20px}.pres-item{height:48px;min-width:92px}.pres-grid img{height:34px;max-width:112px}.pres-fallback{font-size:14px}}
+@media(max-width:480px){.pres-grid{gap:12px 16px}.pres-item{height:44px;min-width:80px;padding:4px 6px}.pres-grid img{height:30px;max-width:96px}}
 
 /* ===== ARTISTS / ASSOCIATES ===== */
 .assoc-sec{background:var(--light);overflow:hidden}
@@ -250,8 +255,10 @@ section{padding:70px 0}
 /* ===== CLIENTS MARQUEE ===== */
 .clients-sec{background:var(--light);overflow:hidden;padding:50px 0}
 .clients-track{display:flex;gap:48px;animation:marquee 35s linear infinite;width:max-content}
-.clients-track img{height:50px;width:auto;filter:grayscale(1);opacity:.4;transition:all .3s}
+.clients-track img{height:50px;max-width:170px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.45;transition:all .3s}
 .clients-track img:hover{filter:grayscale(0);opacity:1}
+.cli-item{display:flex;align-items:center;justify-content:center;height:56px;min-width:120px}
+.cli-fallback{font-weight:800;font-size:17px;color:var(--dark);opacity:.4;white-space:nowrap}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ===== EXCLUSIVE ALBUMS ===== */
@@ -431,7 +438,6 @@ section{padding:70px 0}
   <a href="#artists" onclick="this.parentElement.classList.remove('open')">Artists</a>
   <a href="#services" onclick="this.parentElement.classList.remove('open')">Services</a>
   <a href="#connect" onclick="this.parentElement.classList.remove('open')">Connect</a>
-  <a href="/admin/" style="color:var(--red);font-weight:700" onclick="this.parentElement.classList.remove('open')">Admin Panel</a>
 </div>
 </header>
 
@@ -546,17 +552,18 @@ section{padding:70px 0}
     <button onclick="showPres('video',this)">Video</button>
   </div>
   <div id="pres-audio" class="pres-grid" data-aos="fade-up" data-aos-delay="100">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/168px-Spotify_logo_without_text.svg.png" alt="Spotify" title="Spotify">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/100px-Apple_logo_black.svg.png" alt="Apple Music" title="Apple Music" style="height:40px">
-    <img src="https://images.squarespace-cdn.com/content/v1/5e4ef5e0e7c6ac53d5eef0e9/1582152941519-U3ZCWX35M29LAOWF5WLX/JioSaavn+Logo.png" alt="JioSaavn" title="JioSaavn" style="height:36px">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Gaana_Logo.svg/220px-Gaana_Logo.svg.png" alt="Gaana" title="Gaana" style="height:32px">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/200px-Logo_of_YouTube_%282015-2017%29.svg.png" alt="YouTube Music" title="YouTube Music">
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/39/Wynk_Music_logo.svg/220px-Wynk_Music_logo.svg.png" alt="Wynk" title="Wynk" style="height:36px">
+    <span class="pres-item"><img src="/images/platforms/spotify.svg" alt="Spotify" title="Spotify"></span>
+    <span class="pres-item"><img src="/images/platforms/apple-music.svg" alt="Apple Music" title="Apple Music"></span>
+    <span class="pres-item"><img src="/images/platforms/jiosaavn.svg" alt="JioSaavn" title="JioSaavn"></span>
+    <span class="pres-item"><img src="/images/platforms/gaana.svg" alt="Gaana" title="Gaana"></span>
+    <span class="pres-item"><img src="/images/platforms/youtube-music.svg" alt="YouTube Music" title="YouTube Music"></span>
+    <span class="pres-item"><img src="/images/platforms/wynk.svg" alt="Wynk Music" title="Wynk Music"></span>
+    <span class="pres-item"><img src="/images/platforms/hungama.svg" alt="Hungama" title="Hungama"></span>
   </div>
   <div id="pres-video" class="pres-grid" style="display:none" data-aos="fade-up">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/200px-Logo_of_YouTube_%282015-2017%29.svg.png" alt="YouTube" title="YouTube">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/150px-Instagram_logo.svg.png" alt="Instagram" title="Instagram Reels" style="height:40px">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/100px-Facebook_f_logo_%282019%29.svg.png" alt="Facebook" title="Facebook Watch" style="height:40px">
+    <span class="pres-item"><img src="/images/platforms/youtube.svg" alt="YouTube" title="YouTube"></span>
+    <span class="pres-item"><img src="/images/platforms/instagram.svg" alt="Instagram" title="Instagram Reels"></span>
+    <span class="pres-item"><img src="/images/platforms/facebook.svg" alt="Facebook" title="Facebook Watch"></span>
   </div>
 </div>
 </section>
@@ -635,23 +642,23 @@ section{padding:70px 0}
 </div>
 <div style="overflow:hidden">
   <div class="clients-track" id="clientsTrack">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/168px-Spotify_logo_without_text.svg.png" alt="Spotify">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/200px-Logo_of_YouTube_%282015-2017%29.svg.png" alt="YouTube">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/100px-Apple_logo_black.svg.png" alt="Apple" style="height:44px">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/150px-Instagram_logo.svg.png" alt="Instagram" style="height:48px">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/100px-Facebook_f_logo_%282019%29.svg.png" alt="Facebook" style="height:48px">
-    <img src="https://images.squarespace-cdn.com/content/v1/5e4ef5e0e7c6ac53d5eef0e9/1582152941519-U3ZCWX35M29LAOWF5WLX/JioSaavn+Logo.png" alt="JioSaavn" style="height:36px">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Gaana_Logo.svg/220px-Gaana_Logo.svg.png" alt="Gaana" style="height:32px">
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/39/Wynk_Music_logo.svg/220px-Wynk_Music_logo.svg.png" alt="Wynk" style="height:36px">
+    <span class="cli-item"><img src="/images/platforms/spotify.svg" alt="Spotify" title="Spotify"></span>
+    <span class="cli-item"><img src="/images/platforms/youtube.svg" alt="YouTube" title="YouTube"></span>
+    <span class="cli-item"><img src="/images/platforms/apple-music.svg" alt="Apple Music" title="Apple Music"></span>
+    <span class="cli-item"><img src="/images/platforms/instagram.svg" alt="Instagram" title="Instagram"></span>
+    <span class="cli-item"><img src="/images/platforms/facebook.svg" alt="Facebook" title="Facebook"></span>
+    <span class="cli-item"><img src="/images/platforms/jiosaavn.svg" alt="JioSaavn" title="JioSaavn"></span>
+    <span class="cli-item"><img src="/images/platforms/gaana.svg" alt="Gaana" title="Gaana"></span>
+    <span class="cli-item"><img src="/images/platforms/wynk.svg" alt="Wynk Music" title="Wynk Music"></span>
     <!-- Duplicated for seamless loop -->
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/168px-Spotify_logo_without_text.svg.png" alt="Spotify">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/200px-Logo_of_YouTube_%282015-2017%29.svg.png" alt="YouTube">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/100px-Apple_logo_black.svg.png" alt="Apple" style="height:44px">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/150px-Instagram_logo.svg.png" alt="Instagram" style="height:48px">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/100px-Facebook_f_logo_%282019%29.svg.png" alt="Facebook" style="height:48px">
-    <img src="https://images.squarespace-cdn.com/content/v1/5e4ef5e0e7c6ac53d5eef0e9/1582152941519-U3ZCWX35M29LAOWF5WLX/JioSaavn+Logo.png" alt="JioSaavn" style="height:36px">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Gaana_Logo.svg/220px-Gaana_Logo.svg.png" alt="Gaana" style="height:32px">
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/39/Wynk_Music_logo.svg/220px-Wynk_Music_logo.svg.png" alt="Wynk" style="height:36px">
+    <span class="cli-item"><img src="/images/platforms/spotify.svg" alt="Spotify" title="Spotify"></span>
+    <span class="cli-item"><img src="/images/platforms/youtube.svg" alt="YouTube" title="YouTube"></span>
+    <span class="cli-item"><img src="/images/platforms/apple-music.svg" alt="Apple Music" title="Apple Music"></span>
+    <span class="cli-item"><img src="/images/platforms/instagram.svg" alt="Instagram" title="Instagram"></span>
+    <span class="cli-item"><img src="/images/platforms/facebook.svg" alt="Facebook" title="Facebook"></span>
+    <span class="cli-item"><img src="/images/platforms/jiosaavn.svg" alt="JioSaavn" title="JioSaavn"></span>
+    <span class="cli-item"><img src="/images/platforms/gaana.svg" alt="Gaana" title="Gaana"></span>
+    <span class="cli-item"><img src="/images/platforms/wynk.svg" alt="Wynk Music" title="Wynk Music"></span>
   </div>
 </div>
 </section>
@@ -815,7 +822,7 @@ section{padding:70px 0}
     </div>
   </div>
   <div class="ft-bottom">
-    &copy; 2024-2026 Bainsla Music Private Limited. All Rights Reserved. &nbsp;|&nbsp; <a href="/admin/" style="color:var(--red)">Admin Panel</a>
+    &copy; 2024-2026 Bainsla Music Private Limited. All Rights Reserved.
   </div>
 </div>
 </footer>
@@ -846,6 +853,26 @@ const statsObs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting&&!counterDone){counterDone=true;runCounters();}});
 },{threshold:.3});
 document.querySelector('.stats-bar')&&statsObs.observe(document.querySelector('.stats-bar'));
+
+/* ─── Helpers ─── */
+function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function presLogoFallback(img){
+  const wrap=img.parentElement;
+  if(!wrap) return;
+  const span=document.createElement('span');
+  span.className='pres-fallback';
+  span.textContent=img.alt||'';
+  wrap.replaceChild(span,img);
+}
+
+function cliLogoFallback(img){
+  const wrap=img.parentElement;
+  if(!wrap) return;
+  const span=document.createElement('span');
+  span.className='cli-fallback';
+  span.textContent=img.alt||'';
+  wrap.replaceChild(span,img);
+}
 
 /* ─── Presence tabs ─── */
 function showPres(tab,btn){
@@ -1091,22 +1118,42 @@ function showPres(tab,btn){
   const ct=document.getElementById('clientsTrack');
   if(D.clients && D.clients.length && ct){
     ct.innerHTML='';
-    const html=D.clients.map(c=>`<img src="${c.image||''}" alt="${c.name||''}" style="height:48px">`).join('');
+    const html=D.clients.filter(c=>c.name||c.image).map(c=>{
+      const nm=esc(c.name||'');
+      const src=String(c.image||'').trim();
+      return `<span class="cli-item">${src?`<img src="${esc(src.startsWith('/')||/^(https?:)?\/\//i.test(src)||src.startsWith('data:')?src:'/'+src.replace(/^\.?\//,''))}" alt="${nm}" title="${nm}" loading="lazy" onerror="cliLogoFallback(this)">`:`<span class="cli-fallback">${nm}</span>`}</span>`;
+    }).join('');
     ct.innerHTML=html+html; /* duplicate for seamless marquee */
   }
 
-  /* Presence */
+  /* Presence — logo missing/broken ho to platform ke naam ka text chip dikhta hai */
   if(D.presence && D.presence.length){
-    const audioEl=document.getElementById('pres-audio');
-    const videoEl=document.getElementById('pres-video');
-    if(audioEl){
-      const audio=D.presence.filter(p=>p.type==='audio');
-      if(audio.length) audioEl.innerHTML=audio.map(p=>`<a href="${p.url||'#'}" target="_blank"><img src="${p.image||''}" alt="${p.name}" title="${p.name}" style="height:44px"></a>`).join('');
-    }
-    if(videoEl){
-      const video=D.presence.filter(p=>p.type==='video');
-      if(video.length) videoEl.innerHTML=video.map(p=>`<a href="${p.url||'#'}" target="_blank"><img src="${p.image||''}" alt="${p.name}" title="${p.name}" style="height:44px"></a>`).join('');
-    }
+    const presSrc=v=>{
+      const s=String(v||'').trim();
+      if(!s) return '';
+      if(/^(https?:)?\/\//i.test(s)||s.startsWith('data:')||s.startsWith('/')) return s;
+      return '/'+s.replace(/^\.?\//,'');
+    };
+    const presItem=p=>{
+      const name=esc(p.name||'');
+      const src=presSrc(p.image);
+      const inner=src
+        ? `<img src="${esc(src)}" alt="${name}" title="${name}" loading="lazy" onerror="presLogoFallback(this)">`
+        : `<span class="pres-fallback">${name}</span>`;
+      const url=String(p.url||'').trim();
+      return url
+        ? `<a class="pres-item" href="${esc(url)}" target="_blank" rel="noopener">${inner}</a>`
+        : `<span class="pres-item">${inner}</span>`;
+    };
+    const fillPres=(el,type)=>{
+      if(!el) return;
+      const list=D.presence
+        .filter(p=>(p.type||'audio')===type && p.published!==false && (p.name||p.image))
+        .sort((a,b)=>(Number(a.sort_order||0)-Number(b.sort_order||0)));
+      if(list.length) el.innerHTML=list.map(presItem).join('');
+    };
+    fillPres(document.getElementById('pres-audio'),'audio');
+    fillPres(document.getElementById('pres-video'),'video');
   }
 
   /* Settings: contact info, social links, footer */
