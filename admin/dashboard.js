@@ -2688,43 +2688,91 @@ function renderTeam(area) {
 }
 
 /* ═══════ SERVICES SECTION ═══════ */
+function svcSlugify(text) {
+  return String(text || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+function serviceForm(s) {
+  s = s || {};
+  return `<form>
+    ${field('Service Name', 'name', s.name, 'text', true)}
+    ${field('URL slug (khaali chhodo to naam se ban jaayega)', 'slug', s.slug || '')}
+    ${field('Icon class (Font Awesome, jaise fas fa-compact-disc)', 'icon', s.icon || 'fas fa-cog')}
+    ${imageUploadField('Thumbnail / Featured Image', 'image', s.image || '', 'services')}
+    ${imageUploadField('Icon Image (optional — icon class ki jagah)', 'icon_image', s.icon_image || '', 'services')}
+    ${textareaField('Short Description (homepage card pe)', 'description', s.description || '', 'Ek-do line ka summary...')}
+    ${textareaField('Detail Page Content', 'content', s.content || '', 'Poora content. Khaali line se naya paragraph; <h2>, <ul>, <a> jaise tags bhi chalte hain.')}
+    ${textareaField('Gallery Images (ek line mein ek URL/path)', 'gallery', Array.isArray(s.gallery) ? s.gallery.join('\n') : (s.gallery || ''), '/uploads/services/photo1.jpg')}
+    ${field('CTA Button Text', 'cta_text', s.cta_text || '')}
+    ${field('CTA Button URL', 'cta_url', s.cta_url || '')}
+    ${field('External Link (partner service — detail page ki jagah isi pe jaayega)', 'url', s.url || '', 'url')}
+    ${field('Partner Badge (jaise Intube Media)', 'partner', s.partner || '')}
+    ${field('SEO Title', 'seo_title', s.seo_title || '')}
+    ${textareaField('SEO Description', 'seo_description', s.seo_description || '')}
+    ${field('Order (chhota number pehle)', 'sort_order', s.sort_order == null ? '' : s.sort_order, 'number')}
+    ${selectField('Status', 'published', [{ value: 'yes', label: 'Published (website pe dikhega)' }, { value: 'no', label: 'Unpublished (chhupa hua)' }], s.published === false ? 'no' : 'yes')}
+    ${formActions()}
+  </form>`;
+}
+
+function servicePayload(obj) {
+  const out = Object.assign({}, obj);
+  out.slug = svcSlugify(out.slug || out.name);
+  out.gallery = String(out.gallery || '').split('\n').map(v => v.trim()).filter(Boolean);
+  out.published = out.published !== 'no';
+  out.sort_order = out.sort_order === '' || out.sort_order == null ? 0 : Number(out.sort_order);
+  return out;
+}
+
 function renderServices(area) {
-  const services = DATA.services || [];
+  const services = (DATA.services || []).slice()
+    .map((s, i) => Object.assign({}, s, { _order: s.sort_order == null ? i : Number(s.sort_order) }))
+    .sort((a, b) => a._order - b._order);
   area.innerHTML = `
-    <div class="flex-between mb-20"><div></div><button class="btn btn-primary btn-sm" id="addSvcBtn">+ Add Service</button></div>
+    <div class="flex-between mb-20">
+      <div class="text-xs text-muted">Har service ka apna page banta hai: <code>/services/&lt;slug&gt;</code>. External link do to card seedha wahan jaayega.</div>
+      <button class="btn btn-primary btn-sm" id="addSvcBtn">+ Add Service</button>
+    </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
-      ${services.map(s => `
-        <div class="panel" style="margin:0;text-align:center">
+      ${services.map(s => {
+        const slug = svcSlugify(s.slug || s.name);
+        return `
+        <div class="panel" style="margin:0;text-align:center;${s.published === false ? 'opacity:.55' : ''}">
           <div class="panel-body">
-            <div style="font-size:32px;margin-bottom:8px">${s.icon || '💼'}</div>
+            ${s.image ? `<img src="${s.image}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:10px" onerror="this.style.display='none'">` : ''}
+            <div style="font-size:26px;margin-bottom:6px">${s.icon_image ? `<img src="${s.icon_image}" style="height:34px;margin:0 auto">` : '💼'}</div>
             <div class="fw-700" style="font-size:14px">${s.name || ''}</div>
             <div class="text-xs text-muted" style="margin:6px 0;line-height:1.5">${s.description || ''}</div>
-            <div style="display:flex;gap:4px;justify-content:center;margin-top:8px">
+            <div class="text-xs text-muted">#${s.sort_order || 0}${s.published === false ? ' &middot; hidden' : ''}${s.url ? ' &middot; external' : ''}</div>
+            <a href="/services/${slug}" target="_blank" rel="noopener" class="text-xs" style="color:#f59e0b">/services/${slug} ↗</a>
+            <div style="display:flex;gap:4px;justify-content:center;margin-top:8px;flex-wrap:wrap">
               <button class="btn btn-outline btn-sm edit-svc" data-id="${s.id}" style="padding:3px 8px;font-size:10px">✏ Edit</button>
+              <button class="btn btn-outline btn-sm toggle-svc" data-id="${s.id}" style="padding:3px 8px;font-size:10px">${s.published === false ? '👁 Show' : '🚫 Hide'}</button>
               <button class="btn btn-outline btn-sm del-svc" data-id="${s.id}" style="padding:3px 8px;font-size:10px;border-color:#ef4444;color:#ef4444">✕</button>
             </div>
           </div>
-        </div>
-      `).join('')}
+        </div>`;
+      }).join('')}
       ${services.length === 0 ? '<p style="color:#666;text-align:center;padding:40px">No services added yet. Default services are shown on the website.</p>' : ''}
     </div>`;
   document.getElementById('addSvcBtn')?.addEventListener('click', () => {
-    showModal('Add Service', `<form>
-      ${field('Service Name', 'name', '', 'text', true)}
-      ${field('Icon (emoji or Font Awesome class)', 'icon', '💼')}
-      ${textareaField('Description', 'description', '', 'Describe the service...')}
-      ${formActions()}
-    </form>`, async (obj) => { await api('POST', 'services', obj); toast('Added'); await loadData(); showSection('services'); });
+    showModal('Add Service', serviceForm({}), async (obj) => {
+      await api('POST', 'services', servicePayload(obj)); toast('Added'); await loadData(); showSection('services');
+    });
   });
   area.querySelectorAll('.edit-svc').forEach(b => {
     b.addEventListener('click', () => {
       const s = services.find(x => x.id === b.dataset.id); if (!s) return;
-      showModal('Edit Service', `<form>
-        ${field('Service Name', 'name', s.name, 'text', true)}
-        ${field('Icon', 'icon', s.icon || '💼')}
-        ${textareaField('Description', 'description', s.description || '')}
-        ${formActions()}
-      </form>`, async (obj) => { await api('PUT', 'services', obj, s.id); toast('Updated'); await loadData(); showSection('services'); });
+      showModal('Edit Service', serviceForm(s), async (obj) => {
+        await api('PUT', 'services', servicePayload(obj), s.id); toast('Updated'); await loadData(); showSection('services');
+      });
+    });
+  });
+  area.querySelectorAll('.toggle-svc').forEach(b => {
+    b.addEventListener('click', async () => {
+      const s = services.find(x => x.id === b.dataset.id); if (!s) return;
+      await api('PUT', 'services', { published: s.published === false }, s.id);
+      toast(s.published === false ? 'Published' : 'Hidden'); await loadData(); showSection('services');
     });
   });
   area.querySelectorAll('.del-svc').forEach(b => {

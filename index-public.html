@@ -247,7 +247,8 @@ section{padding:70px 0}
 .svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--red);transform:scaleX(0);transition:transform .3s;transform-origin:left}
 .svc-card:hover::before{transform:scaleX(1)}
 .svc-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.1);transform:translateY(-4px)}
-.svc-icon{width:64px;height:64px;border-radius:50%;background:rgba(204,0,0,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:var(--red);transition:all .3s}
+.svc-icon{width:64px;height:64px;border-radius:50%;background:rgba(204,0,0,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:var(--red);transition:all .3s;overflow:hidden}
+.svc-icon img{width:100%;height:100%;object-fit:cover}
 .svc-card:hover .svc-icon{background:var(--red);color:#fff;transform:scale(1.1)}
 .svc-card h3{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:8px}
 .svc-card p{font-size:12px;color:var(--gray);line-height:1.6}
@@ -591,23 +592,27 @@ section{padding:70px 0}
   <div class="sec-head" data-aos="fade-up">
     <h2>Our Services</h2>
     <p>Complete digital solutions for the entertainment industry</p>
+    <a class="view-more" href="/services">View All</a>
   </div>
   <div class="svc-grid" id="svcGrid">
-    <div class="svc-card" data-aos="fade-up" data-aos-delay="0">
+    <a class="svc-card" href="/services/music-distribution" data-aos="fade-up" data-aos-delay="0">
       <div class="svc-icon"><i class="fas fa-compact-disc"></i></div>
       <h3>Music Distribution</h3>
       <p>Distribute your music across 150+ global platforms including Spotify, Apple Music, JioSaavn, Gaana, Wynk and more.</p>
-    </div>
-    <div class="svc-card" data-aos="fade-up" data-aos-delay="80">
+      <span class="svc-link">View Details &rarr;</span>
+    </a>
+    <a class="svc-card" href="/services/production-house" data-aos="fade-up" data-aos-delay="80">
       <div class="svc-icon"><i class="fas fa-film"></i></div>
       <h3>Production House</h3>
       <p>Full-scale music video production with professional equipment, direction, editing and post-production services.</p>
-    </div>
-    <div class="svc-card" data-aos="fade-up" data-aos-delay="160">
+      <span class="svc-link">View Details &rarr;</span>
+    </a>
+    <a class="svc-card" href="/services/artist-management" data-aos="fade-up" data-aos-delay="160">
       <div class="svc-icon"><i class="fas fa-microphone-alt"></i></div>
       <h3>Artist Management</h3>
       <p>Complete artist management including bookings, brand deals, content strategy and career growth planning.</p>
-    </div>
+      <span class="svc-link">View Details &rarr;</span>
+    </a>
     <a class="svc-card svc-partner" href="https://intubemedia.com" target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="240">
       <div class="svc-icon"><i class="fas fa-laptop-code"></i></div>
       <h3>Website &amp; Digital Solutions</h3>
@@ -797,16 +802,16 @@ section{padding:70px 0}
         <li><a href="#about">About</a></li>
         <li><a href="#catalogue">Catalogue</a></li>
         <li><a href="#artists">Artists</a></li>
-        <li><a href="#services">Services</a></li>
+        <li><a href="/services">Services</a></li>
         <li><a href="#connect">Contact</a></li>
       </ul>
     </div>
     <div>
       <h4>Our Services</h4>
       <ul>
-        <li><a href="#services">Music Distribution</a></li>
-        <li><a href="#services">Production House</a></li>
-        <li><a href="#services">Artist Management</a></li>
+        <li><a href="/services/music-distribution">Music Distribution</a></li>
+        <li><a href="/services/production-house">Production House</a></li>
+        <li><a href="/services/artist-management">Artist Management</a></li>
         <li><a href="https://intubemedia.com" target="_blank" rel="noopener">Website Development</a></li>
         <li><a href="https://intubemedia.com" target="_blank" rel="noopener">App Development</a></li>
         <li><a href="https://intubemedia.com" target="_blank" rel="noopener">Digital Marketing</a></li>
@@ -1021,17 +1026,26 @@ function showPres(tab,btn){
   /* Services */
   const sg=document.getElementById('svcGrid');
   if(D.services && D.services.length && sg){
-    sg.innerHTML='';
-    D.services.forEach((s,i)=>{
-      const inner=`<div class="svc-icon"><i class="${s.icon||'fas fa-cog'}"></i></div>
-        <h3>${s.name||''}</h3>
-        ${s.partner?`<div class="svc-badge">Powered by ${s.partner}</div>`:''}
-        <p>${s.description||''}</p>`;
-      sg.innerHTML+=s.url
-        ? `<a class="svc-card svc-partner" href="${s.url}" target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="${i*80}">${inner}
-        <span class="svc-link">${s.link_text||'Explore '+(s.partner||'more')} &rarr;</span></a>`
-        : `<div class="svc-card" data-aos="fade-up" data-aos-delay="${i*80}">${inner}</div>`;
-    });
+    const slugify=t=>String(t||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+    const list=D.services
+      .filter(s=>s.published!==false && s.name)
+      .map((s,i)=>Object.assign({},s,{_order:s.sort_order==null?i:Number(s.sort_order)}))
+      .sort((a,b)=>a._order-b._order);
+    sg.innerHTML=list.map((s,i)=>{
+      const iconImg=s.icon_image||'';
+      const icon=iconImg
+        ? `<div class="svc-icon"><img src="${esc(iconImg)}" alt="${esc(s.name)}" loading="lazy"></div>`
+        : `<div class="svc-icon"><i class="${esc(s.icon||'fas fa-cog')}"></i></div>`;
+      const inner=`${icon}
+        <h3>${esc(s.name)}</h3>
+        ${s.partner?`<div class="svc-badge">Powered by ${esc(s.partner)}</div>`:''}
+        <p>${esc(s.description||'')}</p>`;
+      const external=String(s.url||'').trim();
+      const href=external||('/services/'+esc(slugify(s.slug||s.name)));
+      const linkText=external?esc(s.link_text||'Explore '+(s.partner||'more')):'View Details';
+      return `<a class="svc-card${external?' svc-partner':''}" href="${esc(href)}"${external?' target="_blank" rel="noopener"':''} data-aos="fade-up" data-aos-delay="${i*80}">${inner}
+        <span class="svc-link">${linkText} &rarr;</span></a>`;
+    }).join('');
   }
 
   /* Warehouse: featured video + admin ke photos/videos */
