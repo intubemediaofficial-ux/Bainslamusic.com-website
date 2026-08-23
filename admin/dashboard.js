@@ -2178,19 +2178,62 @@ function renderLabels(area) {
 }
 
 /* ═══════ PRESENCE SECTION ═══════ */
+/* Website ke saath bundled platform logos — bina upload bhi chun sakte hain */
+const BUNDLED_LOGOS = [
+  { label: '— none —', value: '' },
+  { label: 'Spotify', value: '/images/platforms/spotify.svg' },
+  { label: 'Apple Music', value: '/images/platforms/apple-music.svg' },
+  { label: 'JioSaavn', value: '/images/platforms/jiosaavn.svg' },
+  { label: 'Gaana', value: '/images/platforms/gaana.svg' },
+  { label: 'Wynk Music', value: '/images/platforms/wynk.svg' },
+  { label: 'Hungama', value: '/images/platforms/hungama.svg' },
+  { label: 'YouTube Music', value: '/images/platforms/youtube-music.svg' },
+  { label: 'YouTube', value: '/images/platforms/youtube.svg' },
+  { label: 'Instagram', value: '/images/platforms/instagram.svg' },
+  { label: 'Facebook', value: '/images/platforms/facebook.svg' }
+];
+
+function presenceForm(p) {
+  p = p || {};
+  return `<form>
+    ${imageUploadField('Platform Logo (upload)', 'image', p.image || '', 'presence')}
+    ${selectField('…ya bundled logo chuno (upload ki jagah)', 'image_preset', BUNDLED_LOGOS, BUNDLED_LOGOS.some(l => l.value === p.image) ? p.image : '')}
+    ${field('Platform Name', 'name', p.name, 'text', true)}
+    ${selectField('Type', 'type', ['audio', 'video'], p.type || 'audio')}
+    ${field('Link URL', 'url', p.url || '', 'url')}
+    ${field('Order (chhota number pehle)', 'sort_order', p.sort_order == null ? '' : p.sort_order, 'number')}
+    ${selectField('Status', 'published', [{ value: 'yes', label: 'Published (website pe dikhega)' }, { value: 'no', label: 'Unpublished (chhupa hua)' }], p.published === false ? 'no' : 'yes')}
+    ${formActions()}
+  </form>`;
+}
+
+function presencePayload(obj, originalImage) {
+  const out = Object.assign({}, obj);
+  const uploaded = (out.image || '').trim();
+  delete out.image_preset;
+  // Naya upload preset se aage rehta hai; warna dropdown ka preset use hota hai
+  if (uploaded && uploaded !== (originalImage || '')) out.image = uploaded;
+  else if (obj.image_preset) out.image = obj.image_preset;
+  else out.image = uploaded;
+  out.published = out.published !== 'no';
+  out.sort_order = out.sort_order === '' || out.sort_order == null ? 0 : Number(out.sort_order);
+  return out;
+}
+
 function renderPresence(area) {
-  const platforms = DATA.presence || [];
+  const platforms = (DATA.presence || []).slice().sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
   area.innerHTML = `
-    <div class="flex-between mb-20"><div></div><button class="btn btn-primary btn-sm" id="addPresBtn">+ Add Platform</button></div>
+    <div class="flex-between mb-20"><div class="text-xs text-muted">Logo upload karo ya bundled logo chuno. Order se website pe sequence set hota hai.</div><button class="btn btn-primary btn-sm" id="addPresBtn">+ Add Platform</button></div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
       ${platforms.map(p => `
-        <div class="panel" style="margin:0;text-align:center">
+        <div class="panel" style="margin:0;text-align:center;${p.published === false ? 'opacity:.55' : ''}">
           <div class="panel-body">
-            ${p.image ? `<img src="${p.image}" style="height:50px;margin:0 auto 8px;object-fit:contain">` : `<div style="font-size:28px;margin-bottom:8px">🎵</div>`}
+            ${p.image ? `<img src="${p.image}" style="height:50px;max-width:100%;margin:0 auto 8px;object-fit:contain" onerror="this.style.display='none'">` : `<div style="font-size:28px;margin-bottom:8px">🎵</div>`}
             <div class="fw-700" style="font-size:13px">${p.name || ''}</div>
-            <div class="text-xs text-muted">${p.type || 'audio'}</div>
-            <div style="margin-top:6px;display:flex;gap:4px;justify-content:center">
+            <div class="text-xs text-muted">${p.type || 'audio'} &middot; #${p.sort_order || 0}${p.published === false ? ' &middot; hidden' : ''}</div>
+            <div style="margin-top:6px;display:flex;gap:4px;justify-content:center;flex-wrap:wrap">
               <button class="btn btn-outline btn-sm edit-pres" data-id="${p.id}" style="padding:3px 8px;font-size:10px">✏ Edit</button>
+              <button class="btn btn-outline btn-sm toggle-pres" data-id="${p.id}" style="padding:3px 8px;font-size:10px">${p.published === false ? '👁 Show' : '🚫 Hide'}</button>
               <button class="btn btn-outline btn-sm del-pres" data-id="${p.id}" style="padding:3px 8px;font-size:10px;border-color:#ef4444;color:#ef4444">✕</button>
             </div>
           </div>
@@ -2199,24 +2242,23 @@ function renderPresence(area) {
       ${platforms.length === 0 ? '<p style="color:#666;text-align:center;padding:40px">No platforms added yet.</p>' : ''}
     </div>`;
   document.getElementById('addPresBtn')?.addEventListener('click', () => {
-    showModal('Add Platform', `<form>
-      ${imageUploadField('Platform Logo', 'image', '', 'presence')}
-      ${field('Platform Name', 'name', '', 'text', true)}
-      ${selectField('Type', 'type', ['audio', 'video'], '')}
-      ${field('Link URL', 'url', '', 'url')}
-      ${formActions()}
-    </form>`, async (obj) => { await api('POST', 'presence', obj); toast('Platform added'); await loadData(); showSection('presence'); });
+    showModal('Add Platform', presenceForm({}), async (obj) => {
+      await api('POST', 'presence', presencePayload(obj, '')); toast('Platform added'); await loadData(); showSection('presence');
+    });
   });
   area.querySelectorAll('.edit-pres').forEach(b => {
     b.addEventListener('click', () => {
       const p = platforms.find(x => x.id === b.dataset.id); if (!p) return;
-      showModal('Edit Platform', `<form>
-        ${imageUploadField('Platform Logo', 'image', p.image || '', 'presence')}
-        ${field('Platform Name', 'name', p.name, 'text', true)}
-        ${selectField('Type', 'type', ['audio', 'video'], p.type || '')}
-        ${field('Link URL', 'url', p.url || '', 'url')}
-        ${formActions()}
-      </form>`, async (obj) => { await api('PUT', 'presence', obj, p.id); toast('Updated'); await loadData(); showSection('presence'); });
+      showModal('Edit Platform', presenceForm(p), async (obj) => {
+        await api('PUT', 'presence', presencePayload(obj, p.image || ''), p.id); toast('Updated'); await loadData(); showSection('presence');
+      });
+    });
+  });
+  area.querySelectorAll('.toggle-pres').forEach(b => {
+    b.addEventListener('click', async () => {
+      const p = platforms.find(x => x.id === b.dataset.id); if (!p) return;
+      await api('PUT', 'presence', { published: p.published === false }, p.id);
+      toast(p.published === false ? 'Published' : 'Hidden'); await loadData(); showSection('presence');
     });
   });
   area.querySelectorAll('.del-pres').forEach(b => {
