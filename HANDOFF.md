@@ -247,3 +247,22 @@ The database file has these top-level keys:
 ```
 
 Each item has an `id` field (auto-generated) and a `created_at` timestamp.
+
+---
+
+## Service Pages Routing (nginx)
+
+`service.php` `/services` (listing) aur `/services/<slug>` (detail) dono render karta hai.
+Server pe ye rewrite chahiye:
+
+```nginx
+location = /services { try_files /service.php =404; }
+location ~ ^/services/([a-z0-9-]+)/?$ {
+    rewrite ^/services/([a-z0-9-]+)/?$ /service.php?slug=$1 last;
+}
+```
+
+Service fields (`data/content.json` → `services[]`, sab admin se editable):
+`name`, `slug`, `icon`, `icon_image`, `image`, `description`, `content`,
+`gallery[]`, `cta_text`, `cta_url`, `url` (external partner link), `partner`,
+`seo_title`, `seo_description`, `sort_order`, `published`.

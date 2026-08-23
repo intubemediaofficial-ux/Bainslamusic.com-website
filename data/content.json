@@ -445,37 +445,79 @@
       "id": "sv1",
       "name": "Music Distribution",
       "icon": "fas fa-compact-disc",
-      "description": "Distribute your music across 150+ global platforms including Spotify, Apple Music, JioSaavn, Gaana, Wynk and more."
+      "description": "Distribute your music across 150+ global platforms including Spotify, Apple Music, JioSaavn, Gaana, Wynk and more.",
+      "slug": "music-distribution",
+      "sort_order": 1,
+      "published": true,
+      "content": "Bainsla Music aapka gaana 150+ global platforms — Spotify, Apple Music, JioSaavn, Gaana, Wynk, YouTube Music, Hungama aur Amazon Music — par release karta hai.\n\nHum release planning se lekar metadata, artwork, ISRC/UPC, playlist pitching aur royalty reporting tak poora process handle karte hain, taki artist sirf music par focus kar sake.\n\nContent ID aur copyright protection ke saath aapka catalogue monetize hota hai aur revenue transparent tarike se milta hai.",
+      "cta_text": "Get In Touch",
+      "cta_url": "/#connect",
+      "gallery": []
     },
     {
       "id": "sv2",
       "name": "Production House",
       "icon": "fas fa-film",
-      "description": "Full-scale music video production with professional equipment, direction, editing and post-production services."
-    },
-    {
-      "id": "sv3",
-      "name": "Website Development",
-      "icon": "fas fa-laptop-code",
-      "description": "Custom website design and development for artists, labels and music companies with admin panels and CMS."
-    },
-    {
-      "id": "sv4",
-      "name": "Mobile App Development",
-      "icon": "fas fa-mobile-alt",
-      "description": "Android and iOS app development for music streaming, artist management and fan engagement platforms."
-    },
-    {
-      "id": "sv5",
-      "name": "Digital Marketing",
-      "icon": "fas fa-bullhorn",
-      "description": "Social media management, YouTube SEO, Instagram promotion and digital advertising for maximum reach."
+      "description": "Full-scale music video production with professional equipment, direction, editing and post-production services.",
+      "slug": "production-house",
+      "sort_order": 2,
+      "published": true,
+      "content": "Full-scale music video aur audio production — concept se lekar final delivery tak.\n\nProfessional cameras, lighting, direction, choreography, location scouting, editing, colour grading aur sound mixing — sab in-house team ke saath.\n\nRasiya, folk, devotional aur DJ tracks ke liye Rajasthan mein hamari dedicated production unit hai.",
+      "cta_text": "Get In Touch",
+      "cta_url": "/#connect",
+      "gallery": []
     },
     {
       "id": "sv6",
       "name": "Artist Management",
       "icon": "fas fa-microphone-alt",
-      "description": "Complete artist management including bookings, brand deals, content strategy and career growth planning."
+      "description": "Complete artist management including bookings, brand deals, content strategy and career growth planning.",
+      "slug": "artist-management",
+      "sort_order": 3,
+      "published": true,
+      "content": "Naye aur established artists ke liye complete management — bookings, live shows, brand deals, content strategy aur career planning.\n\nHum artist ki branding, social media growth, collaborations aur release calendar sambhaalte hain, jisse growth consistent rahe.\n\nContract, payment aur promotion ka pura coordination hamari team karti hai.",
+      "cta_text": "Get In Touch",
+      "cta_url": "/#connect",
+      "gallery": []
+    },
+    {
+      "id": "sv3",
+      "name": "Website Development",
+      "icon": "fas fa-laptop-code",
+      "description": "Custom website design and development for artists, labels and music companies with admin panels and CMS.",
+      "slug": "website-development",
+      "sort_order": 4,
+      "published": true,
+      "partner": "Intube Media",
+      "url": "https://intubemedia.com",
+      "link_text": "Explore Intube Media",
+      "gallery": []
+    },
+    {
+      "id": "sv4",
+      "name": "Mobile App Development",
+      "icon": "fas fa-mobile-alt",
+      "description": "Android and iOS app development for music streaming, artist management and fan engagement platforms.",
+      "slug": "mobile-app-development",
+      "sort_order": 5,
+      "published": true,
+      "partner": "Intube Media",
+      "url": "https://intubemedia.com",
+      "link_text": "Explore Intube Media",
+      "gallery": []
+    },
+    {
+      "id": "sv5",
+      "name": "Digital Marketing",
+      "icon": "fas fa-bullhorn",
+      "description": "Social media management, YouTube SEO, Instagram promotion and digital advertising for maximum reach.",
+      "slug": "digital-marketing",
+      "sort_order": 6,
+      "published": true,
+      "partner": "Intube Media",
+      "url": "https://intubemedia.com",
+      "link_text": "Explore Intube Media",
+      "gallery": []
     }
   ],
   "releases": [
