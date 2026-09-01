@@ -176,20 +176,29 @@ section{padding:70px 0}
 
 /* ===== OUR LABELS (Cards) ===== */
 .labels-sec{background:var(--light)}
-.label-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:all .35s;border:1px solid #eee}
-.label-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.12);transform:translateY(-6px)}
-.label-top{padding:24px 20px 16px;display:flex;gap:14px;align-items:flex-start}
-.label-logo{width:70px;height:70px;border-radius:50%;overflow:hidden;flex-shrink:0;border:3px solid #f0f0f0}
+.flip{perspective:1400px;height:340px;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .8s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+.flip:hover .flip-inner,.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:var(--radius);overflow:hidden;background:var(--white);box-shadow:var(--shadow);border:1px solid #eee;display:flex;flex-direction:column}
+.flip-back{transform:rotateY(180deg);background:linear-gradient(150deg,#1a1a1a,#3b0a0a);border-color:#3b0a0a;color:#fff}
+.label-front{align-items:center;justify-content:center;text-align:center;padding:26px 20px;gap:12px}
+.label-logo{width:112px;height:112px;border-radius:50%;overflow:hidden;flex-shrink:0;border:4px solid #f0f0f0;background:#f7f7f7;display:flex;align-items:center;justify-content:center}
 .label-logo img{width:100%;height:100%;object-fit:cover}
-.label-info h3{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:4px}
-.label-info p{font-size:11px;color:var(--gray);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.label-bottom{padding:14px 20px;background:var(--light);border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
-.label-stats{display:flex;gap:14px}
-.label-stats span{font-size:10px;color:#555}
-.label-stats strong{display:block;font-size:15px;color:var(--red);font-weight:700}
-.label-actions{display:flex;gap:6px}
-.label-actions a{width:30px;height:30px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;color:#666;font-size:12px;transition:all .3s}
-.label-actions a:hover{background:var(--red);color:#fff}
+.label-initial{font-size:40px;font-weight:800;color:var(--red)}
+.label-front h3{font-size:19px;font-weight:800;color:var(--dark)}
+.label-front p{font-size:12.5px;color:var(--gray);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.label-hint{margin-top:auto;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--red);font-weight:700}
+.label-back{padding:26px 22px;align-items:center;justify-content:center;text-align:center;gap:16px}
+.label-back h3{font-size:18px;font-weight:800;color:#fff}
+.label-stats{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.label-stats span{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.label-stats strong{display:block;font-size:20px;color:#fff;font-weight:800;margin-bottom:2px}
+.label-actions{display:flex;gap:10px;justify-content:center}
+.label-actions a{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;transition:all .3s}
+.label-actions a:hover{background:var(--red);transform:translateY(-3px)}
+.label-more{display:inline-block;padding:9px 22px;border:2px solid var(--red);border-radius:50px;color:#fff;background:var(--red);font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+.label-more:hover{background:transparent;color:#fff}
+@media(max-width:480px){.flip{height:320px}.label-logo{width:96px;height:96px}}
 
 /* ===== OUR PRESENCE ===== */
 .presence-sec{background:var(--white)}
@@ -207,8 +216,15 @@ section{padding:70px 0}
 
 /* ===== ARTISTS / ASSOCIATES ===== */
 .assoc-sec{background:var(--light);overflow:hidden}
-.assoc-card{text-align:center;padding:20px 14px;transition:all .3s}
-.assoc-card:hover{transform:translateY(-6px)}
+.artist-flip{height:360px}
+.artist-flip .assoc-img{width:150px;height:150px;margin-bottom:10px}
+.assoc-card{text-align:center;padding:24px 14px;align-items:center;justify-content:center;gap:2px}
+.assoc-back{padding:24px 18px;align-items:center;justify-content:center;text-align:center;gap:10px}
+.assoc-back h4{font-size:19px;font-weight:800;color:#fff}
+.assoc-back p{font-size:12.5px;color:rgba(255,255,255,.7);line-height:1.6;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.assoc-back .assoc-social a{background:rgba(255,255,255,.12);color:#fff}
+.assoc-back .assoc-social a:hover{background:var(--red);transform:translateY(-3px)}
+@media(max-width:480px){.artist-flip{height:330px}}
 .assoc-img{width:180px;height:180px;border-radius:50%;overflow:hidden;margin:0 auto 14px;border:5px solid #eee;transition:border-color .3s;max-width:100%}
 .assoc-card:hover .assoc-img{border-color:var(--red)}
 .assoc-img img{width:100%;height:100%;object-fit:cover}
@@ -265,15 +281,35 @@ section{padding:70px 0}
 .cli-fallback{font-weight:800;font-size:17px;color:var(--dark);opacity:.4;white-space:nowrap}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
+/* ===== MUSIC CATEGORIES ===== */
+.music-sec{background:var(--light)}
+.music-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.music-card{position:relative;display:block;border-radius:var(--radius);overflow:hidden;min-height:170px;background:linear-gradient(150deg,#1f1f1f,#4a0d0d);color:#fff;padding:22px 20px;box-shadow:var(--shadow);transition:transform .35s,box-shadow .35s}
+.music-card:hover{transform:translateY(-6px);box-shadow:0 16px 44px rgba(0,0,0,.22)}
+.music-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.42;transition:transform .6s,opacity .3s}
+.music-card:hover img{transform:scale(1.08);opacity:.55}
+.music-card .mc-body{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;justify-content:flex-end;gap:6px}
+.music-card h4{font-size:19px;font-weight:800;letter-spacing:.4px}
+.music-card p{font-size:12px;color:rgba(255,255,255,.75);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.music-card .mc-go{font-size:10.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#ff6b6b}
+@media(max-width:480px){.music-grid{grid-template-columns:repeat(2,1fr);gap:12px}.music-card{min-height:140px;padding:16px 14px}.music-card h4{font-size:15px}.music-card p{display:none}}
+
 /* ===== EXCLUSIVE ALBUMS ===== */
 .albums-sec{background:var(--white)}
-.album-card{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer;box-shadow:var(--shadow)}
-.album-card img{width:100%;height:260px;object-fit:cover;transition:transform .6s}
-.album-card:hover img{transform:scale(1.08)}
-.album-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 45%);display:flex;align-items:flex-end;padding:18px;opacity:0;transition:opacity .3s}
-.album-card:hover .album-ov{opacity:1}
-.album-ov h4{color:#fff;font-size:13px;font-weight:600}
-.album-ov p{color:rgba(255,255,255,.7);font-size:10px}
+.album-stage{perspective:1200px}
+.album-card{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer;box-shadow:var(--shadow);transform-style:preserve-3d;animation:albumSpin 8s ease-in-out infinite;background:#000}
+.album-card:hover{animation-play-state:paused}
+.albumsSwiper .swiper-slide:nth-child(2n) .album-card{animation-delay:-3s}
+.albumsSwiper .swiper-slide:nth-child(3n) .album-card{animation-delay:-6s}
+.album-card.playing{animation:none;transform:none}
+@keyframes albumSpin{0%{transform:rotateY(0) scale(1)}25%{transform:rotateY(26deg) scale(.97)}50%{transform:rotateY(0) scale(1)}75%{transform:rotateY(-26deg) scale(.97)}100%{transform:rotateY(0) scale(1)}}
+.album-card img{width:100%;height:260px;object-fit:cover;display:block;transition:transform .6s}
+.album-card iframe{width:100%;height:260px;border:0;display:block}
+.album-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 55%);display:flex;align-items:flex-end;padding:18px;opacity:1;transition:opacity .3s}
+.album-ov h4{color:#fff;font-size:14px;font-weight:700}
+.album-ov p{color:rgba(255,255,255,.7);font-size:11px}
+.album-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;background:rgba(204,0,0,.92);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 10px 30px rgba(0,0,0,.45);transition:transform .3s}
+.album-card:hover .album-play{transform:translate(-50%,-50%) scale(1.12)}
 
 /* ===== JOURNEY TIMELINE ===== */
 .journey-sec{background:var(--light)}
@@ -429,6 +465,7 @@ section{padding:70px 0}
     <a href="#home" class="active">Home</a>
     <a href="#about">About</a>
     <a href="#catalogue">Catalogue</a>
+    <a href="#music">Music</a>
     <a href="#artists">Artists</a>
     <a href="#services">Services</a>
     <a href="#connect">Connect</a>
@@ -439,6 +476,7 @@ section{padding:70px 0}
   <a href="#home" onclick="this.parentElement.classList.remove('open')">Home</a>
   <a href="#about" onclick="this.parentElement.classList.remove('open')">About</a>
   <a href="#catalogue" onclick="this.parentElement.classList.remove('open')">Catalogue</a>
+  <a href="#music" onclick="this.parentElement.classList.remove('open')">Music</a>
   <a href="#artists" onclick="this.parentElement.classList.remove('open')">Artists</a>
   <a href="#services" onclick="this.parentElement.classList.remove('open')">Services</a>
   <a href="#connect" onclick="this.parentElement.classList.remove('open')">Connect</a>
@@ -641,8 +679,21 @@ section{padding:70px 0}
 </div>
 </section>
 
+<!-- ===== MUSIC CATEGORIES ===== -->
+<section class="music-sec" id="music">
+<div class="container">
+  <div class="sec-head" data-aos="fade-up">
+    <h2>Music</h2>
+    <p>Every language, every mood — our catalogue by genre</p>
+  </div>
+  <div class="music-grid" id="musicGrid">
+    <!-- Populated by JS -->
+  </div>
+</div>
+</section>
+
 <!-- ===== CLIENTS ===== -->
-<section class="clients-sec">
+<section class="clients-sec" id="clientsSec">
 <div class="container">
   <div class="sec-head" data-aos="fade-up">
     <h2>Our Clients &amp; Partners</h2>
@@ -863,6 +914,21 @@ const statsObs=new IntersectionObserver(entries=>{
 document.querySelector('.stats-bar')&&statsObs.observe(document.querySelector('.stats-bar'));
 
 /* ─── Helpers ─── */
+function ytVideoId(u){
+  u=String(u||'');
+  if(u.includes('watch?v=')) return u.split('watch?v=')[1].split('&')[0];
+  if(u.includes('youtu.be/')) return u.split('youtu.be/')[1].split('?')[0].split('&')[0];
+  if(u.includes('/embed/')) return u.split('/embed/')[1].split('?')[0].split('&')[0];
+  if(u.includes('/shorts/')) return u.split('/shorts/')[1].split('?')[0].split('&')[0];
+  if(/^[\w-]{11}$/.test(u.trim())) return u.trim();
+  return '';
+}
+function playAlbum(card){
+  const id=card.getAttribute('data-vid');
+  if(!id||card.classList.contains('playing')) return;
+  card.classList.add('playing');
+  card.innerHTML='<iframe src="https://www.youtube.com/embed/'+encodeURIComponent(id)+'?autoplay=1&rel=0" title="Album video" allow="accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>';
+}
 function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function presLogoFallback(img){
   const wrap=img.parentElement;
@@ -873,6 +939,7 @@ function presLogoFallback(img){
   wrap.replaceChild(span,img);
 }
 
+function labelLogoFallback(img){const w=img.parentNode;const n=img.getAttribute('alt')||'?';w.innerHTML='<span class="label-initial">'+n.trim().charAt(0).toUpperCase()+'</span>';}
 function assocImgFallback(img){const w=img.parentNode;const n=img.getAttribute('alt')||'?';w.innerHTML='<span class="assoc-initial">'+n.trim().charAt(0).toUpperCase()+'</span>';}
 function cliLogoFallback(img){
   const wrap=img.parentElement;
@@ -905,16 +972,21 @@ function showPres(tab,btn){
   if(D.labels && D.labels.length && lw){
     lw.innerHTML='';
     D.labels.forEach((l,i)=>{
-      const yt=l.youtube_url||'', ig=l.instagram_url||'', fb=l.facebook_url||'';
-      lw.innerHTML+=`<div class="swiper-slide"><div class="label-card" data-aos="fade-up" data-aos-delay="${i*60}">
-        <div class="label-top"><div class="label-logo"><img src="${esc(l.image||'')}" alt="${esc(l.name||'')}" loading="lazy"></div>
-          <div class="label-info"><h3>${esc(l.name||'')}</h3><p>${esc(l.description||'')}</p></div></div>
-        <div class="label-bottom">
-          <div class="label-stats"><span><strong>${esc(l.songs||0)}<sup>+</sup></strong>Videos</span><span><strong>${esc(l.views||0)}</strong>Views</span><span><strong>${esc(l.subs||0)}</strong>Subs</span></div>
-          <div class="label-actions">
-            ${yt?`<a href="${yt}" target="_blank"><i class="fab fa-youtube"></i></a>`:''}
-            ${ig?`<a href="${ig}" target="_blank"><i class="fab fa-instagram"></i></a>`:''}
-            ${fb?`<a href="${fb}" target="_blank"><i class="fab fa-facebook-f"></i></a>`:''}
+      const yt=String(l.youtube_url||'').trim(), ig=String(l.instagram_url||'').trim(), fb=String(l.facebook_url||'').trim();
+      const nm=esc(l.name||''), logo=String(l.image||'').trim();
+      const lnk=(u,ic,t)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener" title="${t}" onclick="event.stopPropagation()"><i class="${ic}"></i></a>`:'';
+      lw.innerHTML+=`<div class="swiper-slide"><div class="flip" onclick="this.classList.toggle('flipped')" data-aos="fade-up" data-aos-delay="${i*60}">
+        <div class="flip-inner">
+          <div class="flip-face label-front">
+            <div class="label-logo">${logo?`<img src="${esc(logo)}" alt="${nm}" loading="lazy" onerror="labelLogoFallback(this)">`:`<span class="label-initial">${esc((l.name||'?').trim().charAt(0).toUpperCase())}</span>`}</div>
+            <h3>${nm}</h3><p>${esc(l.description||'')}</p>
+            <span class="label-hint">Tap to see stats</span>
+          </div>
+          <div class="flip-face flip-back label-back">
+            <h3>${nm}</h3>
+            <div class="label-stats"><span><strong>${esc(l.songs||0)}<sup>+</sup></strong>Videos</span><span><strong>${esc(l.views||0)}</strong>Views</span><span><strong>${esc(l.subs||0)}</strong>Subscribers</span></div>
+            <div class="label-actions">${lnk(yt,'fab fa-youtube','YouTube')}${lnk(ig,'fab fa-instagram','Instagram')}${lnk(fb,'fab fa-facebook-f','Facebook')}</div>
+            ${yt?`<a class="label-more" href="${esc(yt)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Know More</a>`:''}
           </div>
         </div></div></div>`;
     });
@@ -930,17 +1002,27 @@ function showPres(tab,btn){
     artists.forEach((a,i)=>{
       const soc=(url,icon,title)=>{
         const u=String(url||'').trim();
-        return u?`<a href="${esc(u)}" target="_blank" rel="noopener" title="${title}"><i class="${icon}"></i></a>`:'';
+        return u?`<a href="${esc(u)}" target="_blank" rel="noopener" title="${title}" onclick="event.stopPropagation()"><i class="${icon}"></i></a>`:'';
       };
-      aw.innerHTML+=`<div class="swiper-slide"><div class="assoc-card" data-aos="zoom-in" data-aos-delay="${i*40}">
-        <div class="assoc-img">${String(a.image||'').trim()?`<img src="${esc(a.image)}" alt="${esc(a.name||'')}" loading="lazy" onerror="assocImgFallback(this)">`:`<span class="assoc-initial">${esc((a.name||'?').trim().charAt(0).toUpperCase())}</span>`}</div>
-        <h4>${esc(a.name||'')}</h4><p>${esc(a.role||'')}</p>
-        <div class="assoc-social">
-          ${soc(a.youtube_url,'fab fa-youtube','YouTube')}
-          ${soc(a.instagram_url,'fab fa-instagram','Instagram')}
-          ${soc(a.facebook_url,'fab fa-facebook-f','Facebook')}
-          ${soc(a.spotify_url,'fab fa-spotify','Spotify')}
-          ${soc(a.apple_music_url,'fab fa-apple','Apple Music')}
+      const photo=String(a.image||'').trim();
+      aw.innerHTML+=`<div class="swiper-slide"><div class="flip artist-flip" onclick="this.classList.toggle('flipped')" data-aos="zoom-in" data-aos-delay="${i*40}">
+        <div class="flip-inner">
+          <div class="flip-face assoc-card">
+            <div class="assoc-img">${photo?`<img src="${esc(photo)}" alt="${esc(a.name||'')}" loading="lazy" onerror="assocImgFallback(this)">`:`<span class="assoc-initial">${esc((a.name||'?').trim().charAt(0).toUpperCase())}</span>`}</div>
+            <h4>${esc(a.name||'')}</h4><p>${esc(a.role||'')}</p>
+            <span class="label-hint">Tap for links</span>
+          </div>
+          <div class="flip-face flip-back assoc-back">
+            <h4>${esc(a.name||'')}</h4>
+            <p>${esc(a.description||a.role||'')}</p>
+            <div class="assoc-social">
+              ${soc(a.youtube_url,'fab fa-youtube','YouTube')}
+              ${soc(a.instagram_url,'fab fa-instagram','Instagram')}
+              ${soc(a.facebook_url,'fab fa-facebook-f','Facebook')}
+              ${soc(a.spotify_url,'fab fa-spotify','Spotify')}
+              ${soc(a.apple_music_url,'fab fa-apple','Apple Music')}
+            </div>
+          </div>
         </div></div></div>`;
     });
   }
@@ -950,11 +1032,12 @@ function showPres(tab,btn){
   if(D.albums && D.albums.length && alw){
     alw.innerHTML='';
     D.albums.forEach((a,i)=>{
-      const vid=a.video_id||'';
-      const img=a.image||(vid?`https://img.youtube.com/vi/${vid}/maxresdefault.jpg`:'');
-      alw.innerHTML+=`<div class="swiper-slide"><div class="album-card" data-aos="fade-up" data-aos-delay="${i*40}">
-        <img src="${img}" alt="${a.title}">
-        <div class="album-ov"><div><h4>${a.title||''}</h4><p>${a.artist||''}</p></div></div></div></div>`;
+      const vid=ytVideoId(a.video_id||'')||ytVideoId(a.youtube_url||a.url||a.link||'');
+      const img=a.image||(vid?`https://img.youtube.com/vi/${vid}/hqdefault.jpg`:'');
+      alw.innerHTML+=`<div class="swiper-slide album-stage"><div class="album-card" data-vid="${esc(vid)}" onclick="playAlbum(this)" data-aos="fade-up" data-aos-delay="${i*40}">
+        ${img?`<img src="${esc(img)}" alt="${esc(a.title||'')}" loading="lazy">`:''}
+        ${vid?'<span class="album-play"><i class="fas fa-play"></i></span>':''}
+        <div class="album-ov"><div><h4>${esc(a.title||'')}</h4><p>${esc(a.artist||'')}</p></div></div></div></div>`;
     });
   }
 
@@ -1142,7 +1225,29 @@ function showPres(tab,btn){
   }
 
   /* Clients */
+  /* Music categories */
+  const mg=document.getElementById('musicGrid');
+  if(mg){
+    const cats=(D.categories||[]).filter(c=>c.name && c.published!==false)
+      .sort((a,b)=>(Number(a.sort_order||0)-Number(b.sort_order||0)));
+    if(cats.length){
+      mg.innerHTML=cats.map(c=>{
+        const url=String(c.url||'').trim();
+        const img=String(c.image||'').trim();
+        const body=`${img?`<img src="${esc(img)}" alt="${esc(c.name)}" loading="lazy">`:''}
+          <div class="mc-body"><h4>${esc(c.name)}</h4><p>${esc(c.description||'')}</p>${url?'<span class="mc-go">Listen Now &rarr;</span>':''}</div>`;
+        return url?`<a class="music-card" href="${esc(url)}" target="_blank" rel="noopener">${body}</a>`
+                  :`<div class="music-card">${body}</div>`;
+      }).join('');
+    } else {
+      const sec=document.getElementById('music'); if(sec) sec.style.display='none';
+    }
+  }
+
   const ct=document.getElementById('clientsTrack');
+  if(D.clients && !D.clients.length){
+    const cs=document.getElementById('clientsSec'); if(cs) cs.style.display='none';
+  }
   if(D.clients && D.clients.length && ct){
     ct.innerHTML='';
     const html=D.clients.filter(c=>c.name||c.image).map(c=>{
@@ -1285,7 +1390,7 @@ function showPres(tab,btn){
   }
 
   /* Re-init Swipers after data loaded */
-  new Swiper('.labelsSwiper',{slidesPerView:1,spaceBetween:18,loop:true,autoplay:{delay:4000,disableOnInteraction:false},navigation:{nextEl:'.labelsSwiper .swiper-button-next',prevEl:'.labelsSwiper .swiper-button-prev'},breakpoints:{640:{slidesPerView:2},1024:{slidesPerView:3}}});
+  new Swiper('.labelsSwiper',{slidesPerView:1.1,spaceBetween:20,loop:true,autoplay:{delay:4000,disableOnInteraction:false},navigation:{nextEl:'.labelsSwiper .swiper-button-next',prevEl:'.labelsSwiper .swiper-button-prev'},breakpoints:{640:{slidesPerView:2},1024:{slidesPerView:3}}});
   new Swiper('.assocSwiper',{slidesPerView:1.3,spaceBetween:16,centeredSlides:false,loop:true,autoplay:{delay:3000,disableOnInteraction:false},navigation:{nextEl:'.assocSwiper .swiper-button-next',prevEl:'.assocSwiper .swiper-button-prev'},breakpoints:{480:{slidesPerView:2},768:{slidesPerView:3},1024:{slidesPerView:4}}});
   new Swiper('.albumsSwiper',{slidesPerView:1,spaceBetween:14,loop:true,autoplay:{delay:3500,disableOnInteraction:false},pagination:{el:'.albumsSwiper .swiper-pagination',clickable:true},navigation:{nextEl:'.albumsSwiper .swiper-button-next',prevEl:'.albumsSwiper .swiper-button-prev'},breakpoints:{640:{slidesPerView:2},768:{slidesPerView:3},1024:{slidesPerView:4}}});
   AOS.refresh();
