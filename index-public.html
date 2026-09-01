@@ -207,16 +207,19 @@ section{padding:70px 0}
 
 /* ===== ARTISTS / ASSOCIATES ===== */
 .assoc-sec{background:var(--light);overflow:hidden}
-.assoc-card{text-align:center;padding:16px;transition:all .3s}
+.assoc-card{text-align:center;padding:20px 14px;transition:all .3s}
 .assoc-card:hover{transform:translateY(-6px)}
-.assoc-img{width:110px;height:110px;border-radius:50%;overflow:hidden;margin:0 auto 10px;border:4px solid #eee;transition:border-color .3s}
+.assoc-img{width:180px;height:180px;border-radius:50%;overflow:hidden;margin:0 auto 14px;border:5px solid #eee;transition:border-color .3s;max-width:100%}
 .assoc-card:hover .assoc-img{border-color:var(--red)}
 .assoc-img img{width:100%;height:100%;object-fit:cover}
-.assoc-card h4{font-size:13px;font-weight:700;color:var(--dark)}
-.assoc-card p{font-size:10px;color:#888}
-.assoc-social{display:flex;gap:5px;justify-content:center;margin-top:6px}
-.assoc-social a{width:24px;height:24px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;color:#666;font-size:10px;transition:all .3s}
+.assoc-initial{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--red),#7a1020)}
+.assoc-card h4{font-size:19px;font-weight:700;color:var(--dark)}
+.assoc-card p{font-size:13px;color:#888;margin-top:2px}
+.assoc-social{display:flex;gap:9px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.assoc-social a{width:42px;height:42px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;color:#666;font-size:17px;transition:all .3s}
 .assoc-social a:hover{background:var(--red);color:#fff}
+@media(max-width:768px){.assoc-img{width:150px;height:150px}.assoc-card h4{font-size:17px}.assoc-social a{width:38px;height:38px;font-size:16px}}
+@media(max-width:480px){.assoc-img{width:130px;height:130px}.assoc-card h4{font-size:16px}.assoc-social a{width:34px;height:34px;font-size:14px}}
 
 /* ===== INTUBE MEDIA NETWORK CARD ===== */
 .network-sec{background:var(--light);padding:56px 0}
@@ -870,6 +873,7 @@ function presLogoFallback(img){
   wrap.replaceChild(span,img);
 }
 
+function assocImgFallback(img){const w=img.parentNode;const n=img.getAttribute('alt')||'?';w.innerHTML='<span class="assoc-initial">'+n.trim().charAt(0).toUpperCase()+'</span>';}
 function cliLogoFallback(img){
   const wrap=img.parentElement;
   if(!wrap) return;
@@ -903,10 +907,10 @@ function showPres(tab,btn){
     D.labels.forEach((l,i)=>{
       const yt=l.youtube_url||'', ig=l.instagram_url||'', fb=l.facebook_url||'';
       lw.innerHTML+=`<div class="swiper-slide"><div class="label-card" data-aos="fade-up" data-aos-delay="${i*60}">
-        <div class="label-top"><div class="label-logo"><img src="${l.image||''}" alt="${l.name}"></div>
-          <div class="label-info"><h3>${l.name}</h3><p>${l.description||''}</p></div></div>
+        <div class="label-top"><div class="label-logo"><img src="${esc(l.image||'')}" alt="${esc(l.name||'')}" loading="lazy"></div>
+          <div class="label-info"><h3>${esc(l.name||'')}</h3><p>${esc(l.description||'')}</p></div></div>
         <div class="label-bottom">
-          <div class="label-stats"><span><strong>${l.songs||0}<sup>+</sup></strong>Songs</span><span><strong>${l.views||0}</strong>Views</span><span><strong>${l.subs||0}</strong>Subs</span></div>
+          <div class="label-stats"><span><strong>${esc(l.songs||0)}<sup>+</sup></strong>Videos</span><span><strong>${esc(l.views||0)}</strong>Views</span><span><strong>${esc(l.subs||0)}</strong>Subs</span></div>
           <div class="label-actions">
             ${yt?`<a href="${yt}" target="_blank"><i class="fab fa-youtube"></i></a>`:''}
             ${ig?`<a href="${ig}" target="_blank"><i class="fab fa-instagram"></i></a>`:''}
@@ -920,13 +924,16 @@ function showPres(tab,btn){
   const aw=document.getElementById('assocWrapper');
   if(D.associates && D.associates.length && aw){
     aw.innerHTML='';
-    D.associates.forEach((a,i)=>{
+    const artists=D.associates
+      .map((a,i)=>Object.assign({},a,{_order:a.sort_order==null||a.sort_order===''?i+1000:Number(a.sort_order)}))
+      .sort((x,y)=>x._order-y._order);
+    artists.forEach((a,i)=>{
       const soc=(url,icon,title)=>{
         const u=String(url||'').trim();
         return u?`<a href="${esc(u)}" target="_blank" rel="noopener" title="${title}"><i class="${icon}"></i></a>`:'';
       };
       aw.innerHTML+=`<div class="swiper-slide"><div class="assoc-card" data-aos="zoom-in" data-aos-delay="${i*40}">
-        <div class="assoc-img"><img src="${esc(a.image||'')}" alt="${esc(a.name||'')}" loading="lazy"></div>
+        <div class="assoc-img">${String(a.image||'').trim()?`<img src="${esc(a.image)}" alt="${esc(a.name||'')}" loading="lazy" onerror="assocImgFallback(this)">`:`<span class="assoc-initial">${esc((a.name||'?').trim().charAt(0).toUpperCase())}</span>`}</div>
         <h4>${esc(a.name||'')}</h4><p>${esc(a.role||'')}</p>
         <div class="assoc-social">
           ${soc(a.youtube_url,'fab fa-youtube','YouTube')}
@@ -1279,7 +1286,7 @@ function showPres(tab,btn){
 
   /* Re-init Swipers after data loaded */
   new Swiper('.labelsSwiper',{slidesPerView:1,spaceBetween:18,loop:true,autoplay:{delay:4000,disableOnInteraction:false},navigation:{nextEl:'.labelsSwiper .swiper-button-next',prevEl:'.labelsSwiper .swiper-button-prev'},breakpoints:{640:{slidesPerView:2},1024:{slidesPerView:3}}});
-  new Swiper('.assocSwiper',{slidesPerView:2,spaceBetween:16,loop:true,autoplay:{delay:3000,disableOnInteraction:false},navigation:{nextEl:'.assocSwiper .swiper-button-next',prevEl:'.assocSwiper .swiper-button-prev'},breakpoints:{640:{slidesPerView:3},1024:{slidesPerView:5}}});
+  new Swiper('.assocSwiper',{slidesPerView:1.3,spaceBetween:16,centeredSlides:false,loop:true,autoplay:{delay:3000,disableOnInteraction:false},navigation:{nextEl:'.assocSwiper .swiper-button-next',prevEl:'.assocSwiper .swiper-button-prev'},breakpoints:{480:{slidesPerView:2},768:{slidesPerView:3},1024:{slidesPerView:4}}});
   new Swiper('.albumsSwiper',{slidesPerView:1,spaceBetween:14,loop:true,autoplay:{delay:3500,disableOnInteraction:false},pagination:{el:'.albumsSwiper .swiper-pagination',clickable:true},navigation:{nextEl:'.albumsSwiper .swiper-button-next',prevEl:'.albumsSwiper .swiper-button-prev'},breakpoints:{640:{slidesPerView:2},768:{slidesPerView:3},1024:{slidesPerView:4}}});
   AOS.refresh();
 })();
