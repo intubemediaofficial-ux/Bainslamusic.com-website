@@ -2335,7 +2335,7 @@ function renderClients(area) {
       ${clients.map(c => `
         <div class="panel" style="margin:0;text-align:center">
           <div class="panel-body">
-            ${c.image ? `<img src="${c.image}" style="height:50px;margin:0 auto 8px;object-fit:contain">` : '<div style="font-size:24px;margin-bottom:8px">🤝</div>'}
+            ${c.image && !c.text_only ? `<img src="${c.image}" style="height:50px;margin:0 auto 8px;object-fit:contain">` : '<div style="font-size:24px;margin-bottom:8px">🤝</div>'}
             <div class="fw-700" style="font-size:12px">${c.name || ''}</div>
             <div style="margin-top:6px;display:flex;gap:4px;justify-content:center">
               <button class="btn btn-outline btn-sm edit-client" data-id="${c.id}" style="padding:2px 6px;font-size:9px">✏</button>
@@ -2348,9 +2348,10 @@ function renderClients(area) {
     </div>`;
   document.getElementById('addClientBtn')?.addEventListener('click', () => {
     showModal('Add Client/Partner', `<form>
-      ${imageUploadField('Client Logo', 'image', '', 'clients')}
+      ${imageUploadField('Client Logo (optional)', 'image', '', 'clients')}
       ${field('Client Name', 'name', '', 'text', true)}
-      ${field('Website URL', 'url', '', 'url')}
+      ${field('Website URL (optional)', 'url', '', 'url')}
+      ${selectField('Show on website as', 'text_only', [{ value: '', label: 'Logo (name is used when no logo)' }, { value: 'yes', label: 'Name as text' }], '')}
       ${formActions()}
     </form>`, async (obj) => { await api('POST', 'clients', obj); toast('Added'); await loadData(); showSection('clients'); });
   });
@@ -2358,9 +2359,10 @@ function renderClients(area) {
     b.addEventListener('click', () => {
       const c = clients.find(x => x.id === b.dataset.id); if (!c) return;
       showModal('Edit Client', `<form>
-        ${imageUploadField('Client Logo', 'image', c.image || '', 'clients')}
+        ${imageUploadField('Client Logo (optional)', 'image', c.image || '', 'clients')}
         ${field('Client Name', 'name', c.name, 'text', true)}
-        ${field('Website URL', 'url', c.url || '', 'url')}
+        ${field('Website URL (optional)', 'url', c.url || '', 'url')}
+        ${selectField('Show on website as', 'text_only', [{ value: '', label: 'Logo (name is used when no logo)' }, { value: 'yes', label: 'Name as text' }], c.text_only ? 'yes' : '')}
         ${formActions()}
       </form>`, async (obj) => { await api('PUT', 'clients', obj, c.id); toast('Updated'); await loadData(); showSection('clients'); });
     });

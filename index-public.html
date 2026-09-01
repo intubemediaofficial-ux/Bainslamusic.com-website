@@ -1141,7 +1141,8 @@ function showPres(tab,btn){
     const html=D.clients.filter(c=>c.name||c.image).map(c=>{
       const nm=esc(c.name||'');
       const src=String(c.image||'').trim();
-      const inner=src?`<img src="${esc(src.startsWith('/')||/^(https?:)?\/\//i.test(src)||src.startsWith('data:')?src:'/'+src.replace(/^\.?\//,''))}" alt="${nm}" title="${nm}" loading="lazy" onerror="cliLogoFallback(this)">`:`<span class="cli-fallback">${nm}</span>`;
+      const textOnly=c.text_only===true||c.text_only==='yes'||c.text_only==='1';
+      const inner=(src&&!textOnly)?`<img src="${esc(src.startsWith('/')||/^(https?:)?\/\//i.test(src)||src.startsWith('data:')?src:'/'+src.replace(/^\.?\//,''))}" alt="${nm}" title="${nm}" loading="lazy" onerror="cliLogoFallback(this)">`:`<span class="cli-fallback">${nm}</span>`;
       const url=String(c.url||'').trim();
       return url
         ? `<a class="cli-item" href="${esc(url)}" target="_blank" rel="noopener">${inner}</a>`
