@@ -2201,8 +2201,8 @@ function presenceForm(p) {
     ${field('Platform Name', 'name', p.name, 'text', true)}
     ${selectField('Type', 'type', ['audio', 'video'], p.type || 'audio')}
     ${field('Link URL', 'url', p.url || '', 'url')}
-    ${field('Order (chhota number pehle)', 'sort_order', p.sort_order == null ? '' : p.sort_order, 'number')}
-    ${selectField('Status', 'published', [{ value: 'yes', label: 'Published (website pe dikhega)' }, { value: 'no', label: 'Unpublished (chhupa hua)' }], p.published === false ? 'no' : 'yes')}
+    ${field('Order (lower number shows first)', 'sort_order', p.sort_order == null ? '' : p.sort_order, 'number')}
+    ${selectField('Status', 'published', [{ value: 'yes', label: 'Published (visible on the website)' }, { value: 'no', label: 'Unpublished (hidden)' }], p.published === false ? 'no' : 'yes')}
     ${formActions()}
   </form>`;
 }
@@ -2285,6 +2285,7 @@ function renderAssociates(area) {
               ${a.instagram_url ? '<span style="font-size:10px;color:#e1306c">📷 IG</span>' : ''}
               ${a.facebook_url ? '<span style="font-size:10px;color:#1877f2">f FB</span>' : ''}
               ${a.spotify_url ? '<span style="font-size:10px;color:#1db954">♪ Spotify</span>' : ''}
+              ${a.apple_music_url ? '<span style="font-size:10px;color:#888"> Apple</span>' : ''}
             </div>
             <div style="margin-top:8px;display:flex;gap:4px;justify-content:center">
               <button class="btn btn-outline btn-sm edit-assoc" data-id="${a.id}" style="padding:3px 8px;font-size:10px">✏ Edit</button>
@@ -2308,6 +2309,7 @@ function renderAssociates(area) {
       ${field('Instagram URL', 'instagram_url', a?.instagram_url || '', 'url')}
       ${field('Facebook URL', 'facebook_url', a?.facebook_url || '', 'url')}
       ${field('Spotify URL', 'spotify_url', a?.spotify_url || '', 'url')}
+      ${field('Apple Music URL', 'apple_music_url', a?.apple_music_url || '', 'url')}
       ${formActions()}`;
   }
   document.getElementById('addAssocBtn')?.addEventListener('click', () => {
@@ -2333,7 +2335,7 @@ function renderClients(area) {
       ${clients.map(c => `
         <div class="panel" style="margin:0;text-align:center">
           <div class="panel-body">
-            ${c.image ? `<img src="${c.image}" style="height:50px;margin:0 auto 8px;object-fit:contain">` : '<div style="font-size:24px;margin-bottom:8px">🤝</div>'}
+            ${c.image && !c.text_only ? `<img src="${c.image}" style="height:50px;margin:0 auto 8px;object-fit:contain">` : '<div style="font-size:24px;margin-bottom:8px">🤝</div>'}
             <div class="fw-700" style="font-size:12px">${c.name || ''}</div>
             <div style="margin-top:6px;display:flex;gap:4px;justify-content:center">
               <button class="btn btn-outline btn-sm edit-client" data-id="${c.id}" style="padding:2px 6px;font-size:9px">✏</button>
@@ -2346,9 +2348,10 @@ function renderClients(area) {
     </div>`;
   document.getElementById('addClientBtn')?.addEventListener('click', () => {
     showModal('Add Client/Partner', `<form>
-      ${imageUploadField('Client Logo', 'image', '', 'clients')}
+      ${imageUploadField('Client Logo (optional)', 'image', '', 'clients')}
       ${field('Client Name', 'name', '', 'text', true)}
-      ${field('Website URL', 'url', '', 'url')}
+      ${field('Website URL (optional)', 'url', '', 'url')}
+      ${selectField('Show on website as', 'text_only', [{ value: '', label: 'Logo (name is used when no logo)' }, { value: 'yes', label: 'Name as text' }], '')}
       ${formActions()}
     </form>`, async (obj) => { await api('POST', 'clients', obj); toast('Added'); await loadData(); showSection('clients'); });
   });
@@ -2356,9 +2359,10 @@ function renderClients(area) {
     b.addEventListener('click', () => {
       const c = clients.find(x => x.id === b.dataset.id); if (!c) return;
       showModal('Edit Client', `<form>
-        ${imageUploadField('Client Logo', 'image', c.image || '', 'clients')}
+        ${imageUploadField('Client Logo (optional)', 'image', c.image || '', 'clients')}
         ${field('Client Name', 'name', c.name, 'text', true)}
-        ${field('Website URL', 'url', c.url || '', 'url')}
+        ${field('Website URL (optional)', 'url', c.url || '', 'url')}
+        ${selectField('Show on website as', 'text_only', [{ value: '', label: 'Logo (name is used when no logo)' }, { value: 'yes', label: 'Name as text' }], c.text_only ? 'yes' : '')}
         ${formActions()}
       </form>`, async (obj) => { await api('PUT', 'clients', obj, c.id); toast('Updated'); await loadData(); showSection('clients'); });
     });
@@ -2462,6 +2466,19 @@ function renderJourney(area) {
 }
 
 /* ═══════ CONTENT WAREHOUSE ═══════ */
+function ytVideoId(u) {
+  u = String(u || '');
+  if (u.includes('watch?v=')) return u.split('watch?v=')[1].split('&')[0];
+  if (u.includes('youtu.be/')) return u.split('youtu.be/')[1].split('?')[0].split('&')[0];
+  if (u.includes('/embed/')) return u.split('/embed/')[1].split('?')[0].split('&')[0];
+  if (u.includes('/shorts/')) return u.split('/shorts/')[1].split('?')[0].split('&')[0];
+  return '';
+}
+function ytEmbedUrl(u) {
+  const id = ytVideoId(u);
+  return id ? 'https://www.youtube.com/embed/' + id : '';
+}
+
 function renderWarehouse(area) {
   const wh = DATA.warehouse || DATA.settings?.warehouse || {};
   const items = Array.isArray(wh.items) ? wh.items : [];
@@ -2480,7 +2497,7 @@ function renderWarehouse(area) {
     <div class="panel mb-20">
       <div class="panel-header"><h2>Photos &amp; Videos (${items.length})</h2></div>
       <div class="panel-body">
-        <p style="color:#888;font-size:12px;margin-bottom:12px">Yahan photo ya video (5 GB tak) upload karo — website ke Content Warehouse section mein turant dikhega. Uploaded video wahin play hota hai, YouTube pe nahi jaata.</p>
+        <p style="color:#888;font-size:12px;margin-bottom:12px">Upload a photo or video (up to 5 GB) — it appears in the website&#39;s Content Warehouse section instantly. Uploaded videos play right there, not on YouTube.</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
           <button class="btn btn-primary btn-sm" id="whAddPhoto">+ Add Photos</button>
           <button class="btn btn-primary btn-sm" id="whAddVideo">+ Add Video (max 5 GB)</button>
@@ -2508,14 +2525,14 @@ function renderWarehouse(area) {
                 </div>
               </div>
             </div>`).join('')}
-          ${items.length === 0 ? '<p style="color:#666;padding:20px">Abhi koi photo/video nahi hai.</p>' : ''}
+          ${items.length === 0 ? '<p style="color:#666;padding:20px">No photos or videos yet.</p>' : ''}
         </div>
       </div>
     </div>
     <div class="panel">
       <div class="panel-header"><h2>Preview</h2></div>
       <div class="panel-body">
-        ${wh.youtube_url ? `<div style="max-width:600px;aspect-ratio:16/9;margin:0 auto;border-radius:12px;overflow:hidden"><iframe src="${wh.youtube_url.includes('embed') ? wh.youtube_url : 'https://www.youtube.com/embed/' + (wh.youtube_url.split('v=')[1]||'').split('&')[0]}" style="width:100%;height:100%;border:none" allowfullscreen></iframe></div>` : '<p style="color:#666;text-align:center">No video set yet</p>'}
+        ${wh.youtube_url && ytEmbedUrl(wh.youtube_url) ? `<div style="max-width:600px;aspect-ratio:16/9;margin:0 auto;border-radius:12px;overflow:hidden"><iframe src="${ytEmbedUrl(wh.youtube_url)}" style="width:100%;height:100%;border:none" allowfullscreen></iframe></div>` : '<p style="color:#666;text-align:center">No video set yet</p>'}
       </div>
     </div>`;
   initVideoUploadZones(area);
@@ -2696,21 +2713,21 @@ function serviceForm(s) {
   s = s || {};
   return `<form>
     ${field('Service Name', 'name', s.name, 'text', true)}
-    ${field('URL slug (khaali chhodo to naam se ban jaayega)', 'slug', s.slug || '')}
-    ${field('Icon class (Font Awesome, jaise fas fa-compact-disc)', 'icon', s.icon || 'fas fa-cog')}
+    ${field('URL slug (leave empty to generate from the name)', 'slug', s.slug || '')}
+    ${field('Icon class (Font Awesome, e.g. fas fa-compact-disc)', 'icon', s.icon || 'fas fa-cog')}
     ${imageUploadField('Thumbnail / Featured Image', 'image', s.image || '', 'services')}
-    ${imageUploadField('Icon Image (optional — icon class ki jagah)', 'icon_image', s.icon_image || '', 'services')}
-    ${textareaField('Short Description (homepage card pe)', 'description', s.description || '', 'Ek-do line ka summary...')}
-    ${textareaField('Detail Page Content', 'content', s.content || '', 'Poora content. Khaali line se naya paragraph; <h2>, <ul>, <a> jaise tags bhi chalte hain.')}
-    ${textareaField('Gallery Images (ek line mein ek URL/path)', 'gallery', Array.isArray(s.gallery) ? s.gallery.join('\n') : (s.gallery || ''), '/uploads/services/photo1.jpg')}
+    ${imageUploadField('Icon Image (optional — replaces the icon class)', 'icon_image', s.icon_image || '', 'services')}
+    ${textareaField('Short Description (shown on the homepage card)', 'description', s.description || '', 'One or two line summary...')}
+    ${textareaField('Detail Page Content', 'content', s.content || '', 'Full page content. A blank line starts a new paragraph; tags like <h2>, <ul>, <a> are allowed.')}
+    ${textareaField('Gallery Images (one URL/path per line)', 'gallery', Array.isArray(s.gallery) ? s.gallery.join('\n') : (s.gallery || ''), '/uploads/services/photo1.jpg')}
     ${field('CTA Button Text', 'cta_text', s.cta_text || '')}
     ${field('CTA Button URL', 'cta_url', s.cta_url || '')}
-    ${field('External Link (partner service — detail page ki jagah isi pe jaayega)', 'url', s.url || '', 'url')}
-    ${field('Partner Badge (jaise Intube Media)', 'partner', s.partner || '')}
+    ${field('External Link (partner service — used instead of the detail page)', 'url', s.url || '', 'url')}
+    ${field('Partner Badge (e.g. Intube Media)', 'partner', s.partner || '')}
     ${field('SEO Title', 'seo_title', s.seo_title || '')}
     ${textareaField('SEO Description', 'seo_description', s.seo_description || '')}
-    ${field('Order (chhota number pehle)', 'sort_order', s.sort_order == null ? '' : s.sort_order, 'number')}
-    ${selectField('Status', 'published', [{ value: 'yes', label: 'Published (website pe dikhega)' }, { value: 'no', label: 'Unpublished (chhupa hua)' }], s.published === false ? 'no' : 'yes')}
+    ${field('Order (lower number shows first)', 'sort_order', s.sort_order == null ? '' : s.sort_order, 'number')}
+    ${selectField('Status', 'published', [{ value: 'yes', label: 'Published (visible on the website)' }, { value: 'no', label: 'Unpublished (hidden)' }], s.published === false ? 'no' : 'yes')}
     ${formActions()}
   </form>`;
 }
@@ -2730,7 +2747,7 @@ function renderServices(area) {
     .sort((a, b) => a._order - b._order);
   area.innerHTML = `
     <div class="flex-between mb-20">
-      <div class="text-xs text-muted">Har service ka apna page banta hai: <code>/services/&lt;slug&gt;</code>. External link do to card seedha wahan jaayega.</div>
+      <div class="text-xs text-muted">Every service gets its own page: <code>/services/&lt;slug&gt;</code>. Add an external link and the card will point there instead.</div>
       <button class="btn btn-primary btn-sm" id="addSvcBtn">+ Add Service</button>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">

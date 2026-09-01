@@ -1,7 +1,7 @@
 <?php
 /**
- * Shared content helpers. Header-free (no session/JSON headers) so ki
- * public HTML pages (service.php, sitemap.php) bhi isko use kar sakein.
+ * Shared content helpers. Header-free (no session/JSON headers) so that
+ * public HTML pages (service.php, sitemap.php) can use them too.
  */
 
 define('CONTENT_FILE', __DIR__ . '/../data/content.json');
@@ -20,7 +20,7 @@ function slugify($text) {
     return trim((string) $text, '-');
 }
 
-/** Service ka slug — admin ka diya slug, warna naam se banaya gaya. */
+/** Service slug — the admin-provided slug, else generated from the name. */
 function serviceSlug(array $service) {
     $slug = slugify($service['slug'] ?? '');
     if ($slug !== '') return $slug;
@@ -28,7 +28,7 @@ function serviceSlug(array $service) {
     return $slug !== '' ? $slug : (string) ($service['id'] ?? '');
 }
 
-/** Published services, sort_order ke hisaab se. */
+/** Published services, ordered by sort_order. */
 function publishedServices(array $data) {
     $services = [];
     foreach ($data['services'] ?? [] as $i => $service) {
@@ -51,7 +51,7 @@ function findServiceBySlug(array $data, $slug) {
     return null;
 }
 
-/** Admin content: sirf safe tags rehte hain; script, event handlers aur javascript: URL hat jaate hain. */
+/** Admin content is limited to safe tags; script, event handlers and javascript: URLs are stripped. */
 function sanitizeRichText($html) {
     $html = (string) $html;
     $html = preg_replace('#<\s*(script|style|iframe|object|embed|form)\b.*?<\s*/\s*\1\s*>#is', '', $html);
@@ -62,7 +62,7 @@ function sanitizeRichText($html) {
     return trim((string) $html);
 }
 
-/** Plain text (newline-separated) ko paragraphs mein badalta hai. */
+/** Converts newline-separated plain text into paragraphs. */
 function richTextToHtml($text) {
     $text = (string) $text;
     if ($text === '') return '';
@@ -77,7 +77,7 @@ function richTextToHtml($text) {
     return $out;
 }
 
-/** Relative path ko site-root path banata hai; external/data URL waise hi. */
+/** Turns a relative path into a site-root path; external/data URLs pass through. */
 function assetUrl($value) {
     $value = trim((string) $value);
     if ($value === '') return '';
@@ -85,7 +85,7 @@ function assetUrl($value) {
     return '/' . ltrim($value, './');
 }
 
-/** Gallery: array ya newline/comma separated string dono chalte hain. */
+/** Gallery: accepts either an array or a newline/comma separated string. */
 function galleryList($value) {
     if (is_array($value)) $items = $value;
     else $items = preg_split('/[\r\n,]+/', (string) $value);

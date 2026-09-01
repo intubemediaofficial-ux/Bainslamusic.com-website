@@ -7,7 +7,7 @@
     "phone": "+91 72978 97628",
     "email": "bainslamusiccompany@gmail.com",
     "contact_email": "support@bainslamusic.com",
-    "contact_phone": "+91 72978 97628",
+    "contact_phone": "+91 86967 61606",
     "contact_address": "Bainsla Music Private Limited, Jaipur, Rajasthan, India",
     "address": "Bainsla Music Private Limited\nJaipur, Rajasthan, India",
     "whatsapp": "917297897628",
@@ -24,9 +24,10 @@
     "stats_views": "12.8M+",
     "hero_video": "",
     "warehouse": {
-      "youtube_url": "https://www.youtube.com/watch?v=3LQAfAUDW2g",
+      "youtube_url": "https://youtu.be/kLr4UGEpW3k",
       "video_file": ""
-    }
+    },
+    "contact_phone2": "+91 95718 55085"
   },
   "banners": [
     {
@@ -449,7 +450,7 @@
       "slug": "music-distribution",
       "sort_order": 1,
       "published": true,
-      "content": "Bainsla Music aapka gaana 150+ global platforms — Spotify, Apple Music, JioSaavn, Gaana, Wynk, YouTube Music, Hungama aur Amazon Music — par release karta hai.\n\nHum release planning se lekar metadata, artwork, ISRC/UPC, playlist pitching aur royalty reporting tak poora process handle karte hain, taki artist sirf music par focus kar sake.\n\nContent ID aur copyright protection ke saath aapka catalogue monetize hota hai aur revenue transparent tarike se milta hai.",
+      "content": "Bainsla Music releases your music on 150+ global platforms — Spotify, Apple Music, JioSaavn, Gaana, Wynk, YouTube Music, Hungama and Amazon Music.\n\nWe handle the entire process: release planning, metadata, artwork, ISRC/UPC allocation, playlist pitching and royalty reporting — so the artist can focus only on the music.\n\nWith Content ID and copyright protection your catalogue stays monetised, and revenue is reported transparently.",
       "cta_text": "Get In Touch",
       "cta_url": "/#connect",
       "gallery": []
@@ -462,7 +463,7 @@
       "slug": "production-house",
       "sort_order": 2,
       "published": true,
-      "content": "Full-scale music video aur audio production — concept se lekar final delivery tak.\n\nProfessional cameras, lighting, direction, choreography, location scouting, editing, colour grading aur sound mixing — sab in-house team ke saath.\n\nRasiya, folk, devotional aur DJ tracks ke liye Rajasthan mein hamari dedicated production unit hai.",
+      "content": "Full-scale music video and audio production — from concept to final delivery.\n\nProfessional cameras, lighting, direction, choreography, location scouting, editing, colour grading and sound mixing, all with an in-house team.\n\nWe run a dedicated production unit in Rajasthan for Rasiya, folk, devotional and DJ tracks.",
       "cta_text": "Get In Touch",
       "cta_url": "/#connect",
       "gallery": []
@@ -475,7 +476,7 @@
       "slug": "artist-management",
       "sort_order": 3,
       "published": true,
-      "content": "Naye aur established artists ke liye complete management — bookings, live shows, brand deals, content strategy aur career planning.\n\nHum artist ki branding, social media growth, collaborations aur release calendar sambhaalte hain, jisse growth consistent rahe.\n\nContract, payment aur promotion ka pura coordination hamari team karti hai.",
+      "content": "Complete management for new and established artists — bookings, live shows, brand deals, content strategy and career planning.\n\nWe look after branding, social media growth, collaborations and the release calendar so growth stays consistent.\n\nOur team coordinates contracts, payments and promotion end to end.",
       "cta_text": "Get In Touch",
       "cta_url": "/#connect",
       "gallery": []
