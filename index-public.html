@@ -711,7 +711,7 @@ section{padding:70px 0}
     <!-- Populated dynamically from admin Content Warehouse settings -->
   </div>
   <div class="wh-grid" id="whGrid">
-    <!-- Admin ke Content Warehouse photos/videos -->
+    <!-- Admin-managed Content Warehouse photos/videos -->
   </div>
   <div style="text-align:center;margin-top:28px" data-aos="fade-up">
     <a href="https://www.youtube.com/@bainslaofficial" target="_blank" style="display:inline-block;padding:12px 30px;border:2px solid rgba(255,255,255,.3);color:#fff;font-weight:700;font-size:12px;border-radius:50px;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s">Visit YouTube Channel</a>
@@ -921,13 +921,19 @@ function showPres(tab,btn){
   if(D.associates && D.associates.length && aw){
     aw.innerHTML='';
     D.associates.forEach((a,i)=>{
+      const soc=(url,icon,title)=>{
+        const u=String(url||'').trim();
+        return u?`<a href="${esc(u)}" target="_blank" rel="noopener" title="${title}"><i class="${icon}"></i></a>`:'';
+      };
       aw.innerHTML+=`<div class="swiper-slide"><div class="assoc-card" data-aos="zoom-in" data-aos-delay="${i*40}">
-        <div class="assoc-img"><img src="${a.image||''}" alt="${a.name}"></div>
-        <h4>${a.name}</h4><p>${a.role||''}</p>
+        <div class="assoc-img"><img src="${esc(a.image||'')}" alt="${esc(a.name||'')}" loading="lazy"></div>
+        <h4>${esc(a.name||'')}</h4><p>${esc(a.role||'')}</p>
         <div class="assoc-social">
-          ${a.youtube_url?`<a href="${a.youtube_url}" target="_blank"><i class="fab fa-youtube"></i></a>`:''}
-          ${a.instagram_url?`<a href="${a.instagram_url}" target="_blank"><i class="fab fa-instagram"></i></a>`:''}
-          ${a.facebook_url?`<a href="${a.facebook_url}" target="_blank"><i class="fab fa-facebook-f"></i></a>`:''}
+          ${soc(a.youtube_url,'fab fa-youtube','YouTube')}
+          ${soc(a.instagram_url,'fab fa-instagram','Instagram')}
+          ${soc(a.facebook_url,'fab fa-facebook-f','Facebook')}
+          ${soc(a.spotify_url,'fab fa-spotify','Spotify')}
+          ${soc(a.apple_music_url,'fab fa-apple','Apple Music')}
         </div></div></div>`;
     });
   }
@@ -1048,7 +1054,7 @@ function showPres(tab,btn){
     }).join('');
   }
 
-  /* Warehouse: featured video + admin ke photos/videos */
+  /* Warehouse: featured video + admin-managed photos/videos */
   const whEl=document.getElementById('whVideo');
   const whGrid=document.getElementById('whGrid');
   if(whEl && D.settings){
@@ -1061,7 +1067,7 @@ function showPres(tab,btn){
     const isVideoFile=(u)=>/\.(mp4|webm|mov|m4v|avi|mkv)(\?|$)/i.test(u||'');
     const localVideo=(u)=>`<video src="${u}" muted loop playsinline controls preload="metadata"></video>`;
 
-    /* Featured: uploaded video > youtube url > pehla warehouse item */
+    /* Featured: uploaded video > youtube url > first warehouse item */
     const vidFile=wh.video_file||'';
     const embed=ytEmbed(wh.youtube_url||'');
     if(vidFile){
@@ -1135,12 +1141,16 @@ function showPres(tab,btn){
     const html=D.clients.filter(c=>c.name||c.image).map(c=>{
       const nm=esc(c.name||'');
       const src=String(c.image||'').trim();
-      return `<span class="cli-item">${src?`<img src="${esc(src.startsWith('/')||/^(https?:)?\/\//i.test(src)||src.startsWith('data:')?src:'/'+src.replace(/^\.?\//,''))}" alt="${nm}" title="${nm}" loading="lazy" onerror="cliLogoFallback(this)">`:`<span class="cli-fallback">${nm}</span>`}</span>`;
+      const inner=src?`<img src="${esc(src.startsWith('/')||/^(https?:)?\/\//i.test(src)||src.startsWith('data:')?src:'/'+src.replace(/^\.?\//,''))}" alt="${nm}" title="${nm}" loading="lazy" onerror="cliLogoFallback(this)">`:`<span class="cli-fallback">${nm}</span>`;
+      const url=String(c.url||'').trim();
+      return url
+        ? `<a class="cli-item" href="${esc(url)}" target="_blank" rel="noopener">${inner}</a>`
+        : `<span class="cli-item">${inner}</span>`;
     }).join('');
     ct.innerHTML=html+html; /* duplicate for seamless marquee */
   }
 
-  /* Presence — logo missing/broken ho to platform ke naam ka text chip dikhta hai */
+  /* Presence — if a logo is missing/broken, show a text chip with the platform name */
   if(D.presence && D.presence.length){
     const presSrc=v=>{
       const s=String(v||'').trim();

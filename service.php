@@ -1,7 +1,7 @@
 <?php
 /**
- * Service pages. Nginx `/services` aur `/services/<slug>` ko yahan bhejta hai.
- * Saara content admin panel (data/content.json → services[]) se aata hai.
+ * Service pages. Nginx routes `/services` and `/services/<slug>` here.
+ * All content comes from the admin panel (data/content.json → services[]).
  */
 require_once __DIR__ . '/api/content-lib.php';
 
@@ -33,7 +33,7 @@ if ($service) {
 } else {
     $canonical = $listUrl;
     $pageTitle = ($slug !== '' ? 'Service not found — ' : 'Our Services — ') . $company;
-    $pageDesc = 'Music distribution, production house, artist management aur digital services — Bainsla Music Private Limited.';
+    $pageDesc = 'Music distribution, production house, artist management and digital services — Bainsla Music Private Limited.';
     $ogImage = '';
 }
 if ($ogImage === '' || $ogImage[0] === '/') {
@@ -172,7 +172,7 @@ img{max-width:100%;display:block}
 <?php if ($slug !== '' && !$service): ?>
 <div class="container notfound">
   <h1>Service not found</h1>
-  <p>Ye service uplabdh nahi hai ya hata di gayi hai.</p>
+  <p>This service is not available or has been removed.</p>
   <a class="btn-cta" href="/services">All Services</a>
 </div>
 <?php elseif ($service):
@@ -230,7 +230,7 @@ img{max-width:100%;display:block}
   <div class="container">
     <div class="crumbs"><a href="/">Home</a> &nbsp;/&nbsp; Services</div>
     <h1>Our Services</h1>
-    <p>Music distribution, production, artist management aur digital solutions — ek hi network se.</p>
+    <p>Music distribution, production, artist management and digital solutions — all from one network.</p>
   </div>
 </section>
 <div class="container">
@@ -248,7 +248,7 @@ img{max-width:100%;display:block}
       <span class="svc-link"><?= $external !== '' ? e($s['link_text'] ?? 'Explore') : 'View Details' ?> &rarr;</span>
     </a>
     <?php endforeach; ?>
-    <?php if (!$services): ?><p style="color:#666">Services abhi add nahi ki gayi hain.</p><?php endif; ?>
+    <?php if (!$services): ?><p style="color:#666">No services have been added yet.</p><?php endif; ?>
   </div>
 </div>
 <?php endif; ?>
