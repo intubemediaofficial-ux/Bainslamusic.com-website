@@ -428,7 +428,7 @@ function renderOverview(area) {
                 ${a.image ? `<img src="${a.image}" style="width:100%;height:100%;object-fit:cover">` : '<div style="font-size:24px;line-height:70px">👤</div>'}
               </div>
               <div class="text-xs fw-700">${a.name || ''}</div>
-              <div class="text-xs text-muted">${a.role || ''}</div>
+              <div class="text-xs text-muted">${a.role || ''}${a.sort_order ? ' · #' + a.sort_order : ''}</div>
               <div class="actions" style="justify-content:center;margin-top:6px">
                 <button class="action-btn" title="Edit">✏</button>
                 <button class="action-btn" title="View">👁</button>
@@ -2142,6 +2142,7 @@ function renderLabels(area) {
       ${imageUploadField('Logo / Photo', 'image', '', 'labels')}
       ${field('Label Name', 'name', '', 'text', true)}
       ${textareaField('Description', 'description', '', 'About this label...')}
+      <div class="form-group"><small style="color:#666">Songs/Views/Subscribers auto-update from the YouTube channel URL below (checked every few hours). Leave the channel URL empty to keep manual numbers.</small></div>
       ${field('Total Songs', 'songs', '', 'number')}
       ${field('Total Views', 'views', '')}
       ${field('Subscribers', 'subs', '')}
@@ -2160,6 +2161,7 @@ function renderLabels(area) {
         ${imageUploadField('Logo / Photo', 'image', l.image || '', 'labels')}
         ${field('Label Name', 'name', l.name, 'text', true)}
         ${textareaField('Description', 'description', l.description || '')}
+        <div class="form-group"><small style="color:#666">Songs/Views/Subscribers auto-update from the YouTube channel URL below (checked every few hours). Leave the channel URL empty to keep manual numbers.</small></div>
         ${field('Total Songs', 'songs', l.songs || '', 'number')}
         ${field('Total Views', 'views', l.views || '')}
         ${field('Subscribers', 'subs', l.subs || '')}
@@ -2279,7 +2281,7 @@ function renderAssociates(area) {
               ${a.image ? `<img src="${a.image}" style="width:100%;height:100%;object-fit:cover">` : '<div style="font-size:28px;line-height:80px">🎤</div>'}
             </div>
             <div class="fw-700" style="font-size:13px">${a.name || ''}</div>
-            <div class="text-xs text-muted">${a.role || ''}</div>
+            <div class="text-xs text-muted">${a.role || ''}${a.sort_order ? ' · #' + a.sort_order : ''}</div>
             <div style="margin-top:6px;display:flex;gap:4px;justify-content:center;flex-wrap:wrap">
               ${a.youtube_url ? '<span style="font-size:10px;color:#c00">▶ YT</span>' : ''}
               ${a.instagram_url ? '<span style="font-size:10px;color:#e1306c">📷 IG</span>' : ''}
@@ -2300,6 +2302,7 @@ function renderAssociates(area) {
     return `${imageUploadField('Photo', 'image', a?.image || '', 'associates')}
       ${field('Name', 'name', a?.name || '', 'text', true)}
       ${field('Role/Designation', 'role', a?.role || '')}
+      ${field('Order (lower number shows first)', 'sort_order', a?.sort_order || '', 'number')}
       ${textareaField('Bio', 'description', a?.description || '')}
       ${field('Phone', 'phone', a?.phone || '', 'tel')}
       ${field('Email', 'email', a?.email || '', 'email')}
