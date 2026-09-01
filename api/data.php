@@ -9,6 +9,8 @@ $section = $_GET['section'] ?? '';
 // Public read access (no auth needed)
 if ($method === 'GET' && $section === 'public') {
     $data = readData();
+    // Visitor submissions are private
+    unset($data['inquiries']);
     jsonResponse($data);
 }
 

@@ -54,7 +54,7 @@ async function loadData() {
     updateBadges();
   } catch (e) {
     console.error('Load failed', e);
-    DATA = { settings: {}, banners: [], releases: [], artists: [], videos: [], catalogue: [], licensing: [], inquiries: [], distribution: [], directors: [], team: [], labels: [], presence: [], associates: [], clients: [], albums: [], journey: [], services: [] };
+    DATA = { settings: {}, banners: [], releases: [], artists: [], videos: [], catalogue: [], licensing: [], inquiries: [], distribution: [], directors: [], team: [], labels: [], presence: [], associates: [], clients: [], albums: [], journey: [], services: [], categories: [] };
   }
 }
 
@@ -129,6 +129,7 @@ const SECTION_META = {
   associates: { title: 'Our Associates', subtitle: 'Manage artists, singers and performers with photos and social links.' },
   clients: { title: 'Our Clients', subtitle: 'Manage client logos that scroll on the website.' },
   albums: { title: 'Exclusive Albums', subtitle: 'Manage album cards with images and descriptions.' },
+  categories: { title: 'Music Categories', subtitle: 'Manage music genres/languages shown in the Music section.' },
   journey: { title: 'Our Journey', subtitle: 'Manage company timeline milestones.' },
   warehouse: { title: 'Content Warehouse', subtitle: 'Upload or embed a featured video for the Content Warehouse section.' },
   releases: { title: 'Latest Releases', subtitle: 'Manage latest YouTube video releases displayed on the website.' },
@@ -159,6 +160,7 @@ function showSection(s) {
     case 'associates': renderAssociates(area); break;
     case 'clients': renderClients(area); break;
     case 'albums': renderAlbums(area); break;
+    case 'categories': renderCategories(area); break;
     case 'journey': renderJourney(area); break;
     case 'warehouse': renderWarehouse(area); break;
     case 'releases': renderReleases(area); break;
@@ -2190,9 +2192,35 @@ const BUNDLED_LOGOS = [
   { label: 'Wynk Music', value: '/images/platforms/wynk.svg' },
   { label: 'Hungama', value: '/images/platforms/hungama.svg' },
   { label: 'YouTube Music', value: '/images/platforms/youtube-music.svg' },
+  { label: 'Amazon Music', value: '/images/platforms/amazon-music.svg' },
+  { label: 'Resso', value: '/images/platforms/resso.svg' },
+  { label: 'Deezer', value: '/images/platforms/deezer.svg' },
+  { label: 'Tidal', value: '/images/platforms/tidal.svg' },
+  { label: 'SoundCloud', value: '/images/platforms/soundcloud.svg' },
+  { label: 'Pandora', value: '/images/platforms/pandora.svg' },
+  { label: 'Anghami', value: '/images/platforms/anghami.svg' },
+  { label: 'Boomplay', value: '/images/platforms/boomplay.svg' },
+  { label: 'Audiomack', value: '/images/platforms/audiomack.svg' },
+  { label: 'iHeartRadio', value: '/images/platforms/iheartradio.svg' },
+  { label: 'Napster', value: '/images/platforms/napster.svg' },
+  { label: 'Shazam', value: '/images/platforms/shazam.svg' },
+  { label: 'Qobuz', value: '/images/platforms/qobuz.svg' },
+  { label: 'Saregama', value: '/images/platforms/saregama.svg' },
+  { label: 'Intube Music', value: '/images/platforms/intube-music.svg' },
   { label: 'YouTube', value: '/images/platforms/youtube.svg' },
   { label: 'Instagram', value: '/images/platforms/instagram.svg' },
-  { label: 'Facebook', value: '/images/platforms/facebook.svg' }
+  { label: 'Facebook', value: '/images/platforms/facebook.svg' },
+  { label: 'TikTok', value: '/images/platforms/tiktok.svg' },
+  { label: 'Snapchat', value: '/images/platforms/snapchat.svg' },
+  { label: 'Dailymotion', value: '/images/platforms/dailymotion.svg' },
+  { label: 'Vimeo', value: '/images/platforms/vimeo.svg' },
+  { label: 'Triller', value: '/images/platforms/triller.svg' },
+  { label: 'Moj', value: '/images/platforms/moj.svg' },
+  { label: 'ShareChat', value: '/images/platforms/sharechat.svg' },
+  { label: 'Josh', value: '/images/platforms/josh.svg' },
+  { label: 'Roposo', value: '/images/platforms/roposo.svg' },
+  { label: 'MX Player', value: '/images/platforms/mx-player.svg' },
+  { label: 'JioTV', value: '/images/platforms/jiotv.svg' }
 ];
 
 function presenceForm(p) {
@@ -2265,6 +2293,74 @@ function renderPresence(area) {
   });
   area.querySelectorAll('.del-pres').forEach(b => {
     b.addEventListener('click', async () => { if (!confirm('Delete?')) return; await api('DELETE', 'presence', null, b.dataset.id); toast('Deleted'); await loadData(); showSection('presence'); });
+  });
+}
+
+
+/* ═══════ MUSIC CATEGORIES SECTION ═══════ */
+function categoryForm(c) {
+  c = c || {};
+  return `<form>
+    ${imageUploadField('Cover Image (optional)', 'image', c.image || '', 'categories')}
+    ${field('Category Name', 'name', c.name || '', 'text', true)}
+    ${textareaField('Short Description', 'description', c.description || '')}
+    ${field('Link URL (playlist/channel, optional)', 'url', c.url || '', 'url')}
+    ${field('Order (lower number shows first)', 'sort_order', c.sort_order == null ? '' : c.sort_order, 'number')}
+    ${selectField('Status', 'published', [{ value: 'yes', label: 'Published (visible on the website)' }, { value: 'no', label: 'Unpublished (hidden)' }], c.published === false ? 'no' : 'yes')}
+    ${formActions()}
+  </form>`;
+}
+
+function categoryPayload(obj) {
+  const out = Object.assign({}, obj);
+  out.published = out.published !== 'no';
+  out.sort_order = out.sort_order === '' || out.sort_order == null ? 0 : Number(out.sort_order);
+  return out;
+}
+
+function renderCategories(area) {
+  const cats = (DATA.categories || []).slice().sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
+  area.innerHTML = `
+    <div class="flex-between mb-20"><div class="text-xs text-muted">These show in the "Music" section on the homepage.</div><button class="btn btn-primary btn-sm" id="addCatBtn">+ Add Category</button></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+      ${cats.map(c => `
+        <div class="panel" style="margin:0;${c.published === false ? 'opacity:.55' : ''}">
+          <div class="panel-body">
+            ${c.image ? `<img src="${c.image}" style="width:100%;height:90px;object-fit:cover;border-radius:8px;margin-bottom:8px" onerror="this.style.display='none'">` : ''}
+            <div class="fw-700" style="font-size:14px">${c.name || ''}</div>
+            <div class="text-xs text-muted">#${c.sort_order || 0}${c.published === false ? ' &middot; hidden' : ''}</div>
+            <div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap">
+              <button class="btn btn-outline btn-sm edit-cat" data-id="${c.id}" style="padding:3px 8px;font-size:10px">✏ Edit</button>
+              <button class="btn btn-outline btn-sm toggle-cat" data-id="${c.id}" style="padding:3px 8px;font-size:10px">${c.published === false ? '👁 Show' : '🚫 Hide'}</button>
+              <button class="btn btn-outline btn-sm del-cat" data-id="${c.id}" style="padding:3px 8px;font-size:10px;border-color:#ef4444;color:#ef4444">✕</button>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+      ${cats.length === 0 ? '<p style="color:#666;text-align:center;padding:40px">No categories added yet.</p>' : ''}
+    </div>`;
+  document.getElementById('addCatBtn')?.addEventListener('click', () => {
+    showModal('Add Category', categoryForm({}), async (obj) => {
+      await api('POST', 'categories', categoryPayload(obj)); toast('Category added'); await loadData(); showSection('categories');
+    });
+  });
+  area.querySelectorAll('.edit-cat').forEach(b => {
+    b.addEventListener('click', () => {
+      const c = cats.find(x => x.id === b.dataset.id); if (!c) return;
+      showModal('Edit Category', categoryForm(c), async (obj) => {
+        await api('PUT', 'categories', categoryPayload(obj), c.id); toast('Updated'); await loadData(); showSection('categories');
+      });
+    });
+  });
+  area.querySelectorAll('.toggle-cat').forEach(b => {
+    b.addEventListener('click', async () => {
+      const c = cats.find(x => x.id === b.dataset.id); if (!c) return;
+      await api('PUT', 'categories', { published: c.published === false }, c.id);
+      toast(c.published === false ? 'Published' : 'Hidden'); await loadData(); showSection('categories');
+    });
+  });
+  area.querySelectorAll('.del-cat').forEach(b => {
+    b.addEventListener('click', async () => { if (!confirm('Delete?')) return; await api('DELETE', 'categories', null, b.dataset.id); toast('Deleted'); await loadData(); showSection('categories'); });
   });
 }
 
@@ -2403,7 +2499,7 @@ function renderAlbums(area) {
       ${imageUploadField('Album Cover', 'image', '', 'albums')}
       ${field('Album Title', 'title', '', 'text', true)}
       ${field('Artist', 'artist', '')}
-      ${field('YouTube Video ID', 'video_id', '')}
+      ${field('YouTube Video URL or ID', 'video_id', '')}
       ${textareaField('Description', 'description', '')}
       ${formActions()}
     </form>`, async (obj) => { await api('POST', 'albums', obj); toast('Added'); await loadData(); showSection('albums'); });
@@ -2415,7 +2511,7 @@ function renderAlbums(area) {
         ${imageUploadField('Album Cover', 'image', a.image || '', 'albums')}
         ${field('Album Title', 'title', a.title, 'text', true)}
         ${field('Artist', 'artist', a.artist || '')}
-        ${field('YouTube Video ID', 'video_id', a.video_id || '')}
+        ${field('YouTube Video URL or ID', 'video_id', a.video_id || '')}
         ${textareaField('Description', 'description', a.description || '')}
         ${formActions()}
       </form>`, async (obj) => { await api('PUT', 'albums', obj, a.id); toast('Updated'); await loadData(); showSection('albums'); });

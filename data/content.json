@@ -132,7 +132,7 @@
             "type": "audio",
             "image": "/images/platforms/spotify.svg",
             "url": "https://open.spotify.com/",
-            "sort_order": 10,
+            "sort_order": 1,
             "published": true
         },
         {
@@ -141,7 +141,7 @@
             "type": "audio",
             "image": "/images/platforms/apple-music.svg",
             "url": "https://music.apple.com/",
-            "sort_order": 20,
+            "sort_order": 2,
             "published": true
         },
         {
@@ -150,7 +150,7 @@
             "type": "audio",
             "image": "/images/platforms/jiosaavn.svg",
             "url": "https://www.jiosaavn.com/",
-            "sort_order": 30,
+            "sort_order": 4,
             "published": true
         },
         {
@@ -159,7 +159,7 @@
             "type": "audio",
             "image": "/images/platforms/gaana.svg",
             "url": "https://gaana.com/",
-            "sort_order": 40,
+            "sort_order": 5,
             "published": true
         },
         {
@@ -168,7 +168,7 @@
             "type": "audio",
             "image": "/images/platforms/wynk.svg",
             "url": "https://wynk.in/",
-            "sort_order": 50,
+            "sort_order": 6,
             "published": true
         },
         {
@@ -177,7 +177,7 @@
             "type": "audio",
             "image": "/images/platforms/hungama.svg",
             "url": "https://www.hungama.com/",
-            "sort_order": 60,
+            "sort_order": 7,
             "published": true
         },
         {
@@ -186,7 +186,7 @@
             "type": "video",
             "image": "/images/platforms/youtube.svg",
             "url": "https://www.youtube.com/@bainslaofficial",
-            "sort_order": 70,
+            "sort_order": 1,
             "published": true
         },
         {
@@ -195,7 +195,7 @@
             "type": "video",
             "image": "/images/platforms/instagram.svg",
             "url": "https://www.instagram.com/bainsla_music_company",
-            "sort_order": 80,
+            "sort_order": 2,
             "published": true
         },
         {
@@ -204,7 +204,287 @@
             "type": "video",
             "image": "/images/platforms/facebook.svg",
             "url": "https://facebook.com/bainslamusic",
-            "sort_order": 90,
+            "sort_order": 3,
+            "published": true
+        },
+        {
+            "id": "6a9724d52a8ee",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "YouTube Music",
+            "image": "/images/platforms/youtube-music.svg",
+            "type": "audio",
+            "url": "https://music.youtube.com/",
+            "sort_order": 3,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad59",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Amazon Music",
+            "image": "/images/platforms/amazon-music.svg",
+            "type": "audio",
+            "url": "https://music.amazon.com/",
+            "sort_order": 8,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad5f",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Resso",
+            "image": "/images/platforms/resso.svg",
+            "type": "audio",
+            "url": "https://www.resso.com/",
+            "sort_order": 9,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad62",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Deezer",
+            "image": "/images/platforms/deezer.svg",
+            "type": "audio",
+            "url": "https://www.deezer.com/",
+            "sort_order": 10,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad66",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Tidal",
+            "image": "/images/platforms/tidal.svg",
+            "type": "audio",
+            "url": "https://tidal.com/",
+            "sort_order": 11,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad6a",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "SoundCloud",
+            "image": "/images/platforms/soundcloud.svg",
+            "type": "audio",
+            "url": "https://soundcloud.com/",
+            "sort_order": 12,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad6e",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Pandora",
+            "image": "/images/platforms/pandora.svg",
+            "type": "audio",
+            "url": "https://www.pandora.com/",
+            "sort_order": 13,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad72",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Anghami",
+            "image": "/images/platforms/anghami.svg",
+            "type": "audio",
+            "url": "https://www.anghami.com/",
+            "sort_order": 14,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad77",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Boomplay",
+            "image": "/images/platforms/boomplay.svg",
+            "type": "audio",
+            "url": "https://www.boomplay.com/",
+            "sort_order": 15,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad7b",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Audiomack",
+            "image": "/images/platforms/audiomack.svg",
+            "type": "audio",
+            "url": "https://audiomack.com/",
+            "sort_order": 16,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad80",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "iHeartRadio",
+            "image": "/images/platforms/iheartradio.svg",
+            "type": "audio",
+            "url": "https://www.iheart.com/",
+            "sort_order": 17,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad85",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Napster",
+            "image": "/images/platforms/napster.svg",
+            "type": "audio",
+            "url": "https://www.napster.com/",
+            "sort_order": 18,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad8a",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Shazam",
+            "image": "/images/platforms/shazam.svg",
+            "type": "audio",
+            "url": "https://www.shazam.com/",
+            "sort_order": 19,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad8f",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Qobuz",
+            "image": "/images/platforms/qobuz.svg",
+            "type": "audio",
+            "url": "https://www.qobuz.com/",
+            "sort_order": 20,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad94",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Saregama",
+            "image": "/images/platforms/saregama.svg",
+            "type": "audio",
+            "url": "https://www.saregama.com/",
+            "sort_order": 21,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ad9b",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Intube Music",
+            "image": "/images/platforms/intube-music.svg",
+            "type": "audio",
+            "url": "https://www.intubemusic.com/",
+            "sort_order": 22,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ada8",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "TikTok",
+            "image": "/images/platforms/tiktok.svg",
+            "type": "video",
+            "url": "https://www.tiktok.com/",
+            "sort_order": 4,
+            "published": true
+        },
+        {
+            "id": "6a9724d52adb1",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Snapchat",
+            "image": "/images/platforms/snapchat.svg",
+            "type": "video",
+            "url": "https://www.snapchat.com/",
+            "sort_order": 5,
+            "published": true
+        },
+        {
+            "id": "6a9724d52adba",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Moj",
+            "image": "/images/platforms/moj.svg",
+            "type": "video",
+            "url": "https://mojapp.in/",
+            "sort_order": 6,
+            "published": true
+        },
+        {
+            "id": "6a9724d52adc0",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "ShareChat",
+            "image": "/images/platforms/sharechat.svg",
+            "type": "video",
+            "url": "https://sharechat.com/",
+            "sort_order": 7,
+            "published": true
+        },
+        {
+            "id": "6a9724d52adc7",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Josh",
+            "image": "/images/platforms/josh.svg",
+            "type": "video",
+            "url": "https://share.myjosh.in/",
+            "sort_order": 8,
+            "published": true
+        },
+        {
+            "id": "6a9724d52adce",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Roposo",
+            "image": "/images/platforms/roposo.svg",
+            "type": "video",
+            "url": "https://www.roposo.com/",
+            "sort_order": 9,
+            "published": true
+        },
+        {
+            "id": "6a9724d52add6",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "MX Player",
+            "image": "/images/platforms/mx-player.svg",
+            "type": "video",
+            "url": "https://www.mxplayer.in/",
+            "sort_order": 10,
+            "published": true
+        },
+        {
+            "id": "6a9724d52addd",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Dailymotion",
+            "image": "/images/platforms/dailymotion.svg",
+            "type": "video",
+            "url": "https://www.dailymotion.com/",
+            "sort_order": 11,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ade5",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Vimeo",
+            "image": "/images/platforms/vimeo.svg",
+            "type": "video",
+            "url": "https://vimeo.com/",
+            "sort_order": 12,
+            "published": true
+        },
+        {
+            "id": "6a9724d52adec",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Triller",
+            "image": "/images/platforms/triller.svg",
+            "type": "video",
+            "url": "https://triller.co/",
+            "sort_order": 13,
+            "published": true
+        },
+        {
+            "id": "6a9724d52adf3",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "JioTV",
+            "image": "/images/platforms/jiotv.svg",
+            "type": "video",
+            "url": "https://www.jiocinema.com/",
+            "sort_order": 14,
+            "published": true
+        },
+        {
+            "id": "6a9724d52adfe",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Intube Music",
+            "image": "/images/platforms/intube-music.svg",
+            "type": "video",
+            "url": "https://www.intubemusic.com/",
+            "sort_order": 15,
             "published": true
         }
     ],
@@ -368,38 +648,7 @@
             "role": "Singer"
         }
     ],
-    "clients": [
-        {
-            "id": "cl1",
-            "name": "T-Series",
-            "image": "/images/brands/t-series.svg",
-            "url": ""
-        },
-        {
-            "id": "cl2",
-            "name": "Zee Music",
-            "image": "/images/brands/zee-music.svg",
-            "url": ""
-        },
-        {
-            "id": "cl3",
-            "name": "Sony Music",
-            "image": "/images/brands/sony-music.svg",
-            "url": ""
-        },
-        {
-            "id": "cl4",
-            "name": "Tips Music",
-            "image": "/images/brands/tips-music.svg",
-            "url": ""
-        },
-        {
-            "id": "cl5",
-            "name": "Speed Records",
-            "image": "/images/brands/speed-records.svg",
-            "url": ""
-        }
-    ],
+    "clients": [],
     "albums": [
         {
             "id": "al1",
@@ -1166,5 +1415,87 @@
             "created_at": "2024-01-01"
         }
     ],
-    "inquiries": []
+    "inquiries": [],
+    "categories": [
+        {
+            "id": "6a9724d52ae00",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Hindi",
+            "description": "Hindi film, pop and independent music from our labels and artists.",
+            "image": "",
+            "url": "",
+            "sort_order": 1,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ae02",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Gurjar Rasiya",
+            "description": "The biggest catalogue of Gurjar Rasiya folk hits and viral tracks.",
+            "image": "",
+            "url": "",
+            "sort_order": 2,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ae04",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Rajasthani",
+            "description": "Rajasthani folk, love songs and traditional festival music.",
+            "image": "",
+            "url": "",
+            "sort_order": 3,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ae06",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Marwadi",
+            "description": "Marwadi songs, lokgeet and wedding classics.",
+            "image": "",
+            "url": "",
+            "sort_order": 4,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ae08",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Shekhawati",
+            "description": "Shekhawati regional folk music and cultural songs.",
+            "image": "",
+            "url": "",
+            "sort_order": 5,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ae0a",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Devotional",
+            "description": "Bhajan, aarti, katha and devotional collections.",
+            "image": "",
+            "url": "",
+            "sort_order": 6,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ae0d",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Haryanvi",
+            "description": "Haryanvi dance numbers, ragni and desi beats.",
+            "image": "",
+            "url": "",
+            "sort_order": 7,
+            "published": true
+        },
+        {
+            "id": "6a9724d52ae10",
+            "created_at": "2026-09-01 19:17:41",
+            "name": "Bhojpuri",
+            "description": "Bhojpuri hits, folk songs and film music.",
+            "image": "",
+            "url": "",
+            "sort_order": 8,
+            "published": true
+        }
+    ]
 }
